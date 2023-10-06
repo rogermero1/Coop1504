@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('RUTA_TEMPLATE_GENERAL')}">
+	<ui:define name="SEGM_CONTENIDO_OPCIONES_TITULO">
+		<center>
+			<h:outputText class="titulos" value="Certificaciones" />
+		</center>
+	</ui:define>
+
+	<ui:define name="SEGM_CONTENIDO_OPCIONES">
+
+		<script>
+		 function initDialog()
+		 {
+			 alert("Prueba");
+			 var x = document.getElementById("myDialog");
+			  x.open = true;
+		}
+		</script>
+
+		<p:growl id="msjGeneral" showDetail="true" showSummary="true"
+			sticky="true" />
+		<h:form id="formulario" style="width:50%; margin: auto;"
+			enctype="multipart/form-data">
+			<h:commandButton id="dialogClickBtn" value="Cargar"
+				onclick="initDialog(); return false;">
+
+			</h:commandButton>
+			<p:commandButton onmousedown="dlgAutorizacion.show()" value="Cargar">
+
+			</p:commandButton>
+
+
+		</h:form>
+
+		<p:dialog id="dialogAutorizacion" header="Autorización"
+			resizable="true" widgetVar="dlgAutorizacion" modal="true"
+			height="500" width="50%" appendToBody="true">
+
+			<form action="servlet_archivo" method="post" target="respuesta"
+				enctype="multipart/form-data">
+				Seleccione el archivo:<input type="file" name="fileName"></input> <br></br>
+				<input type="submit" value="Cargar"></input>
+				<iframe name="respuesta" id="respuesta" frameborder="0"></iframe>
+			</form>
+
+		</p:dialog>
+
+
+	</ui:define>
+</ui:composition>

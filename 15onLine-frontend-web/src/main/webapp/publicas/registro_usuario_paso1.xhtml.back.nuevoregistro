@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('RUTA_TEMPLATE_REGISTRO')}">
+	<ui:define name="SEGM_CONTENIDO_TITULO">
+		<center>
+			<h:outputText class="titulos"
+				value="Creación de usuario: (Paso 1 - Validación de credenciales)" />
+		</center>
+	</ui:define>
+	<ui:define name="SEGM_CONTENIDO_REGISTRO">
+		<center>
+			<h:form id="frmUsuario">
+				<p:panel id="panelRegistro">
+					<p:panel style="width:50%">
+						<center>
+							<p:outputLabel style="font-weight:bold;"
+								value="Por favor, ingrese su número de identificación y el número de su convenio. Si aún no lo tiene solicitelo acérquese a cualquiera de nuestras oficinas." />
+						</center>
+					</p:panel>
+					<p:spacer height="10" />
+					<p:panel style="width:50%">
+						<center>
+							<p:outputLabel style="font-weight:bold;"
+								value="Si usted ha ingresado con un usuario de nuestro antiguo sistema, por favor revise su correo e ingrese el código enviado para actualizar su usuario" />
+						</center>
+					</p:panel>
+					<p:spacer height="10" />
+					<p:messages globalOnly="true" showDetail="true" closable="true" />
+					<p:outputLabel value="#{registroUsuarioMB.controlSesion}" />
+					<!-- <p:growl id="msjGeneral" showDetail="true" showSummary="true" -->
+					<!-- sticky="true" /> -->
+					<h:panelGrid columns="3">
+						<h:outputText value="Cédula : " />
+						<p:inputText id="cedula" required="true"
+							requiredMessage="Ingrese Cédula"
+							validatorMessage="INGRESE CEDULA"
+							value="#{registroUsuarioMB.cedula}" />
+						<p:message for="cedula" />
+						<h:outputText value="N° Convenio : " />
+						<p:inputText id="convenio" alt="clave" required="true"
+							requiredMessage="Ingrese Convenio"
+							validatorMessage="INGRESE CONVENIO"
+							value="#{registroUsuarioMB.convenioWeb}" />
+						<p:message for="convenio" />
+					</h:panelGrid>
+					<center>
+						<h:panelGrid>
+							<p:commandButton partialSubmit="true" update="frmUsuario"
+								process="frmUsuario"
+								actionListener="#{registroUsuarioMB.validacionConvenio}"
+								value="Validar" icon="ui-icon-disk" onstart="dlgCargando.show()"
+								onsuccess="dlgCargando.hide()" />
+						</h:panelGrid>
+					</center>
+					<p:spacer height="10" />
+				</p:panel>
+			</h:form>
+			<p:dialog id="modalDialogCargando" closable="false"
+				header="Cargando..." widgetVar="dlgCargando" modal="true"
+				height="40" width="250" appendToBody="true">
+				<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando"></p:graphicImage>
+			</p:dialog>
+		</center>
+	</ui:define>
+</ui:composition>

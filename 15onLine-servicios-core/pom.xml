@@ -1,0 +1,213 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>ec.fin.coop15abril</groupId>
+		<artifactId>15onLineWeb</artifactId>
+		<version>2.0</version>
+	</parent>
+	<artifactId>15onLine-servicios-core</artifactId>
+	<name>15onLine-servicios-core</name>
+	<description>15onLine-servicios-core</description>
+	<packaging>jar</packaging>
+	<properties>
+		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>11</maven.compiler.source>
+	</properties>
+
+	<dependencies>
+
+		<!-- https://mvnrepository.com/artifact/javax/javaee-web-api -->
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-web-api</artifactId>
+			<version>8.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/commons-collections/commons-collections -->
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>3.2.2</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>5.4.22.Final</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-envers -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-envers</artifactId>
+			<version>5.4.22.Final</version>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jakarta.xml.ws</groupId>
+			<artifactId>jakarta.xml.ws-api</artifactId>
+			<version>2.3.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.sun.xml.ws</groupId>
+			<artifactId>jaxws-ri</artifactId>
+			<version>2.3.2</version>
+			<type>pom</type>
+		</dependency>
+
+		<dependency>
+			<groupId>com.novell.ldap</groupId>
+			<artifactId>jldap</artifactId>
+			<version>2009-10-07</version>
+		</dependency>
+		<!-- Integracion de Lombok para core -->
+		<dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <version>1.18.24</version>
+		    <scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.slf4j</groupId>
+		    <artifactId>slf4j-api</artifactId>
+		    <version>2.0.9</version>
+		    <scope>compile</scope>
+		</dependency>
+
+		<!-- SERVIDOR NEXUS-->
+		<dependency>
+			 <groupId>fin.coop15abril.librerias</groupId>
+			 <artifactId>dtos-denarius</artifactId>
+			 <version>1.0</version>
+			 <scope>compile</scope>
+		</dependency>
+		<dependency>
+			 <groupId>fin.coop15abril.librerias</groupId>
+			 <artifactId>excepciones</artifactId>
+			 <version>1.0</version>
+			 <scope>compile</scope>
+		</dependency>
+		<dependency>
+			 <groupId>fin.coop15abril.librerias</groupId>
+			 <artifactId>utilerias</artifactId>
+			 <version>1.0</version>
+			 <scope>compile</scope> 
+		</dependency> 
+		<!-- DESERIALIZACION JSON-->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20230227</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.9</version>
+		</dependency>
+		<!-- PROBANDO JACKSON-->
+		
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-core</artifactId>
+		    <version>2.13.0</version> <!-- Usa la versión más reciente -->
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-databind</artifactId>
+		    <version>2.13.0</version> <!-- Usa la versión más reciente -->
+		</dependency>
+
+	</dependencies>
+
+	<build>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Dependencies>com.novell.jldap, org.hibernate</Dependencies>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<classifier>integracion</classifier>
+							<includes>
+								<include>**/librerias/excepciones/*</include>
+								<include>**/interfaces/*</include>
+								<include>**/ldap/modelo/servicios/*</include>
+								<include>**/ldap/modelo/servicios/*.properties</include>
+								<include>**/seguridad/modelo/entidades/*</include>
+								<include>**/webbanking/modelo/entidades/*</include>
+								<include>**/procedimientosalmacenados/modelo/entidades/*</include>
+								<include>**/webbanking/modelo/entidades/*</include>
+								<include>**/consultas/modelo/entidades/webbanking/*</include>
+								<include>**/consultas/modelo/entidades/clientes/*</include>
+								<include>**/librerias/entidades/*</include>
+								<include>**/librerias/entidades/*</include>
+							</includes>
+							<excludes>
+								<exclude>**/test.*</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<configuration>
+							<target>
+								<copy
+									file="${project.build.directory}/${project.build.finalName}-integracion.jar"
+									todir="../15onLine-frontend-web/src/main/webapp/WEB-INF/lib" />
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
+
+
+</project>

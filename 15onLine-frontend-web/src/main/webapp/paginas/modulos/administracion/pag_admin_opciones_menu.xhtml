@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="viewname">
+		<li>Administración De Opciones del Menú</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+		<p:growl id="msjGeneral" showDetail="true" showSummary="true"
+			life="5000" />
+		<h:form id="frmOpciones">
+			<p:dataTable id="tablaOpciones" var="regOpciones"
+				value="#{administracionOpcionMB.listaOpcionesVigentes}"
+				paginator="true" rows="10" paginatorPosition="bottom"
+				selectionMode="single" rowKey="#{regOpciones.id}"
+				selection="#{administracionOpcionMB.opcion}" resizableColumns="true">
+				<f:facet name="header">
+					<p:outputLabel value="Opciones del Menú" />
+				</f:facet>
+				<p:ajax event="rowSelect"
+					listener="#{administracionOpcionMB.onRowSelect}"
+					update=":frmOpciones" />
+				<p:ajax event="rowUnselect"
+					listener="#{administracionOpcionMB.onRowUnselect}"
+					update=":frmOpciones" />
+				<p:column headerText="Id" style="width:4%;">
+					<h:outputText value="#{regOpciones.id}" />
+				</p:column>
+				<p:column headerText="Nombre Opcion">
+					<h:outputText value="#{regOpciones.opcion}" />
+				</p:column>
+				<p:column headerText="Descripcion">
+					<h:outputText value="#{regOpciones.descripcion}" />
+				</p:column>
+				<p:column headerText="Url Pagina">
+					<h:outputText value="#{regOpciones.accion}" />
+				</p:column>
+				<p:column headerText="Icono">
+					<h:outputText value="#{regOpciones.rutaImagen}" />
+				</p:column>
+				<p:column headerText="Orden" style="width:4%;">
+					<h:outputText value="#{regOpciones.orden}" />
+				</p:column>
+				<p:column headerText="Orientacion">
+					<h:outputText
+						value="#{regOpciones.orientacion=='H'?'Horizontal':'Vertical'}" />
+				</p:column>
+				<p:column headerText="Tipo" style="width:4%;">
+					<h:outputText value="#{regOpciones.tipo}" />
+				</p:column>
+				<p:column headerText="Padre">
+					<h:outputText
+						value="#{administracionOpcionMB.buscaPadre(regOpciones.opcionPadre.id)}" />
+				</p:column>
+				<p:column headerText="Valida Batch">
+					<h:outputText value="#{regOpciones.validaOnLine}" />
+				</p:column>
+				<f:facet name="footer">
+					<p:commandButton value="Nuevo" icon="fa fa-file"
+						update=":frmMantenimiento"
+						action="#{administracionOpcionMB.inicializacion}"
+						oncomplete="PF('dlgOpcion').show()" />
+
+					<h:outputText value=" " />
+
+					<p:commandButton value="Editar" icon="fa fa-pencil"
+						disabled="#{administracionOpcionMB.accionEliminar}"
+						update=":frmMantenimiento"
+						action="#{administracionOpcionMB.cargaPadre}"
+						oncomplete="PF('dlgOpcion').show()" />
+
+					<h:outputText value=" " />
+
+					<p:commandButton value="Eliminar" icon="fa fa-trash"
+						disabled="#{administracionOpcionMB.accionEliminar}"
+						update=":frmConfirmacion"
+						oncomplete="PF('dlgConfirmacion').show()" />
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+		<p:dialog header="Confirmación" widgetVar="dlgConfirmacion"
+			resizable="false" id="dlgConfirma" appendToBody="true"
+			hideEffect="drop" showEffect="explode" modal="true">
+			<h:form id="frmConfirmacion">
+				<p:panelGrid>
+					<p:row>
+						<p:column colspan="2">
+							<p:outputLabel
+								value="Desea eliminar la opción: #{administracionOpcionMB.opcion.descripcion}?" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:commandButton value="SI" partialSubmit="true"
+								update=":frmOpciones, :frmConfirmacion :msjGeneral"
+								actionListener="#{administracionOpcionMB.eliminarOpcion}"
+								oncomplete="PF('dlgConfirmacion').hide()"
+								styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+						</p:column>
+						<p:column>
+							<p:commandButton value="NO"
+								onclick="PF('dlgConfirmacion').hide()"
+								styleClass="ui-confirmdialog-no" icon="fa fa-window-close" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+		<p:dialog header="Datos Opción" widgetVar="dlgOpcion"
+			resizable="false" id="dlgOpc" appendToBody="true"
+			showEffect="explode" hideEffect="drop" modal="true">
+			<h:form id="frmMantenimiento">
+				<p:panelGrid columns="2">
+					<h:outputText value="Nombre Opción:" />
+					<p:inputText value="#{administracionOpcionMB.opcion.opcion}" />
+					<h:outputText value="Descripcion:" />
+					<p:inputText value="#{administracionOpcionMB.opcion.descripcion}" />
+					<h:outputText value="Url Pagina:" />
+					<p:inputText value="#{administracionOpcionMB.opcion.accion}" />
+					<h:outputText value="Orden:" />
+					<p:inputText value="#{administracionOpcionMB.opcion.orden}" />
+					<h:outputText value="Icono:" />
+					<p:inputText value="#{administracionOpcionMB.opcion.rutaImagen}" />
+					<h:outputText value="Posicion:" />
+					<p:inputText value="#{administracionOpcionMB.opcion.orientacion}" />
+					<h:outputText value="Tipo" />
+					<p:inputText value="#{administracionOpcionMB.opcion.tipo}" />
+					<h:outputText value="Padre" />
+					<p:selectOneMenu value="#{administracionOpcionMB.idPadre}">
+						<f:selectItems
+							value="#{administracionOpcionMB.listaOpcionesPadre}" var="lista"
+							itemLabel="#{lista}" itemValue="#{lista}" />
+					</p:selectOneMenu>
+					<h:outputText value="Valida Batch" />
+					<p:inputText value="#{administracionOpcionMB.opcion.validaOnLine}" />
+					<f:facet name="footer">
+						<center>
+							<p:commandButton value="Guardar" icon="fa fa-floppy-o"
+								partialSubmit="true"
+								update=":frmOpciones, :frmMantenimiento, :msjGeneral"
+								actionListener="#{administracionOpcionMB.guardarOpcion}"
+								oncomplete="PF('dlgOpcion').hide()" />
+
+							<h:outputText value=" " />
+							<p:commandButton value="Cancelar" icon="fa fa-ban"
+								partialSubmit="true"
+								update=":frmOpciones, :frmMantenimiento, :msjGeneral"
+								action="#{administracionOpcionMB.inicializacion}"
+								onclick="PF('dlgOpcion').hide()" />
+						</center>
+					</f:facet>
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

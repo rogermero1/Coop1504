@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file is not required if you don't need any extra configuration. -->
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+    http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+   <!-- Write your navigation rules here. You should use CDI for creating @Named managed beans! -->
+   
+    <component>
+        <component-type>org.primefaces.component.PandoraMenu</component-type>
+        <component-class>org.primefaces.pandora.component.PandoraMenu</component-class>
+    </component>
+    
+    <render-kit>
+        <renderer>
+            <component-family>org.primefaces.component</component-family>
+            <renderer-type>org.primefaces.component.PandoraMenuRenderer</renderer-type>
+            <renderer-class>org.primefaces.pandora.component.PandoraMenuRenderer</renderer-class>
+        </renderer>
+    </render-kit>
+
+
+
+</faces-config>

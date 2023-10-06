@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template_registro_externo.xhtml">
+	
+		<ui:define name="viewname">
+        <li>Desbloqueo, Olvido de contraseña (Paso 1 - Validación de usuario)</li>
+        <li><i class="fa fa-angle-right"></i></li>
+        <li>
+            
+        </li>
+    </ui:define>
+	 <ui:define name="content">
+		<center>
+			<h:form id="frmDesbloqueoOlvido">
+				<p:panel id="panelDescbloqueoOlvido" style="width:500px"
+					header="Por favor ingrese el nombre de usuario que asigno en el proceso de registro, si no lo recuerda, ingrese la pregunta y respuesta secreta, caso contrario
+	comuniquese con servicio al cliente de la Cooperativa de Ahorro y Crédito 15 de Abril LTDA.">
+					<p:messages globalOnly="true" showDetail="true" closable="true" />
+					<h:panelGrid border="0" columns="3">
+						<p:outputLabel value="Ingrese Nombre de usuario:" />
+						<p:inputText value="#{registroUsuarioMB.usuario.usuario}"
+							required="true" onchange="ChangeCase(this);" />
+						<p:commandButton partialSubmit="true" update="frmDesbloqueoOlvido"
+							process="frmDesbloqueoOlvido"
+							actionListener="#{registroUsuarioMB.validaUsuarioDesbloqueoOlvido}"
+							value="Validar usuario" icon="fa fa-check" />
+					</h:panelGrid>
+				</p:panel>
+				<p:spacer height="10" />
+				<p:panel id="panelPreguntaSecreta" style="width:500px"
+					header="Por favor de respuesta a la pregunta secreta"
+					rendered="#{registroUsuarioMB.contestaPreguntaSecreta}">
+					<h:panelGrid border="0" columns="3">
+						<p:outputLabel
+							value="#{registroUsuarioMB.preguntaSecreta.pregunta}" />
+						<p:password value="#{registroUsuarioMB.respuestaDesbloqueoOlvido}" />
+						<p:commandLink partialSubmit="true" update="frmDesbloqueoOlvido"
+							process="frmDesbloqueoOlvido"
+							actionListener="#{registroUsuarioMB.validaUsuarioDesbloqueoOlvido}"
+							value="Otra Pregunta" />
+					</h:panelGrid>
+					<h:panelGrid border="0" columns="1">
+						<center>
+							<p:commandButton partialSubmit="true"
+								update="frmDesbloqueoOlvido" process="frmDesbloqueoOlvido"
+								actionListener="#{registroUsuarioMB.validaRespuestaDesbloqueoOlvido}"
+								value="Validar Respuesta" icon="fa fa-check" />
+						</center>
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+		</center>
+	</ui:define>
+
+</ui:composition>

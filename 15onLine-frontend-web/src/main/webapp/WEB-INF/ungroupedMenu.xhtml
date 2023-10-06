@@ -1,0 +1,54 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui" xmlns:sb="http://primefaces.org/pandora">
+
+    <sb:menu widgetVar="PandoraMenuWidget">
+        <p:submenu id="sbx_homepage" label="Main Menu" icon="fa fa-fw fa-home">
+            <p:menuitem id="sbx_dashboard" value="Dashboard" icon="fa fa-fw fa-home"  />
+            <p:submenu id="sbx_components" label="UI Kit" icon="fa fa-fw fa-star">
+                <p:menuitem id="sbx_forms" value="Forms" icon="fa fa-fw fa-code"  />
+                <p:menuitem id="sbx_data" value="Data" icon="fa fa-fw fa-table"  />
+                <p:menuitem id="sbx_panels" value="Panels" icon="fa fa-fw fa-list-alt"  />
+                <p:menuitem id="sbx_overlays" value="Overlays" icon="fa fa-fw fa-square"  />
+                <p:menuitem id="sbx_menus" value="Menus" icon="fa fa-fw fa-minus-square-o" />
+                <p:menuitem id="sbx_messages" value="Messages" icon="fa fa-fw fa-circle-o-notch"  />
+                <p:menuitem id="sbx_charts" value="Charts" icon="fa fa-fw fa-area-chart"  />
+                <p:menuitem id="sbx_file" value="File" icon="fa fa-fw fa-arrow-circle-o-up"  />
+                <p:menuitem id="sbx_others" value="Misc" icon="fa fa-fw fa-user-secret"  />
+            </p:submenu>
+            <p:submenu id="sbx_default" label="Pages" icon="fa fa-fw fa-cube">
+                <p:menuitem id="sbx_empty" value="Empty" icon="fa fa-fw fa-square-o"  />
+                <p:menuitem id="sbx_login" value="Login" icon="fa fa-fw fa-sign-in"  />
+                <p:menuitem id="sbx_db_landing" value="Landing" icon="fa fa-fw fa-certificate" />
+                <p:menuitem id="sbx_error" value="Error" icon="fa fa-fw fa-exclamation-circle"  />
+                <p:menuitem id="sbx_404" value="404" icon="fa fa-fw fa-times" />
+                <p:menuitem id="sbx_access" value="Access Denied" icon="fa fa-fw fa-exclamation-triangle"  />
+            </p:submenu>
+            <p:submenu id="sbx_hierarchy" label="Hierarchy" icon="fa fa-fw fa-sitemap">
+                <p:submenu id="sbx_sm1" label="Submenu 1" icon="fa fa-fw fa-sign-in">
+                    <p:submenu id="sbx_sm11" label="Submenu 1.1" icon="fa fa-fw fa-sign-in">
+                        <p:menuitem id="sbx_lnk111" value="Link 1.1.1" icon="fa fa-fw fa-sign-in" url="#" />
+                        <p:menuitem id="sbx_lnk112" value="Link 1.1.2" icon="fa fa-fw fa-sign-in" url="#" />
+                        <p:menuitem id="sbx_lnk113" value="Link 1.1.3" icon="fa fa-fw fa-sign-in" url="#" />
+                    </p:submenu>
+                    <p:submenu id="sbx_sm12" label="Submenu 1.2" icon="fa fa-fw fa-sign-in">
+                        <p:menuitem id="sbx_lnk121" value="Link 1.2.1" icon="fa fa-fw fa-sign-in" url="#" />
+                    </p:submenu>
+                </p:submenu>
+                <p:submenu id="sbx_sm2" label="Submenu 2" icon="fa fa-fw fa-sign-in">
+                    <p:submenu id="sbx_sm21" label="Submenu 2.1" icon="fa fa-fw fa-sign-in">
+                        <p:menuitem id="sbx_lnk211" value="Link 2.1.1" icon="fa fa-fw fa-sign-in" url="#" />
+                        <p:menuitem id="sbx_lnk212" value="Link 2.1.2" icon="fa fa-fw fa-sign-in" url="#" />
+                    </p:submenu>
+                    <p:submenu id="sbx_sm22" label="Submenu 2.2" icon="fa fa-fw fa-sign-in">
+                        <p:menuitem id="sbx_lnk221" value="Link 2.2.1" icon="fa fa-fw fa-sign-in" url="#" />
+                    </p:submenu>
+                </p:submenu>
+            </p:submenu>
+            <p:submenu id="sbx_misc" label="Get Started" icon="fa fa-fw fa-download">
+                <p:menuitem id="sbx_doc" value="Docs" icon="fa fa-fw fa-certificate"  />
+                <p:menuitem id="sbx_buy" value="Buy Now" icon="fa fa-fw fa-credit-card-alt" url="https://www.primefaces.org/store" />
+            </p:submenu>
+        </p:submenu>
+    </sb:menu>
+    
+</ui:composition>

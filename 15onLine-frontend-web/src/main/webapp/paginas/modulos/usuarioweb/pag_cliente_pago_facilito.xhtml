@@ -1,0 +1,185 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+	<ui:define name="viewname">
+		<li>Pagos</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+
+		<center>
+
+			<p:outputLabel value="#{pagoMB.controlSesion}" />
+
+			<h:form id="frmPagoServicio" style="width:90%;">
+				<p:fieldset legend="Datos para su pago" toggleable="false">
+
+
+					<p:panelGrid>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Grupo:" />
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="cmbGrupos" value="#{pagoMB.grupoFacilito}">
+									<p:ajax event="change"
+										listener="#{pagoMB.buscaProductosPorGrupoFacilito()}"
+										update=":frmPagoServicio:cmbProductos, :frmPagoServicio:txtTitular, :frmPagoServicio:txtReferencia" />
+									<f:selectItem itemLabel="Seleccione Grupo" itemValue="" />
+									<f:selectItems value="#{pagoMB.listadoGruposFacilito}"
+										var="grupo" itemLabel="#{grupo.descripcion}"
+										itemValue="#{grupo.id}" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Producto:" />
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="cmbProductos"
+									value="#{pagoMB.idRubroFacilito}" filter="true"
+									filterMatchMode="contains">
+									<p:ajax event="change"
+										listener="#{pagoMB.determinaTipoPagoFacilito()}"
+										update=":frmPagoServicio:txtTotal, :frmPagoServicio:txtTitulo" />
+									<f:selectItem itemLabel="Seleccione Producto" itemValue="" />
+									<f:selectItems value="#{pagoMB.rubrosFacilito}" var="rubro"
+										itemLabel="#{rubro.nombre}" itemValue="#{rubro.identidad}" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Su Cuenta(*)" />
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="cmbCuentas" value="#{pagoMB.cuentaDebito}"
+									requiredMessage="Seleccione cuenta">
+									<f:selectItem itemLabel="Seleccione cuenta" itemValue="" />
+									<f:selectItems value="#{pagoMB.listadoCuentas}" var="cuenta"
+										itemLabel="#{cuenta.descripcion}" itemValue="#{cuenta.id}" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel id="txtTitulo"
+									value="#{pagoMB.tituloReferenciaPago}" />
+							</p:column>
+							<p:column>
+								<p:inputText id="txtReferencia" value="#{pagoMB.numeroServicio}" />
+								<p:outputLabel value=" " />
+								<p:commandButton value="Buscar" icon="fa fa-search"
+									action="#{pagoMB.consultaDeudaFacilito()}"
+									update=":mensajeAplicacion, :frmListadoDeuda, :frmPagoServicio:txtTitular, :frmPagoServicio:txtReferencia"
+									onstart="PF('dlgCargando').show()"
+									onsuccess="PF('dlgCargando').hide()" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Titular:" />
+							</p:column>
+							<p:column colspan="2">
+								<p:inputText readonly="true" id="txtTitular"
+									value="#{pagoMB.numeroIdenticacionServicio} - #{pagoMB.nombreBeneficiario}"
+									size="50" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Total a pagar: " />
+							</p:column>
+							<p:column>
+								<p:inputText readonly="#{pagoMB.bloqueaAbono}" id="txtTotal"
+									value="#{pagoMB.totalPagoGAD}" size="20" />
+								<p:outputLabel value=" * Incluye comisión " />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<p:panelGrid>
+						<p:row>
+							<p:column colspan="6" style="text-align:center">
+								<p:commandButton value="Confirmar"
+									action="#{pagoMB.validaDatosPagoFacilito(true)}"
+									update=":frmPagoServicio, :frmListadoDeuda, :mensajeAplicacion"
+									icon="fa fa-check" onstart="PF('dlgCargando').show()"
+									onsuccess="PF('dlgCargando').hide()" />
+								<h:outputText value=" " />
+								<p:commandButton value="Limpiar" icon="fa fa-refresh"
+									actionListener="#{pagoMB.funcionLimpiar}" partialSubmit="true"
+									process="@this" update=":frmPagoServicio, :frmListadoDeuda" />
+								<h:outputText value=" " />
+								<p:commandButton value="Cancelar" icon="fa fa-window-close"
+									ajax="true" immediate="true"
+									actionListener="#{pagoMB.funcionCancelar}" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:fieldset>
+			</h:form>
+		</center>
+
+		<center>
+			<p:messages id="mensajeAplicacion" closable="true" showSummary="true"
+				showDetail="true" style="width:90%;" />
+		</center>
+
+		<center>
+			<h:form id="frmListadoDeuda" style="width:90%;">
+				<p:dataTable id="tablaDatosPagos" paginator="true"
+					paginatorPosition="bottom" var="datos"
+					value="#{pagoMB.rubrosAdeudadosFacilito}" rows="10"
+					emptyMessage="No registra información" selectionMode="single"
+					rowKey="#{datos.IDRubro}" selection="#{pagoMB.rubroSeleccionado}">
+					<f:facet name="header">
+						<p:outputLabel value="Valores adeudados" />
+					</f:facet>
+					<p:ajax event="rowSelect" listener="#{pagoMB.onRowSelectFacilito}"
+						update=":frmListadoDeuda, :frmPagoServicio:txtTotal" />
+					<p:ajax event="rowUnselect"
+						listener="#{pagoMB.onRowUnselectFacilito}"
+						update=":frmListadoDeuda, :frmPagoServicio:txtTotal" />
+					<p:column headerText="Prioridad"
+						style="text-align : center; width:10%;">
+						<h:outputText value="#{datos.prioridad}" />
+					</p:column>
+					<p:column headerText="Descripción" style="text-align : center">
+						<h:outputText value="#{datos.descripcion}" />
+					</p:column>
+					<p:column headerText="Valor" style="text-align : right; width:15%;">
+						<h:outputText value="#{datos.valor}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Comisión"
+						style="text-align : right; width:15%;">
+						<h:outputText value="#{datos.comision}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Total" style="text-align : right; width:15%;">
+						<h:outputText value="#{datos.valorConComision}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</center>
+
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+			width="300">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando"></p:graphicImage>
+		</p:dialog>
+
+	</ui:define>
+
+</ui:composition>

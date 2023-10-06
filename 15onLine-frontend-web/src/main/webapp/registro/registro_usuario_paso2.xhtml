@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template_registro_externo.xhtml">
+
+	<ui:define name="viewname">
+		<li>Creación de usuarios: (Paso 2 - Selección de Imágenes)</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+		<center>
+			<h:form id="form">
+				<p:panel id="panelRegistro" style="width:100%"
+					header="Por favor, seleccione una imágen y a continuación escriba un comentario para la misma.">
+
+					<p:messages globalOnly="true" showDetail="true" closable="true" />
+
+					<div align="left">
+						<h:panelGrid columns="3">
+							<h:outputText value="Cliente : " style="font-weight:bold;" />
+							<h:outputText value="#{registroUsuarioMB.cedula}" />
+							<h:outputText value="#{registroUsuarioMB.nombreCliente}" />
+						</h:panelGrid>
+
+						<p:fieldset legend="Imágenes" toggleable="true" toggleSpeed="500" style="width:100%">
+							<p:dataGrid var="imagenes" id="cosito"
+								value="#{registroUsuarioMB.listaImagen}" paginator="true"
+								paginatorAlwaysVisible="false" style="margin:20px; border-style: none;" columns="8">
+								<p:commandLink title="#{imagenes}" update=":form:set_imagen">
+									<p:graphicImage value="#{imagenes}" style="margin-left:10%; " />
+									<f:setPropertyActionListener value="#{imagenes}"
+										target="#{registroUsuarioMB.usuario.imagen}" />
+								</p:commandLink>
+							</p:dataGrid>
+							<center>
+								<h:panelGrid id="set_imagen" border="0" columns="2">
+									<p:outputLabel value="Imagen seleccionada:" />
+									<p:graphicImage value="#{registroUsuarioMB.usuario.imagen}" />
+									<p:outputLabel
+										value="¿Qué significa para usted la imágen seleccionada?" />
+									<p:inputText
+										value="#{registroUsuarioMB.usuario.descripcionImagen}"
+										maxlength="70" />
+								</h:panelGrid>
+								<h:panelGrid>
+									<p:commandButton partialSubmit="true" update="form"
+										process="form"
+										actionListener="#{registroUsuarioMB.validacionImagen}"
+										value="Validar" icon="fa fa-floppy-o"
+										onstart="PF('dlgCargando').show()"
+										onsuccess="PF('dlgCargando').hide()" />
+								</h:panelGrid>
+							</center>
+						</p:fieldset>
+					</div>
+				</p:panel>
+			</h:form>
+		</center>
+
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+			width="300" appendToBody="true">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando"></p:graphicImage>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<h:form>
+		<p:toolbar style="background:transparent;">
+			<p:toolbarGroup align="left">
+				<p:menuButton value="Inicio">
+					<p:menuitem value="Inicio" icon="ui-icon-home"
+						url="#{servicioUsuarioMB.urlInicio()}" />
+					<!-- #{configuracionesGeneralesMB.getValorConstanteConfiguracion('RUTA_PRINCIPAL_APLICACION')} -->
+					<p:separator />
+					<p:menuitem value="Cerrar Session" action="#{logoutMB.logout}"
+						oncomplete="javascript:window.close();" icon="ui-icon-extlink"
+						immediate="true" process="@this" update="@this" />
+				</p:menuButton>
+			</p:toolbarGroup>
+			<p:toolbarGroup align="right" style="background:transparent;">
+				<h:panelGrid style="background:transparent;">
+					<p:clock pattern="dd/MM/yyyy - HH:mm:ss" mode="client" />
+				</h:panelGrid>
+			</p:toolbarGroup>
+		</p:toolbar>
+	</h:form>
+</ui:composition>

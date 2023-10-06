@@ -1,0 +1,356 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('RUTA_TEMPLATE_REGISTRO')}">
+	<ui:define name="SEGM_CONTENIDO_TITULO">
+		<center>
+			<h:outputText class="titulos"
+				value="Creación de usuario: (Paso 1 - Validación de credenciales)" />
+		</center>
+	</ui:define>
+	<ui:define name="SEGM_CONTENIDO_REGISTRO">
+		<center>
+			<h:form id="frmUsuario">
+				<p:panel id="panelRegistro">
+					<p:panel style="width:50%">
+						<center>
+							<p:outputLabel style="font-weight:bold;"
+								value="Por favor, ingrese su número de identificación, correo y celular registrados en la institución." />
+						</center>
+					</p:panel>
+					<p:spacer height="10" />
+					<p:messages globalOnly="true" showDetail="true" closable="true" />
+					<p:outputLabel value="#{registroUsuarioMB.controlSesion}" />
+					<!-- <p:growl id="msjGeneral" showDetail="true" showSummary="true" -->
+					<!-- sticky="true" /> -->
+					<h:panelGrid columns="3">
+						<h:outputText value="Cédula : " />
+						<p:inputText id="cedula" required="true"
+							requiredMessage="Ingrese Cédula"
+							validatorMessage="INGRESE CEDULA"
+							value="#{registroUsuarioMB.cedula}" />
+						<p:message for="cedula" />
+
+						<h:outputText value="Correo : " />
+						<p:inputText id="correo" required="true"
+							requiredMessage="Ingrese Correo"
+							validatorMessage="INGRESE CORREO"
+							value="#{registroUsuarioMB.correo}" />
+						<p:message for="correo" />
+
+						<h:outputText value="Celular : " />
+						<p:inputText id="celular" required="true"
+							requiredMessage="Ingrese Celular"
+							validatorMessage="INGRESE CELULAR"
+							value="#{registroUsuarioMB.celular}" />
+						<p:message for="celular" />
+
+						<!-- 						<h:outputText value="N° Convenio : " /> -->
+						<!-- 						<p:inputText id="convenio" alt="clave" required="true" -->
+						<!-- 							requiredMessage="Ingrese Convenio" -->
+						<!-- 							validatorMessage="INGRESE CONVENIO" -->
+						<!-- 							value="#{registroUsuarioMB.convenioWeb}" /> -->
+						<!-- 						<p:message for="convenio" /> -->
+					</h:panelGrid>
+					<center>
+						<h:panelGrid>
+							<p:commandButton partialSubmit="true" update="frmUsuario"
+								id="btnValidar" process="frmUsuario"
+								disabled="#{registroUsuarioMB.aceptarCondiciones == false}"
+								actionListener="#{registroUsuarioMB.validacionConvenio}"
+								value="Validar" icon="ui-icon-disk" onstart="dlgCargando.show()"
+								onsuccess="dlgCargando.hide()" />
+						</h:panelGrid>
+					</center>
+					<p:spacer height="10" />
+					<center>
+						<p:panel style="width:50%">
+							<center>
+								<p:selectBooleanCheckbox
+									value="#{registroUsuarioMB.aceptarCondiciones}">
+									<p:ajax update="frmUsuario:btnValidar"
+										listener="#{registroUsuarioMB.nada}" />
+								</p:selectBooleanCheckbox>
+								<p:outputLabel style="font-weight:bold;" value="   Aceptar los " />
+								<p:commandLink onmousedown="dlgCondiciones.show()">
+									<p:outputLabel style="font-weight:bold;"
+										value="Terminos y condiciones" />
+								</p:commandLink>
+							</center>
+						</p:panel>
+					</center>
+					<p:spacer height="10" />
+				</p:panel>
+			</h:form>
+			<p:dialog id="modalDialogCargando" closable="false"
+				header="Cargando..." widgetVar="dlgCargando" modal="true"
+				height="40" width="250" appendToBody="true">
+				<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando"></p:graphicImage>
+			</p:dialog>
+			<p:dialog id="dialogCondiciones" header="Términos y Condiciones"
+				resizable="true" widgetVar="dlgCondiciones" modal="true"
+				height="500" width="50%" appendToBody="true">
+				<div class="logoImpresion">
+					<h:panelGrid columns="1">
+						<img src="#{configuracionesGeneralesMB.logoAplicacion}"
+							height="90px" align="left" class="" />
+					</h:panelGrid>
+					<div>
+						<p style="font-weight: bold; font-size: 14px; text-align: center;">CONTRATO
+							DE UTILIZACION DEL SERVICIO DE BANCA VIRTUAL</p>
+						<p style="font-size: 12px; text-align: justify;">
+							<b>PRIMERA: COMPARECIENTES.-</b><br />Comparecen a la
+							celebración del presente contrato de utilización del servicio de
+							Banca Virtual , por una parte, LA COOPERATIVA DE AHORRO Y CREDITO
+							QUINCE DE ABRIL LTDA.,debidamente representada por quien suscribe
+							este contrato , a quien en adelante podrá llamarse simplemente
+							como “LA COOPERATIVA”; y, por otra parte, el CLIENTE.<br />Los
+							comparecientes convienen y aceptan, libre y voluntariamente, las
+							condiciones, derechos y obligaciones que se expresan en las
+							cláusulas que siguen a continuación:<br /> <b>SEGUNDA:
+								OBJETO.-</b><br /> La Cooperativa ha desarrollado un sistema
+							denominado Banca virtual, con el objeto de dar un mejor servicio
+							a sus clientes, dichos servicios son los siguientes:<br />CONSULTAS<br />&nbsp;-Posición
+							consolidada<br /> &nbsp;-Consulta de movimientos históricos
+							cuenta de ahorro<br /> &nbsp;-Consulta de los últimos diez
+							movimientos de cuenta de ahorro<br /> &nbsp;-Consulta de
+							préstamos Consulta de cuotas de préstamo<br /> &nbsp;-Consulta
+							Detalle de cuota de préstamo<br /> &nbsp;-Consulta inversiones<br />
+							&nbsp;-Consulta de seguros<br /> TRANSACCIONES <br />
+							&nbsp;-Transferencias entre cuentas locales <br />
+							&nbsp;-Transferencias a otros Bancos locales<br /> PAGOS <br />
+							&nbsp;-Pago de préstamos <br /> &nbsp;-Pago de servicio <br />
+							&nbsp;-Pago consumo de tarjeta de crédito<br /> SEGURIDAD <br />
+							&nbsp;-Configuración de perfil transaccional <br />
+							&nbsp;-Cambio clave <br /> &nbsp;-Cambio de respuestas a
+							preguntas secretas <br /> &nbsp;-Cambio de teléfono celular y
+							correo electrónico <br /> &nbsp;-Autorización de computadores. <br />Los
+							términos y condiciones de este contrato que constan a
+							continuación, serán de observancia y aplicación respecto de todos
+							los servicios de Banca Virtual , como transacciones, operaciones,
+							productos y/o servicios que EL CLIENTE tenga celebrados,
+							aceptados y reconocidos con LA COOPERATIVA, e inclusive respecto
+							de las que así pueda celebrar y/o aceptar en el futuro , en tanto
+							no se contrapongan a otros términos de carácter específico
+							contenidos derivados de contratos solicitudes suscritas y/o
+							aceptadas bajo cualquier medio o mecanismo por EL CLIENTE. <br />Ninguno
+							de los términos de este contrato exonera al CLIENTE de cumplir
+							los requisitos y formalidades que la ley y/o LA COOPERATIVA
+							exijan para la prestación y/o realización de determinados
+							servicios, productos, operaciones o transacciones. <br /> <b>TERCERA:
+								SEGURIDAD.-</b><br /> Para permitir el acceso al canal virtual que
+							comprende transacciones, operaciones, productos y/o servicios
+							(“Servicios de Banca virtual ”), seleccionados por EL CLIENTE y
+							de aquellos otros a los que se afilie en el futuro, LA
+							COOPERATIVA otorgará al CLIENTE un número de acceso temporal, que
+							servirá para su registro en el portal electrónico, y que EL
+							CLIENTE se obliga a mantener exclusivamente en su poder y con
+							carácter reservado, dicho número se compone de seis dígitos. <br />Durante
+							el proceso de registro, EL CLIENTE tendrá que escoger una imagen
+							e ingresar una descripción para dicha imagen, esto como mecanismo
+							de seguridad, se presentará cada vez que se ingrese al sistema de
+							Banca Virtual con el fin de comprobar que está accediendo a la
+							página correcta, en caso de que esta información no coincida EL
+							CLIENTE deberá cerrar dicha página y reportar a LA COOPERATIVA. <br />La
+							clave de seguridad para acceso al sistema de banca virtual,
+							tendrá un periodo de caducidad obligatorio impuesto por la
+							cooperativa. <br />Para confirmar transacciones y
+							configuraciones del usuario, LA COOPERATIVA enviara al correo
+							electrónico y teléfono celular registrados por EL CLIENTE un
+							código de seguridad temporal cuyo tiempo de vigencia sera
+							establecido por LA COOPERATIVA. <br />El conocimiento y uso de
+							la clave y códigos enviados, son de responsabilidad directa de EL
+							CLIENTE, reconociendo y aceptando éste como propias, las
+							operaciones que se realicen, informaciones o instrucciones que
+							mediante su uso se transmitan a través de los canales virtuales;
+							salvo aquellas transacciones fraudulentas en las cuales quede
+							acreditada de manera fehaciente la ausencia de culpa de EL
+							CLIENTE. <br />Las transacciones y servicios que EL CLIENTE,
+							podrá efectuar y recibir a través del canal virtual, son aquellas
+							que LA COOPERATIVA ponga a disposición de EL CLIENTE. <br />Los
+							pagos por consumo de servicios que realice EL CLIENTE a través de
+							la Banca Virtual o de cualquier otro canal que se implemente en
+							el futuro, quedarán evidenciados en la constancia de realización
+							de la operación de pago que LA COOPERATIVA expedirá. <br />Dichos
+							pagos los efectuará EL CLIENTE con cargo a sus cuentas de ahorro.
+							<br />Las transferencias de dinero que efectúe EL CLIENTE entre
+							sus cuentas y/o a cuentas de terceros, a través de la Banca
+							virtual o de cualquier otro canal que en el futuro ponga a su
+							disposición LA COOPERATIVA , serán de su exclusiva
+							responsabilidad, asumiendo EL CLIENTE las consecuencias de
+							cualquier error que pudiera presentarse en la instrucción que al
+							efecto haya impartido a LA COOPERATIVA mediante el uso de tales
+							mecanismos virtuales, salvo que se acredite responsabilidad por
+							parte de LA COOPERATIVA . <br />LA COOPERATIVA no está obligada
+							a realizar pagos y/o transferencias por cantidades que EL CLIENTE
+							no tenga disponibles, ni está obligado a hacer anticipos de
+							fondos, ni a otorgar créditos, ni sobregiros en favor del mismo.
+							<br />LA COOPERATIVA ejecutará las órdenes transmitidas para
+							acceder a los servicios virtuales de acuerdo a las instrucciones
+							expresas del CLIENTE, por lo que no será responsable por las
+							consecuencias que pudieran derivarse de la ejecución de tales
+							instrucciones, ni de los actos practicados en el ejercicio del
+							presente contrato que sean de práctica usual. <br /> <b>CUARTA:
+								DE LOS COSTOS Y GASTOS.-</b><br /> El CLIENTE declara haber sido
+							informado del costo de los servicios tarifados <br /> <b>QUINTA:
+								OBLIGACIONES DEL CLIENTE.-</b><br /> EL CLIENTE se obliga frente a
+							LA COOPERATIVA, a lo siguiente:<br /> a) Adoptar las medidas
+							necesarias para impedir el uso indebido de su clave. <br />b) No
+							divulgar su respectiva Clave Secreta, a fin de evitar el mal uso
+							de los servicios virtuales. <br />Las operaciones que realicen
+							terceras personas, a través de cualquiera de los canales
+							virtuales en perjuicio de la(s) cuenta(s) del CLIENTE, serán
+							consideradas como un incumplimiento de lo dispuesto en el numeral
+							precedente, salvo que LA COOPERATIVA estime que ha quedado
+							fehacientemente acreditado lo contrario. <br />En estos eventos
+							EL CLIENTE deberá comunicar de inmediato por escrito y será
+							responsable en cualquier caso de las diversas operaciones que se
+							realicen por el uso indebido de su clave mientras no informe el
+							hecho a LA COOPERATIVA y presente la denuncia respectiva ante las
+							Autoridades judiciales, en caso de pérdida o sustracción. <br />Posteriormente
+							LA COOPERATIVA a solicitud de EL CLIENTE procederá a la
+							expedición de una nueva clave secreta. <br />EL CLIENTE reconoce
+							que los servicios virtuales, reúnen los estándares de seguridad
+							adecuados, según lo permita el desarrollo tecnológico bajo el
+							cual los mismos han sido diseñados. No obstante ello, los citados
+							servicios podrían estar sujetos a interferencias por parte de
+							terceros, supuesto en el cual EL CLIENTE asume las consecuencias
+							que de ello pudieran derivarse, salvo que LA COOPERATIVA estime
+							que la ausencia de responsabilidad de EL CLIENTE ha quedado
+							fehacientemente acreditada. EL CLIENTE reconoce asimismo, que por
+							la propia naturaleza sofisticada de los servicios virtuales ellos
+							están sujetos a errores operativos por lo que libera a LA
+							COOPERATIVA de responsabilidad por los perjuicios que
+							eventualmente pudieran sufrir y que se deban a eventos producidos
+							como consecuencia de caso fortuito, fuerza mayor o ausencia de
+							culpa; salvo que los errores operativos correspondan a
+							incumplimientos por parte de LA COOPERATIVA. Cualquier error o
+							inexactitud que se advierta, deberá ser comunicado por EL CLIENTE
+							de inmediato por escrito a LA COOPERATIVA , la que una vez
+							verificado el error o inexactitud, procederá a subsanarlos según
+							los mecanismos, controles internos y procedimientos que tenga
+							establecidos. LA COOPERATIVA se obliga a adoptar todas las
+							medidas razonables para reducir todo riesgo o peligro, informando
+							oportunamente de tales eventualidades a EL CLIENTE y disponiendo
+							su reparación o sustitución. <br /> <b>SEXTA: AUTORIZACION
+								DEL CLIENTE.-</b><br /> EL CLIENTE autoriza en forma irrevocable a
+							LA COOPERATIVA para: <br />Grabar las órdenes e instrucciones
+							dadas por EL CLIENTE a través del canal virtual, de forma que
+							puedan quedar recogidas en soportes magnéticos, informáticos o de
+							otra clase. <br /> <b>SEPTIMA: PLAZO Y TERMINACION
+								ANTICIPADA.-</b><br /> El presente contrato es de plazo
+							indeterminado. Siendo así, tanto EL CLIENTE como LA COOPERATIVA
+							podrán solicitar dar por terminado el presente contrato en
+							cualquier momento, a su sola decisión, dando aviso por escrito a
+							la otra parte. <br />Queda expresamente convenido que la
+							terminación del contrato conforme a lo estipulado en el presente
+							numeral constituye el ejercicio de un derecho que ambas partes se
+							otorgan recíprocamente. <br />Por su parte, sin perjuicio de
+							otras causales de resolución expresamente previstas en el
+							presente contrato, LA COOPERATIVA podrá dejar sin efecto el
+							contrato, comunicando dicha medida de manera posterior a EL
+							CLIENTE: <br />a) Cuando medie disposición legal o mandato de
+							autoridad competente que así lo autorice u ordene; <br />b)
+							Cuando en aplicación de las normas prudenciales emitidas por el
+							organismo de control, LA COOPERATIVA detecte que se han realizado
+							o se vienen realizando operaciones inusuales, irregulares y/o
+							sospechosas o que puedan causar perjuicio a LA COOPERATIVA o a
+							sus clientes, y siempre que el CLIENTE no haya acreditado la
+							procedencia legal de sus fondos u operaciones en el plazo que
+							establezca; <br />c)Cuando LA COOPERATIVA tome conocimiento que
+							EL CLIENTE está siendo investigado por lavado de activos, delitos
+							precedentes y/o financiamiento del terrorismo por las autoridades
+							competentes o EL CLIENTE sea vinculado con personas naturales o
+							jurídicas sujetas a investigación o proceso judiciales
+							relacionados con el lavado de activos, delitos precedentes y/o el
+							financiamiento del terrorismo; o <br />d) Cuando se verifique
+							que EL CLIENTE ha proporcionado información inexacta, incompleta,
+							inconsistente o falsa a LA COOPERATIVA contraviniendo así lo
+							establecido en las leyes correspondientes. <br />Asimismo, LA
+							COOPERATIVA podrá resolver el contrato, operando la resolución de
+							pleno derecho desde la fecha en que esta decisión es comunicada a
+							EL CLIENTE: <br />e) Cuando EL CLIENTE incumpla alguna de sus
+							obligaciones asumidas conforme a los términos del presente
+							contrato; <br />f) En los demás supuestos previstos en el
+							presente contrato. <br />La terminación y/o suspensión, por
+							cualesquier motivo, de uno o más de los Servicios objeto de este
+							contrato no implica ni acarrea la resolución y/o terminación de
+							este contrato, salvo LA COOPERATIVA así lo establezca
+							expresamente. <br />EL CLIENTE consiente que en el marco de la
+							ejecución de los Servicios materia del presente contrato, LA
+							COOPERATIVA podrá acceder o recopilar, y almacenar en bases de
+							datos, información que permita su identificación o lo haga
+							identificable, así como información personal e información
+							financiera y crediticia de EL CLIENTE, incluyendo información
+							calificada como datos sensibles por la legislación aplicable,
+							proporcionada directamente por EL CLIENTE u obtenida de otras
+							fuentes públicas o privadas, en forma escrita, oral o electrónica
+							(en adelante, conjuntamente todo dato e información de EL
+							CLIENTE, los “Datos Personales”). En el caso de personas
+							jurídicas o patrimonios autónomos, como sociedades anónimas,
+							sociedades de personas, sociedades conyugales, fideicomisos o
+							sucesiones, entre otros, LA COOPERATIVA podrá acceder a los Datos
+							Personales con respecto a cada persona autorizada, socio,
+							fiduciario, albacea o integrante, según corresponda. <br />EL
+							CLIENTE declara y se compromete a brindar en todo momento a LA
+							COOPERATIVA información completa y verdadera. Si parte de su
+							información personal, financiera o crediticia cambia, pasa a ser
+							inexacta o pierde actualidad, EL CLIENTE está obligado a dar
+							aviso a LA COOPERATIVA inmediatamente para que se proceda a la
+							actualización de sus registros. <br />Las partes se someten a la
+							jurisdicción y competencia de los Jueces, Cortes y Tribunales de
+							esta ciudad, en caso de cualquier controversia derivada de la
+							interpretación y/o ejecución del presente contrato. Este contrato
+							se rige por las Leyes de la República del Ecuador. <br />Las
+							partes fijan como sus domicilios la ciudad de Portoviejo, donde
+							se dirigirán todas las comunicaciones y/o notificaciones
+							judiciales y extrajudiciales a que hubiere lugar. EL CLIENTE se
+							obliga a comunicar por escrito a LA COOPERATIVA cualquier cambio
+							de domicilio, caso contrario, todas las comunicaciones y/o
+							notificaciones cursadas a EL CLIENTE en el domicilio registrado
+							según el presente contrato, serán válidas y surtirán todos los
+							efectos legales, siendo EL CLIENTE el único responsable por los
+							perjuicios ocasionados a los terceros pudieran residir en el
+							domicilio convencionalmente designado por EL CLIENTE. <br />Todos
+							los datos de EL CLIENTE que este consigne en el presente
+							documento se consideran como vigentes y en tal sentido
+							sustituirán y/o actualizarán los datos que a la fecha mantengan
+							registrados en LA COOPERATIVA, de ser el caso. Las posteriores
+							actualizaciones de los datos de EL CLIENTE podrán ser efectuados
+							mediante comunicación escrita o instrucción dirigida a LA
+							COOPERATIVA a través de los mecanismos que LA COOPERATIVA ponga a
+							sus disposición. <br />EL CLIENTE podrá dar instrucciones,
+							efectuar transacciones sobre sus cuentas, solicitar o contratar
+							servicios, propios de LA COOPERATIVA o que ésta ofrece, en forma
+							personal o empleando los medios escritos, u otros mecanismos que
+							LA COOPERATIVA ponga a disposición de EL CLIENTE y que ésta
+							reconoce como válidos para dichos efectos. Para efectuar las
+							instrucciones u operaciones antes señaladas, EL CLIENTE reconoce
+							que por seguridad deberá utilizar, cuando así se le solicite, la
+							clave secreta que le permite acceder al canal virtual. <br />EL
+							CLIENTE declara aceptar la totalidad de los términos y
+							condiciones del presente contrato y de haber leído en forma
+							previa a la suscripción del presente documento, y para constacia
+							de lo actuado firman por duplicado el presente contrato a los
+							#{convenioWebMB.fechaFormateada}.<br /> <br /> <br />
+						</p>
+					</div>
+					<table style="width: 100%">
+						<tr>
+							<td style="width: 50%;">
+								<p style="font-size: 12px; text-align: center;">CLIENTE</p>
+							</td>
+							<td style="width: 50%">
+								<p style="font-size: 12px; text-align: center;">COOP.l5 DE
+									ABRIL LTDA</p>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</p:dialog>
+		</center>
+	</ui:define>
+</ui:composition>

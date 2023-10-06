@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="viewname">
+		<li>Confirmación Pago de servicio</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+		<center>
+			<p:fieldset legend="Confirmación de datos y pago" toggleable="false"
+				style="width:90%;">
+
+				<p:panelGrid>
+					<p:row>
+						<p:column>
+							<p:outputLabel>Empresa :</p:outputLabel>
+						</p:column>
+						<p:column>
+							<b><p:outputLabel>#{pagoMB.descripcionEnpresa}</p:outputLabel></b>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel>Servicio :</p:outputLabel>
+						</p:column>
+						<p:column>
+							<b><p:outputLabel> #{pagoMB.descripcionServicio}</p:outputLabel></b>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="#{pagoMB.tituloReferenciaPago}:" />
+						</p:column>
+						<p:column>
+							<b><p:outputLabel>#{pagoMB.numeroServicio}</p:outputLabel></b>
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<p:outputLabel>Titular :</p:outputLabel>
+						</p:column>
+						<p:column>
+							<b><p:outputLabel>#{pagoMB.numeroIdenticacionServicio} - #{pagoMB.nombreBeneficiario}</p:outputLabel></b>
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column>
+							<p:outputLabel>Valor #{pagoMB.totalPagoGAD == pagoMB.rubroSeleccionado.valor ? "adeudado" : "abono"} :</p:outputLabel>
+						</p:column>
+						<p:column>
+							<b><h:outputLabel
+									value="#{pagoMB.totalPagoGAD - pagoMB.rubroSeleccionado.comision}">
+									<f:convertNumber minFractionDigits="2" />
+								</h:outputLabel></b>
+							<!-- 							<b><h:outputLabel value="#{pagoMB.rubroSeleccionado.valor}"> -->
+							<!-- 									<f:convertNumber minFractionDigits="2" /> -->
+							<!-- 								</h:outputLabel></b> -->
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel>Comisión :</p:outputLabel>
+						</p:column>
+						<p:column>
+							<b><h:outputLabel
+									value="#{pagoMB.rubroSeleccionado.comision}">
+									<f:convertNumber minFractionDigits="2" />
+								</h:outputLabel></b>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel>Valor total :</p:outputLabel>
+						</p:column>
+						<p:column>
+							<b><h:outputLabel value="#{pagoMB.totalPagoGAD}">
+									<f:convertNumber minFractionDigits="2" />
+								</h:outputLabel></b>
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</p:fieldset>
+		</center>
+		<center>
+			<p:fieldset legend="Información / Confirmación" style="width:90%;">
+				<center>
+					<p:outputLabel>Hemos enviado a su <b>#{servicioUsuarioMB.textoOtpMail} teléfono
+							celular </b> un código de seguridad con un tiempo de vigencia de <b>#{pagoMB.parametrosGenerales.minutosVigenciaOtp}
+							minutos</b>, proceda a ingresarlo para confirmar su transacción</p:outputLabel>
+				</center>
+				<h:form id="frmConfirmaTransaccion">
+					<p:messages id="mensajeAplicacion" globalOnly="true"
+						showDetail="true" closable="true" showSummary="true" />
+
+					<center>
+						<p:panelGrid>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Ingrese código de seguridad : </p:outputLabel>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<!-- 									<p:keyboard id="txtCodigoSeguridad" required="true" -->
+									<!-- 										requiredMessage="Código de seguridad es requeridas." -->
+									<!-- 										value="#{pagoMB.codigoSeguridad}" style="width:100px" -->
+									<!-- 										password="true" keypadOnly="true" /> -->
+									<p:keyboard id="txtCodigoSeguridad" required="true"
+										requiredMessage="Código de seguridad es requeridas."
+										value="#{pagoMB.codigoSeguridad}" style="width:100px"
+										password="true" closeLabel="Cerrar" backspaceLabel="Borrar"
+										clearLabel="Limpiar" onkeydown="return false"
+										onkeypress="return false" onkeyup="return false"
+										layout="custom"
+										layoutTemplate="#{configuracionesGeneralesMB.tecladoRandom}" />
+									<p:message for="txtCodigoSeguridad" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column colspan="2">
+									<p:commandButton id="btnConfirmarTransaccion"
+										title="Procesar transacción" icon="fa fa-check"
+										update=":frmConfirmaTransaccion" value="Confirmar"
+										action="#{pagoMB.trxPagoFacilito()}"
+										onstart="PF('dlgCargando').show()"
+										onsuccess="PF('dlgCargando').hide()">
+									</p:commandButton>
+									<h:outputText value=" " />
+									<p:commandButton id="btnCancelar" title="Cancelar transacción"
+										icon="fa fa-window-close" value="Cancelar" ajax="true"
+										immediate="true" actionListener="#{pagoMB.funcionCancelar}">
+									</p:commandButton>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</center>
+				</h:form>
+			</p:fieldset>
+		</center>
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+			width="300" appendToBody="true">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>

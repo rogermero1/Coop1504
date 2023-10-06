@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('RUTA_TEMPLATE_REGISTRO')}">
+
+	<ui:define name="SEGM_CONTENIDO_TITULO">
+		<center>
+			<h:outputText class="titulos" value="Inicio de Sesión" />
+		</center>
+	</ui:define>
+
+	<ui:define name="SEGM_CONTENIDO_REGISTRO">
+		<center>
+			<h:form id="form">
+				<!-- 				<p:panel id="panelLogin"> -->
+				<p:messages globalOnly="false" showDetail="true" />
+				<div id="marcoSeguridad">
+					<table width="70%" border="0" cellpadding="0" cellspacing="0"
+						style="margin: 40px; font-size: 12px; margin-left: 45px;">
+						<tbody>
+							<tr>
+								<td align="center">Estimado cliente, pensando en su
+									seguridad hemos creado una nueva plataforma para sus
+									transacciones On Line acorde a los requerimientos dispuestos
+									por nuestros organismos de control. Si es un usuario de la
+									plataforma anterior, ingrese al sistema y luego actualice su
+									usuario.</td>
+							</tr>
+							<tr>
+								<td align="center"><p:separator /><strong
+									style="color: #6E6E33;">CONSEJO DE SEGURIDAD</strong> <p:separator /></td>
+							</tr>
+							<tr>
+								<td align="center">
+									<p>
+										Su usuario y sus claves son secretas. <strong>NUNCA</strong>
+										entregue datos personales y/o contraseñas de acceso por ningún
+										medio. La Cooperativa 15 de Abril Ltda. <strong>JAMÁS</strong>
+										le solicitará esta información.
+									</p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div id="marcoLogin">
+					<h:panelGrid columns="2" style="margin:40px;">
+						<h:graphicImage value="/imagenes/seed/login_usuarios.png"
+							width="80" />
+						<h:column>
+							<h:panelGrid columns="2">
+								<h:outputText value="Usuario "
+									style="font-weight:bold;font-size: 12px;" />
+								<p:inputText id="user" value="#{loginMB.usuario}"
+									required="true" requiredMessage="Ingrese Usuario"
+									onblur="ChangeCase(this);" validatorMessage="INGRESE USUARIO">
+								</p:inputText>
+								<h:outputText value="Clave"
+									style="font-weight:bold;font-size: 12px;" />
+								<p:password value="#{loginMB.clave}" id="pass" required="true"
+									requiredMessage="Ingrese Clave"
+									validatorMessage="INGRESE CLAVE">
+								</p:password>
+							</h:panelGrid>
+						</h:column>
+						<h:column />
+						<h:column>
+							<div align="right">
+								<p:commandButton icon="ui-icon-key" value="Acceder"
+									action="#{loginMB.autenticar}" update="form"
+									onstart="dlgCargando.show()" onsuccess="dlgCargando.hide()" />
+								<!-- update="panelLogin" -->
+							</div>
+						</h:column>
+					</h:panelGrid>
+					<h:panelGrid columns="2">
+						<h:column>
+							<div align="center">
+								<h:link
+									outcome="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('RUTA_INICIO_REGISTRO')}">
+									<div id="registro" />
+								</h:link>
+							</div>
+						</h:column>
+						<h:column>
+							<div align="center">
+								<h:link
+									outcome="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('RUTA_INICIO_DESBLOQUEO')}">
+									<div id="desbloqueo" />
+								</h:link>
+							</div>
+						</h:column>
+					</h:panelGrid>
+				</div>
+				<!-- 				</p:panel> -->
+			</h:form>
+			<p:ajaxStatus onstart="PF('statusDialog').show();"
+				onsuccess="PF('statusDialog').hide();" />
+			<p:dialog modal="true" widgetVar="statusDialog" header="Status"
+				draggable="false" closable="false" showHeader="false"
+				appendToBody="true">
+				<p:graphicImage value="/imagenes/seed/barra_ajax.gif" />
+			</p:dialog>
+			<p:dialog id="modalDialogCargando" closable="false"
+				header="Cargando..." widgetVar="dlgCargando" modal="true"
+				height="40" width="250" appendToBody="true">
+				<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando"></p:graphicImage>
+			</p:dialog>
+		</center>
+	</ui:define>
+</ui:composition>

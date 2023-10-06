@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rep_contrato_1504" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="809e8b58-30ef-4e93-9274-4d945ef550fe">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" fontName="Times New Roman" fontSize="50" isBold="true" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#E6DAC3"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="ID_CONVENIO" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[select t.numero_identificacion,
+t.fecha_registro,
+t.numero_identificacion,
+t.nombre_cliente,
+t.convenio_web,
+a.texto_1,
+a.texto_2,
+a.texto_3,
+a.texto_4
+from TWEB_CONVENIOS t, TWEB_CONTRATO_CONFIG a where  t.id  = $P{ID_CONVENIO}]]>
+	</queryString>
+	<field name="NUMERO_IDENTIFICACION" class="java.lang.String"/>
+	<field name="FECHA_REGISTRO" class="java.sql.Timestamp"/>
+	<field name="NOMBRE_CLIENTE" class="java.lang.String"/>
+	<field name="CONVENIO_WEB" class="java.lang.String"/>
+	<field name="TEXTO_1" class="java.lang.String"/>
+	<field name="TEXTO_2" class="java.lang.String"/>
+	<field name="TEXTO_3" class="java.lang.String"/>
+	<field name="TEXTO_4" class="java.lang.String"/>
+	<title>
+		<band height="85" splitType="Stretch">
+			<image>
+				<reportElement x="1" y="0" width="150" height="45" uuid="9fd6a7f2-3813-445d-a2e7-2372ee08bd08"/>
+				<imageExpression><![CDATA["C:/1504_reportes/banner_logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="40" width="553" height="22" uuid="72550094-130c-41a4-a1d9-fae33c05e064"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CONTRATO DE UTILIZACION DEL SERVICIO DE BANCA VIRTUAL]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy HH.mm.ss" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="111" y="64" width="442" height="21" uuid="a6e59897-6574-4282-90a6-0557579ad9f7"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FECHA_REGISTRO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="0" y="64" width="111" height="21" forecolor="#000000" uuid="10a5382f-c46c-4364-85be-2fd4b13dfb19"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de suscripción:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="15" uuid="592d2d67-62e8-4cea-88c7-c1f754a6999e"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement style="Detail" x="1" y="0" width="551" height="15" uuid="65a20075-7a1d-40e9-bfe0-572f75b52a3f"/>
+					<textElement textAlignment="Justified" markup="none">
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($F{TEXTO_1} + " " + $F{TEXTO_2} + " "
+    + $F{TEXTO_3} + " "
+    + $F{TEXTO_4} ).replaceAll("NOMBRE_CLIENTE",$F{NOMBRE_CLIENTE})]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-21" y="1" width="597" height="24" forecolor="#000000" backcolor="#FFFFFF" uuid="d14e73ec-36f4-4f07-b55d-7a5b7be827a5"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="533" y="0" width="40" height="20" forecolor="#000000" uuid="22945c2f-2b05-4315-9009-c80ed102decb"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="445" y="0" width="88" height="20" forecolor="#000000" uuid="3ade5e11-6980-47f9-8720-cc34f1a23dfe"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+				</textField>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement style="Column header" x="22" y="1" width="197" height="20" forecolor="#000000" uuid="f3e32307-61f6-4580-a8f7-81f1c3c0b0ec"/>
+					<textElement verticalAlignment="Middle">
+						<font size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="269">
+			<image>
+				<reportElement x="1" y="8" width="150" height="45" uuid="5d06d1d6-b0ab-4e81-a13b-c3791f7fa6f5"/>
+				<imageExpression><![CDATA["C:/1504_reportes/banner_logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="1" y="46" width="553" height="22" uuid="e396e181-9b46-4b3c-b0cf-9f535c61d051"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SOLICITUD DE REGISTRO DE USUARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="1" y="69" width="111" height="21" forecolor="#000000" uuid="47b5b781-4001-468a-9176-00d28e01e51c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de suscripción:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy HH.mm.ss" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="112" y="69" width="442" height="21" uuid="d278a1c8-ac8e-4b99-8fdf-f6715f0230dc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Times-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FECHA_REGISTRO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="94" width="555" height="104" uuid="a1b21238-a57a-4c05-b119-c1cd94068ae5"/>
+				<textElement textAlignment="Justified" markup="none">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new String("El cliente NOMBRE_CLIENTE, con cédula CEDULA_CLIENTE, solicita se le proporcione un código para la creación de un usuario en la Banca Virtual.\n \nEl cliente certifica que ha recibido un código temporal (COD_TEMPORAL), y se compromete a hacer uso debido del mismo. El cliente no deberá proporcionar esta información ni permitir la intervención de terceros durante el proceso de creación de su usuario, y en general cuando se esté efectuando cualquier transacción.\n \nEn caso de cualquier irregularidad, por favor, acérquese de inmediato a comunicarlo en cualquiera de nuestras agencias.\n \nEl cliente acepta la entrega de su código temporal bajo los términos del servicio y firma el presente documento.").replaceAll("NOMBRE_CLIENTE", $F{NOMBRE_CLIENTE}).replaceAll("CEDULA_CLIENTE", $F{NUMERO_IDENTIFICACION}).replaceAll("COD_TEMPORAL", $F{CONVENIO_WEB})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="215" width="553" height="20" uuid="f8e0512a-9eca-4cf2-91cd-58796bc835d7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOMBRE_CLIENTE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="231" y="235" width="25" height="20" uuid="398fd2a4-dbb8-4253-969c-a395295f7972"/>
+				<textElement verticalAlignment="Top"/>
+				<text><![CDATA[C.C.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="256" y="235" width="71" height="20" uuid="4ad2e19e-c679-463b-9b23-553200445d28"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NUMERO_IDENTIFICACION}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="555" height="1" uuid="be676ea8-4ac7-458a-a77a-4d1396ebaf55"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band height="74" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="32" width="275" height="20" uuid="e5423190-178e-4071-81c5-8abd8e14dc6a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOMBRE_CLIENTE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="110" y="52" width="25" height="20" uuid="bd3e28d1-8f7e-483d-93f0-f1bdec3adb25"/>
+				<textElement verticalAlignment="Top"/>
+				<text><![CDATA[C.C.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="135" y="52" width="71" height="20" uuid="b6c53aff-0982-4b62-9daf-aad326faa1db"/>
+				<textElement verticalAlignment="Top">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NUMERO_IDENTIFICACION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="32" width="275" height="20" uuid="d5c454a2-b7b3-40b1-a80c-80dba41b8818"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["COOP.l5 DE ABRIL LTDA"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

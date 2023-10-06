@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+	<ui:define name="viewname">
+		<li>Comprobante de pago de tarjeta</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+		<center>
+			<p:panel
+				header="Comprobante pago de tarjeta crédito - Cooperativa de ahorro y crédito 15 de abril LTDA."
+				id="frmComprobanteTransaccionPagoTarjeta" style="width:90%;">
+				<h:panelGrid columns="1">
+					<img class="logoImpresion"
+						src="#{configuracionesGeneralesMB.logoAplicacion}" height="90px"
+						align="left" style="display: none;" />
+				</h:panelGrid>
+				<br />
+				<h:form>
+					<center>
+						<p:panelGrid>
+							<p:row>
+								<p:column>
+									<h:outputLabel value="Motivo : " />
+								</p:column>
+								<p:column>
+									<b><h:outputLabel
+											value="#{transferenciaMB.transferenciaOtroBanco.motivo}" /></b>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<h:outputLabel value="Número Comprobante : " />
+								</p:column>
+								<p:column>
+									<b><h:outputLabel
+											value="#{transferenciaMB.transferenciaOtroBanco.secuencia}" /></b>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<h:outputLabel value="Fecha/Hora : " />
+								</p:column>
+								<p:column>
+									<b><h:outputLabel value="#{transferenciaMB.fechaHora}">
+											<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+												timeZone="#{transferenciaMB.zonaHoraria}" />
+										</h:outputLabel></b>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<h:outputLabel value="Cuenta debitar : " />
+								</p:column>
+								<p:column>
+									<b><h:outputLabel
+											value="#{transferenciaMB.enmascararCadena(transferenciaMB.transferenciaOtroBanco.cuentaOrdenante)}" /></b>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<h:outputLabel value="Tarjeta a pagar : " />
+								</p:column>
+								<p:column>
+									<b><h:outputLabel
+											value="#{transferenciaMB.enmascararCadena(transferenciaMB.transferenciaOtroBanco.cuentaDestino)}" /></b>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<h:outputLabel value="Identificación : " />
+								</p:column>
+								<p:column>
+									<b><h:outputLabel
+											value="#{transferenciaMB.transferenciaOtroBanco.identificacionBeneficiario}" /></b>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<h:outputLabel value="Nombre beneficiario : " />
+								</p:column>
+								<p:column>
+									<b><h:outputLabel
+											value="#{transferenciaMB.transferenciaOtroBanco.nombreBeneficiario}" /></b>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<h:outputLabel value="Concepto : " />
+								</p:column>
+								<p:column>
+									<b><h:outputLabel value="Pago de tarjeta de credito" /></b>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<h:outputLabel value="Institución Financiera : " />
+								</p:column>
+								<p:column>
+									<b><h:outputLabel
+											value="#{transferenciaMB.descripcionFinanciera}" /></b>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<h:outputLabel value="Monto transacción : " />
+								</p:column>
+								<p:column>
+									<b><h:outputLabel
+											value="#{transferenciaMB.transferenciaOtroBanco.valor}">
+											<f:convertNumber minFractionDigits="2" />
+										</h:outputLabel></b>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<h:outputLabel value="Comisión : " />
+								</p:column>
+								<p:column>
+									<b><h:outputLabel
+											value="#{transferenciaMB.comisionOtrosBancos}">
+											<f:convertNumber minFractionDigits="2" />
+										</h:outputLabel></b>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<h:outputLabel value="Monto total : " />
+								</p:column>
+								<p:column>
+									<b><h:outputLabel
+											value="#{transferenciaMB.transferenciaOtroBanco.valor + transferenciaMB.comisionOtrosBancos}">
+											<f:convertNumber minFractionDigits="2" />
+										</h:outputLabel></b>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</center>
+				</h:form>
+			</p:panel>
+		</center>
+		<center>
+			<h:panelGrid columns="2">
+				<p:commandButton value="Imprimir" type="button" icon="fa fa-print">
+					<p:printer target="frmComprobanteTransaccionPagoTarjeta" />
+				</p:commandButton>
+				<p:commandButton value="Inicio" icon="fa fa-home" ajax="true"
+					immediate="true"
+					actionListener="#{transferenciaMB.funcionCancelar}"
+					onstart="PF('dlgCargando').show()" />
+			</h:panelGrid>
+		</center>
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+			width="300" appendToBody="true">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>

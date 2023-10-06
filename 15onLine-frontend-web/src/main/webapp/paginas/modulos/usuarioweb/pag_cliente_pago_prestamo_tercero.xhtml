@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="viewname">
+		<li>Pago de préstamo (terceros)</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+		<center>
+			<h:form id="frmPagoPrestamo" style="width:90%;">
+				<p:outputLabel value="#{pagoMB.controlSesion}" />
+				<p:fieldset legend="Datos requeridos para registrar pago"
+					toggleable="false">
+					<p:messages id="mensajeAplicacion" closable="true"
+						showSummary="true" showDetail="true" />
+					<center>
+						<p:panelGrid>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Referencia (*)</p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:inputText size="45"
+										value="#{pagoMB.abonoPagoPrestamo.referencia}" required="true"
+										requiredMessage="Ingrese referencia, información requerida."
+										converter="toUpperCaseConverter">
+										<f:ajax event="blur" render="@this" />
+									</p:inputText>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Su cuenta (*)</p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:selectOneMenu
+										value="#{pagoMB.abonoPagoPrestamo.numeroCuenta}"
+										required="true" requiredMessage="Seleccione su cuenta.">
+										<p:ajax />
+										<f:selectItem itemLabel="Seleccione Cuenta" itemValue="" />
+										<f:selectItems value="#{pagoMB.listadoCuentas}" var="cuenta"
+											itemLabel="#{cuenta.descripcion}" itemValue="#{cuenta.id}" />
+									</p:selectOneMenu>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Cédula (*)</p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:inputText value="#{pagoMB.numeroIdentificacion}"
+										required="true" requiredMessage="Ingrese cédula.">
+										<!-- 								<f:ajax event="blur" render="@this" /> -->
+										<p:ajax event="blur"
+											update="cmbPrestamos lblDescripcion lblBeneficiario mensajeAplicacion"
+											listener="#{pagoMB.consultaPrestamosTercero()}" />
+									</p:inputText>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel id="lblDescripcion"
+										value="#{pagoMB.etiquetaNombreBeneficiario}" />
+								</p:column>
+								<p:column>
+									<b><p:outputLabel id="lblBeneficiario"
+											value="#{pagoMB.nombreBeneficiario}" /></b>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Seleccione prestamo (*)</p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:selectOneMenu id="cmbPrestamos"
+										value="#{pagoMB.abonoPagoPrestamo.numeroPrestamo}"
+										required="true" requiredMessage="Seleccione su préstamo.">
+										<p:ajax event="change"
+											listener="#{pagoMB.consultaDatoprestamo()}"
+											update=":frmPagoPrestamo:txtCuotasAtrasadas :frmPagoPrestamo:txtCuotasPendientes :frmPagoPrestamo:txtValorAdeudado :frmPagoPrestamo:txtSaldoCapital :frmPagoPrestamo:txtSaldoTotal" />
+										<f:selectItem itemLabel="Seleccione Préstamo" itemValue="" />
+										<f:selectItems value="#{pagoMB.listadoPrestamosTercero}"
+											var="prestamo" itemLabel="#{prestamo.descripcion}"
+											itemValue="#{prestamo.id}" />
+									</p:selectOneMenu>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Cuotas atrasadas</p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:inputText id="txtCuotasAtrasadas"
+										value="#{pagoMB.datoPrestamo.cuotasAtrasadas}" required="true"
+										readonly="true" style="text-align : right"></p:inputText>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Cuotas pendientes </p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:inputText id="txtCuotasPendientes" readonly="true"
+										value="#{pagoMB.datoPrestamo.cuotasPedientes}" required="true"
+										style="text-align : right"></p:inputText>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Valor adeudado</p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:inputText id="txtValorAdeudado"
+										value="#{pagoMB.datoPrestamo.valorAdeudado}" required="true"
+										readonly="true" style="text-align : right">
+										<f:convertNumber pattern="#0.00" />
+									</p:inputText>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Saldo capital</p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:inputText id="txtSaldoCapital"
+										value="#{pagoMB.datoPrestamo.saldoCapital}" required="true"
+										readonly="true" style="text-align : right">
+										<f:convertNumber pattern="#0.00" />
+									</p:inputText>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Saldo total</p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:inputText id="txtSaldoTotal"
+										value="#{pagoMB.datoPrestamo.saldoTotal}" required="true"
+										readonly="true" style="text-align : right">
+										<f:convertNumber pattern="#0.00" />
+									</p:inputText>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Monto a pagar(*)</p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:inputNumber id="txtMontoPago"
+										value="#{pagoMB.abonoPagoPrestamo.valorPago}" symbol="$ "
+										required="true" requiredMessage="Monto a pagar es requerido."
+										style="width:100px; text-align:right">
+										<p:ajax event="blur" listener="#{pagoMB.validaValorPago()}"
+											update=":frmPagoPrestamo:mensajeAplicacion" />
+									</p:inputNumber>
+									<p:outputLabel> USD (Ejemplo: 1537.45)</p:outputLabel>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column colspan="4" style="text-align : center">
+									<p:commandButton value="Confirmar" icon="fa fa-check"
+										action="#{pagoMB.validaDatosPagoPrestamo()}"
+										update=":frmPagoPrestamo:mensajeAplicacion"
+										onstart="PF('dlgCargando').show()"
+										onsuccess="PF('dlgCargando').hide()" />
+									<h:outputText value=" " />
+									<p:commandButton value="Limpiar" icon="fa fa-refresh"
+										process="@this" actionListener="#{pagoMB.funcionLimpiar}"
+										update=":frmPagoPrestamo :frmPagoPrestamo:txtCuotasAtrasadas :frmPagoPrestamo:txtCuotasPendientes :frmPagoPrestamo:txtValorAdeudado :frmPagoPrestamo:txtSaldoCapital :frmPagoPrestamo:txtSaldoTotal" />
+									<h:outputText value=" " />
+									<p:commandButton id="btnCancelar" title="Cancelar transacción"
+										ajax="true" immediate="true" icon="fa fa-window-close"
+										value="Cancelar" action="#{pagoMB.funcionCancelar}"
+										onstart="PF('dlgCargando').show()">
+									</p:commandButton>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</center>
+				</p:fieldset>
+				<p:fieldset legend="Nota recordatoria" toggleable="false">
+					<center>
+						<p:outputLabel>Al presionar el botón <b>Confirmar</b> le enviaremos un código de seguridad a su <b>#{servicioUsuarioMB.textoOtpMail}
+								teléfono celular</b> para que proceda a confirmar la transferencia.</p:outputLabel>
+						<br />
+						<p:outputLabel>Tiempo máximo de duración del código de seguridad es de <b>#{transferenciaMB.parametrosGenerales.minutosVigenciaOtp}
+								minutos.</b>
+						</p:outputLabel>
+						<br />
+					</center>
+				</p:fieldset>
+			</h:form>
+		</center>
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+			width="300" appendToBody="true">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>

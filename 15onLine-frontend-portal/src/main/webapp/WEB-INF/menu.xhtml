@@ -1,0 +1,73 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+                xmlns:h="http://java.sun.com/jsf/html" 
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets" 
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="menu-wrapper">
+        <div class="layout-menu-container">
+            <h:form id="menuform">
+                <div class="layout-profile">
+                    <a class="layout-profile-button" href="#">
+                        <span class="profile-image-icons">
+                            <p:graphicImage name="images/menu/avatar.png" library="pandora-layout" />
+                            <span class="icons">
+                                <i class="fa fa-fw fa-comment"><span></span></i>
+                                <i class="fa fa-fw fa-bell-o"></i>
+                                <i class="fa fa-fw fa-sign-out"></i>
+                            </span>
+                        </span>
+                        <span class="profile-info-button">
+                            <span class="layout-profile-userinfo">
+                                <span class="layout-profile-name">Amelia Cabal</span>
+                                <span class="layout-profile-role">Normal Employee</span>
+                            </span>
+                            <i class="layout-profile-icon fa fa-angle-down"></i>
+                        </span>
+                    </a>
+                    <ul class="layout-profile-menu">
+                        <li class="info">
+                            <div class="profile-info">
+                                <div class="layout-profile-userinfo">
+                                    <span class="layout-profile-name">Amelia Cabal</span>
+                                    <span class="layout-profile-role">Normal Employee</span>
+                                </div>
+                                <div class="icons">
+                                    <i class="fa fa-fw fa-comment"></i>
+                                    <i class="fa fa-fw fa-bell-o"></i>
+                                    <i class="fa fa-fw fa-sign-out"></i>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-fw fa-user"></i>
+                                <span>Profile</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-fw fa-cog"></i>
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-fw fa-envelope-o"></i>
+                                <span>Messages</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-fw fa-bell-o"></i>
+                                <span>Notifications</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <ui:include src="#{guestPreferences.groupedMenu ? 'groupedMenu.xhtml' : 'ungroupedMenu.xhtml'}" />
+            </h:form>
+        </div> 
+    </div>
+
+</ui:composition>

@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+
+
+	<ui:define name="head">
+		<style>
+.contenedor {
+	position: relative;
+	width: 20%;
+	height: 50px;
+	/*background-color: red;*/
+	/* centrar vertical y horizontalmente */
+	position: absolute;
+	top: 40%;
+	left: 40%;
+	/*margin: -50px 0 0 -25px;*/
+	/* aplicar a top y al margen izquierdo un valor negativo para completar el centrado del elemento hijo */
+}
+</style>
+	</ui:define>
+
+	<ui:define name="viewname">
+		<li>Control</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+
+	<ui:define name="content">
+
+		<p:panel styleClass="contenedor">
+			<f:facet name="header">
+				<p:outputLabel style="font-size:16px;" value="Información" />
+			</f:facet>
+			<p:outputLabel style="font-size : 16px;"
+					value="#{configuracionesGeneralesMB.mensajeServicioNoDisponible}" />
+			<h:form>
+				<p:poll interval="2"
+					listener="#{configuracionesGeneralesMB.regresaPaginaPrincipalWeb()}"
+					update="@form" />
+			</h:form>
+		</p:panel>
+
+	</ui:define>
+
+</ui:composition>

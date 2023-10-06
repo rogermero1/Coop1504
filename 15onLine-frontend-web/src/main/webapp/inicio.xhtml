@@ -1,0 +1,69 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+		<link rel="shortcut icon" type="image/x-icon"
+			href="#{configuracionesGeneralesMB.iconoAplicacion}" />
+		<link rel="stylesheet" type="text/css"
+			href="#{configuracionesGeneralesMB.estiloInicial}" />
+		<title><h:outputText
+				value="#{configuracionesGeneralesMB.tituloAplicacion}" /></title>
+	</f:facet>
+
+	<script type="text/javascript"
+		src="#{configuracionesGeneralesMB.jsPrincipal}" />
+</h:head>
+<h:body onload="abrirEmergente();">
+	<div id="wrapper">
+		<div id="fondoEncabezado">
+			<img src="#{configuracionesGeneralesMB.logoAplicacion}" height="90px"
+				align="left" /> <img
+				src="#{configuracionesGeneralesMB.marcaAplicacion}" height="90px"
+				align="right" />
+		</div>
+		<div id="contenedor">
+			<div
+				style="display: block; padding-top: 10px; width: 500px; margin: auto;">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0">
+					<tbody>
+						<tr>
+							<td align="center">
+								<p>
+									Bienvenido al servicio <strong>15onLine</strong> de su <strong>Cooperativa
+										de ahorro y crédito 15 de Abril Ltda.</strong> Se ha abierto una
+									ventana de acceso al servicio, si no puede verla haga clic <a
+										href="javascript:abrirEmergente()"><strong>aquí</strong></a>
+								</p> <p:separator />
+							</td>
+						</tr>
+						<tr>
+							<td align="center"><strong style="color: #6E6E33;">¡ALERTA
+									DE SEGURIDAD!</strong> <p:separator /></td>
+						</tr>
+						<tr>
+							<td align="center">
+								<p>
+									Su usuario y sus claves son secretas. <strong>NUNCA</strong>
+									entregue datos personales y/o contraseñas de acceso por ningún
+									medio. La Cooperativa 15 de Abril Ltda. <strong>JAMÁS</strong>
+									le solicitará esta información.
+								</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+		<div id="copyright">
+			<strong>Copyright ©</strong> 2022 Cooperativa de Ahorro y Crédito 15
+			de Abril Ltda., Todos los Derechos Reservados.
+		</div>
+	</div>
+</h:body>
+</html>

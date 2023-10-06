@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+		<link rel="shortcut icon" type="image/x-icon"
+			href="#{configuracionesGeneralesMB.iconoAplicacion}" />
+		<link rel="stylesheet" type="text/css"
+			href="#{configuracionesGeneralesMB.estiloRegistro}" />
+		<title><h:outputText
+				value="#{configuracionesGeneralesMB.tituloAplicacion}" /></title>
+	</f:facet>
+
+	<script type="text/javascript"
+		src="#{configuracionesGeneralesMB.jsPrincipal}" />
+</h:head>
+
+<h:body>
+	<f:view>
+		<pe:layout resizerTip="Resize Me" togglerTipClosed="Open Me"
+			togglerTipOpen="Close Me">
+			<!-- NORTE -->
+			<pe:layoutPane position="north" closable="false" resizable="0"
+				spacingClosed="0" spacingOpen="0" resizeWhileDragging="false"
+				styleContent="border:none;  z-index: 9998;  z-index: 40; overflow: visible !important;">
+				<ui:insert name="SEGM_LOGO_LOGIN">
+					<ui:include
+						src="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('SEGM_LOGO_REGISTRO')}" />
+				</ui:insert>
+			</pe:layoutPane>
+			<!--CENTRO -->
+			<pe:layoutPane position="center">
+				<!-- <f:facet name="header"> -->
+				<p:panel>
+					<ui:insert name="SEGM_CONTENIDO_TITULO">
+					</ui:insert>
+				</p:panel>
+				<!-- </f:facet> -->
+				<ui:insert name="SEGM_CONTENIDO_REGISTRO">
+					<!-- Aqui se llenara el contenido de las opciones -->
+				</ui:insert>
+			</pe:layoutPane>
+		</pe:layout>
+	</f:view>
+</h:body>
+</html>
+

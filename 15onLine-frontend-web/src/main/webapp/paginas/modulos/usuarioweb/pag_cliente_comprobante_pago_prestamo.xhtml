@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="viewname">
+		<li>Comprobante de pago de préstamo</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+		<center>
+			<p:panel id="frmComprobantePagoPrestamo"
+				header="Comprobante pago de préstamo - Cooperativa de ahorro y crédito 15 de abril LTDA."
+				style="width:90%;">
+				<h:panelGrid columns="1">
+					<img class="logoImpresion"
+						src="#{configuracionesGeneralesMB.logoAplicacion}" height="90px"
+						align="left" style="display: none;" />
+				</h:panelGrid>
+				<center>
+					<p:panelGrid>
+						<p:row>
+							<p:column>
+								<p:outputLabel>Referencia :</p:outputLabel>
+							</p:column>
+							<p:column>
+								<p:outputLabel>
+									<b>#{pagoMB.abonoPagoPrestamo.referencia}</b>
+								</p:outputLabel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel>Número de comprobante :</p:outputLabel>
+							</p:column>
+							<p:column>
+								<p:outputLabel>
+									<b>#{pagoMB.abonoPagoPrestamo.secuenciaPago}</b>
+								</p:outputLabel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel>Cuenta a debitar :</p:outputLabel>
+							</p:column>
+							<p:column>
+								<p:outputLabel>
+									<b>#{pagoMB.abonoPagoPrestamo.numeroCuenta} </b>
+								</p:outputLabel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel>Número prestamo :</p:outputLabel>
+							</p:column>
+							<p:column>
+								<p:outputLabel>
+									<b>#{pagoMB.abonoPagoPrestamo.numeroPrestamo}</b>
+								</p:outputLabel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel>Cuotas atrasadas :</p:outputLabel>
+							</p:column>
+							<p:column>
+								<p:outputLabel>
+									<b>#{pagoMB.datoPrestamo.cuotasAtrasadas}</b>
+								</p:outputLabel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel>Cuotas pendientes :</p:outputLabel>
+							</p:column>
+							<p:column>
+								<p:outputLabel>
+									<b>#{pagoMB.datoPrestamo.cuotasPedientes}</b>
+								</p:outputLabel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel>Valor adeudado :</p:outputLabel>
+							</p:column>
+							<p:column>
+								<b><h:outputLabel
+										value="#{pagoMB.datoPrestamo.valorAdeudado}">
+										<f:convertNumber minFractionDigits="2" />
+									</h:outputLabel></b>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel>Saldo capital :</p:outputLabel>
+							</p:column>
+							<p:column>
+								<b><h:outputLabel
+										value="#{pagoMB.datoPrestamo.saldoCapital}">
+										<f:convertNumber minFractionDigits="2" />
+									</h:outputLabel></b>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel>Saldo total :</p:outputLabel>
+							</p:column>
+							<p:column>
+								<b><h:outputLabel value="#{pagoMB.datoPrestamo.saldoTotal}">
+										<f:convertNumber minFractionDigits="2" />
+									</h:outputLabel></b>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel>Monto a pagar :</p:outputLabel>
+							</p:column>
+							<p:column>
+								<b><h:outputLabel
+										value="#{pagoMB.abonoPagoPrestamo.valorPago}">
+										<f:convertNumber minFractionDigits="2" />
+									</h:outputLabel></b>
+								<p:outputLabel> USD </p:outputLabel>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel>Fecha/Hora :</p:outputLabel>
+							</p:column>
+							<p:column>
+								<b><h:outputLabel value="#{pagoMB.fechaHora}">
+										<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+											timeZone="#{pagoMB.zonaHoraria}" />
+									</h:outputLabel></b>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</center>
+			</p:panel>
+		</center>
+		<center>
+			<h:panelGrid columns="2">
+				<p:commandButton value="Imprimir" type="button" icon="fa fa-print">
+					<p:printer target="frmComprobantePagoPrestamo" />
+				</p:commandButton>
+				<p:commandButton value="Inicio" icon="fa fa-home" ajax="true"
+					immediate="true" actionListener="#{pagoMB.funcionCancelar}"
+					onstart="PF('dlgCargando').show()" />
+			</h:panelGrid>
+		</center>
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+			width="300" appendToBody="true">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>

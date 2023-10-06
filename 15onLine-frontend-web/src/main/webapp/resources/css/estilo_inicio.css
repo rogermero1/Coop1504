@@ -1,0 +1,74 @@
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #F5F3E5;
+	height: 100%;
+}
+
+body,p,td,th,li {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	color: black;
+	line-height: 20px;
+}
+
+#contenedor {
+	background-color: #FFF;
+	border: 2px solid #DDDDDD;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 550px;
+	margin-top: -90px;
+	margin-left: -285px;
+}
+
+#wrapper {
+	
+}
+
+#copyright {
+	width: 100%;
+	height: 40px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background: #FFF;
+	text-align: right;
+	font-size: 12px !important;
+	font-family: Arial, Helvetica, sans-serif;
+	color: black;
+	padding: 25px 0px 0px 0px;
+}
+
+#fondoEncabezado {
+	background-image: url(/15onLine/imagenes/coop15abril/fondo.jpg);
+	width: 100%;
+	height: 100px;
+}
+
+#degradadoBannerSuperior {
+	width: 100%;
+	height: 50px;
+	/* For Safari 5.1 to 6.0 */
+	background: -webkit-linear-gradient(#D2D3D7, #FEFEFE);
+	/* For Opera 11.1 to 12.0 */
+	background: -o-linear-gradient(#D2D3D7, #FEFEFE);
+	/* For Firefox 3.6 to 15 */
+	background: -moz-linear-gradient(#D2D3D7, #FEFEFE);
+	/* Standard syntax (must be last) */
+	background: linear-gradient(#D2D3D7, #FEFEFE);
+}
+
+#degradadoBannerInferior {
+	width: 100%;
+	height: 50px;
+	/* For Safari 5.1 to 6.0 */
+	background: -webkit-linear-gradient(#FEFEFE, #D2D3D7);
+	/* For Opera 11.1 to 12.0 */
+	background: -o-linear-gradient(#FEFEFE, #D2D3D7);
+	/* For Firefox 3.6 to 15 */
+	background: -moz-linear-gradient(#FEFEFE, #D2D3D7);
+	/* Standard syntax (must be last) */
+	background: linear-gradient(#FEFEFE, #D2D3D7);
+}

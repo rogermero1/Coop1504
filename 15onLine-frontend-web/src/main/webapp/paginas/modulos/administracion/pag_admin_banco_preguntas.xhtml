@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="viewname">
+		<li>Administración de Banco de Preguntas</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+		<p:growl id="msjGeneral" showDetail="true" showSummary="true"
+			life="5000" />
+		<h:form id="frmBancoPreguntas">
+			<p:dataTable id="tablaPreguntas" var="regPreguntas"
+				value="#{administracionBancoPreguntasMB.listadoPreguntas}"
+				paginator="true" rows="10" paginatorPosition="bottom"
+				selectionMode="single" rowKey="#{regPreguntas.id}"
+				selection="#{administracionBancoPreguntasMB.bancoPregunta}">
+				<f:facet name="header">
+					<p:outputLabel value="Banco de Preguntas" />
+				</f:facet>
+				<p:ajax event="rowSelect"
+					listener="#{administracionBancoPreguntasMB.onRowSelect}"
+					update=":frmBancoPreguntas" />
+				<p:ajax event="rowUnselect"
+					listener="#{administracionBancoPreguntasMB.onRowUnselect}"
+					update=":frmBancoPreguntas" />
+				<p:column headerText="Id">
+					<h:outputText value="#{regPreguntas.id}" />
+				</p:column>
+				<p:column headerText="Observacion">
+					<h:outputText value="#{regPreguntas.observacion}" />
+				</p:column>
+				<p:column headerText="Descripcion">
+					<h:outputText value="#{regPreguntas.descripcion}" />
+				</p:column>
+				<f:facet name="footer">
+					<p:commandButton value="Nuevo" icon="fa fa-file"
+						update=":frmMantenimiento"
+						action="#{administracionBancoPreguntasMB.inicializacion}"
+						oncomplete="PF('dlgPregunta').show()" />
+					<h:outputText value=" " />
+					<p:commandButton value="Editar" icon="fa fa-pencil"
+						disabled="#{administracionBancoPreguntasMB.accionEliminar}"
+						update=":frmMantenimiento" oncomplete="PF('dlgPregunta').show()" />
+					<h:outputText value=" " />	
+					<p:commandButton value="Eliminar" icon="fa fa-trash"
+						disabled="#{administracionBancoPreguntasMB.accionEliminar}"
+						update=":frmConfirmacion" oncomplete="PF('dlgConfirmacion').show()" />
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+		<p:dialog header="Confirmación" widgetVar="dlgConfirmacion"
+			resizable="false" id="dlgConfirma" appendToBody="true"
+			hideEffect="drop" showEffect="explode" modal="true">
+			<h:form id="frmConfirmacion">
+				<p:panelGrid>
+					<p:row>
+						<p:column colspan="2">
+							<p:outputLabel
+								value="Desea eliminar la opción: #{administracionBancoPreguntasMB.bancoPregunta.descripcion}?" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:commandButton value="SI" partialSubmit="true"
+								update=":frmBancoPreguntas, :frmConfirmacion :msjGeneral"
+								actionListener="#{administracionBancoPreguntasMB.eliminaPreguntaMb}"
+								oncomplete="PF('dlgConfirmacion').hide()"
+								styleClass="ui-confirmdialog-yes" icon="fa fa-check-circle" />
+						</p:column>
+						<p:column>
+							<p:commandButton value="NO" onclick="PF('dlgConfirmacion').hide()"
+								styleClass="ui-confirmdialog-no" icon="fa fa-window-close" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+		<p:dialog header="Datos Pregunta" widgetVar="dlgPregunta"
+			resizable="false" id="dlgPrg" appendToBody="true"
+			showEffect="explode" hideEffect="drop" modal="true">
+			<h:form id="frmMantenimiento">
+				<p:panelGrid columns="2">
+					<h:outputText value="Observacion:" />
+					<p:inputText
+						value="#{administracionBancoPreguntasMB.bancoPregunta.observacion}">
+					</p:inputText>
+					<h:outputText value="Descripcion:" />
+					<p:inputText
+						value="#{administracionBancoPreguntasMB.bancoPregunta.descripcion}">
+					</p:inputText>
+					<f:facet name="footer">
+						<center>
+							<p:commandButton value="Guardar" icon="fa fa-floppy-o"
+								partialSubmit="true"
+								update=":frmBancoPreguntas, :frmMantenimiento, :msjGeneral"
+								actionListener="#{administracionBancoPreguntasMB.creaBancoPreguntaMb}"
+								oncomplete="PF('dlgPregunta').hide()" />
+								
+							<h:outputText value=" " />	
+							<p:commandButton value="Cancelar" icon="fa fa-ban"
+								partialSubmit="true"
+								update=":frmBancoPreguntas, :frmMantenimiento, :msjGeneral"
+								action="#{administracionBancoPreguntasMB.inicializacion}"
+								oncomplete="PF('dlgPregunta').hide()" />
+						</center>
+					</f:facet>
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,199 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="viewname">
+		<li>Configuración de su perfil transaccional</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+		<center>
+			<p:panel
+				header="Estimado cliente, esta opción le permite parametrizar sus cupos maximos transaccionales, recuerde que no puede superar los cupos asignados por la institución."
+				style="width:90%;">
+				<h:form id="frmPerfilTransaccional">
+					<center>
+						<h:panelGrid columns="2">
+							<h:panelGrid>
+								<h:panelGrid columns="2">
+									<p:outputLabel value="Seleccione canal electrónico:" />
+									<p:selectOneMenu id="cmbCanalElectronico"
+										value="#{perfilTransaccionalMB.opcion}">
+										<p:ajax event="change"
+											listener="#{perfilTransaccionalMB.consultaCupos()}"
+											update=":frmPerfilTransaccional :frmConfirmaActualizacion" />
+										<f:selectItem itemLabel="Seleccione Canal Electronico"
+											itemValue="0" />
+										<f:selectItems
+											value="#{perfilTransaccionalMB.listadoCanalesElectronicos}"
+											var="canal" itemLabel="#{canal.descripcion}"
+											itemValue="#{canal.id}" />
+									</p:selectOneMenu>
+									<p:message for="cmbCanalElectronico" escape="true" />
+								</h:panelGrid>
+								<p:fieldset legend="Montos mínimos y máximos por transacción"
+									toggleable="false">
+									<h:panelGrid id="dataGridMontoMinimoMaximo" columns="4">
+										<p:outputLabel value="Monto mínimo por transacción:" />
+										<h:outputText style="text-align:right"
+											value="#{perfilTransaccionalMB.perfilTransaccionalCooperativa.montoMinimoTransaccion}">
+											<f:convertNumber minFractionDigits="2" />
+										</h:outputText>
+										<p:inputNumber id="txtMinimoTrx"
+											value="#{perfilTransaccionalMB.perfilTransaccionalCliente.montoMinimoTransaccion}"
+											symbol="$ " required="true"
+											requiredMessage="Monto mínimo es obligatorio"
+											style="width:100px; text-align:right" />
+										<p:message id="mesTxtMinimo" for="txtMinimoTrx" />
+
+										<p:outputLabel value="Monto máximo por transacción:" />
+										<h:outputLabel style="text-align : right"
+											value="#{perfilTransaccionalMB.perfilTransaccionalCooperativa.montoMaximoTransaccion}">
+											<f:convertNumber minFractionDigits="2" />
+										</h:outputLabel>
+										<p:inputNumber id="txtMontoMaximoTrx"
+											value="#{perfilTransaccionalMB.perfilTransaccionalCliente.montoMaximoTransaccion}"
+											symbol="$ " required="true"
+											requiredMessage="Monto máximo es obligatorio"
+											style="width:100px; text-align:right">
+										</p:inputNumber>
+										<p:message for="txtMontoMaximoTrx" />
+									</h:panelGrid>
+								</p:fieldset>
+							</h:panelGrid>
+							<p:fieldset
+								legend="Montos y transacciones diarias, semanales y mensuales"
+								toggleable="false">
+								<h:panelGrid id="dataGridMontoTransaccionesDiarias" columns="5">
+									<p:outputLabel value="Monto diario permitido:" />
+									<p:outputLabel style="text-align : right" value="Máximo $" />
+									<h:outputText style="text-align : right"
+										value="#{perfilTransaccionalMB.perfilTransaccionalCooperativa.montoDiario}">
+										<f:convertNumber minFractionDigits="2" />
+									</h:outputText>
+									<p:inputNumber id="txtMontoDiarioMax"
+										value="#{perfilTransaccionalMB.perfilTransaccionalCliente.montoDiario}"
+										symbol="$ " required="true"
+										requiredMessage="Monto máximo diario es obligatorio"
+										style="width:100px; text-align:right">
+									</p:inputNumber>
+									<p:message for="txtMontoDiarioMax" />
+
+									<p:outputLabel value="Transacciones diarias permitidas:" />
+									<p:outputLabel style="text-align : right" value="Máximo" />
+									<p:outputLabel style="text-align : right"
+										value="#{perfilTransaccionalMB.perfilTransaccionalCooperativa.transaccionDiaria}" />
+									<p:inputNumber id="txtTrxDiarias" required="true"
+										requiredMessage="Transacciones diarias requeridas."
+										value="#{perfilTransaccionalMB.perfilTransaccionalCliente.transaccionDiaria}"
+										style="width:100px" decimalPlaces="0" />
+									<p:message for="txtTrxDiarias" />
+
+									<p:outputLabel value="Monto semanal permitido:" />
+									<p:outputLabel style="text-align : right" value="Máximo $" />
+									<h:outputText style="text-align : right"
+										value="#{perfilTransaccionalMB.perfilTransaccionalCooperativa.montoSemanal}">
+										<f:convertNumber minFractionDigits="2" />
+									</h:outputText>
+									<p:inputNumber id="txtMontoSemanalMax"
+										value="#{perfilTransaccionalMB.perfilTransaccionalCliente.montoSemanal}"
+										symbol="$ " required="true"
+										requiredMessage="Monto máximo semanal es obligatorio"
+										style="width:100px; text-align:right">
+									</p:inputNumber>
+									<p:message for="txtMontoSemanalMax" />
+
+									<p:outputLabel value="Transacciones semanales permitidas:"></p:outputLabel>
+									<p:outputLabel style="text-align : right" value="Máximo"></p:outputLabel>
+									<p:outputLabel style="text-align : right"
+										value="#{perfilTransaccionalMB.perfilTransaccionalCooperativa.transaccionSemanal}" />
+									<p:inputNumber id="txtTrxSemanales" required="true"
+										requiredMessage="Transacciones semanales requeridas."
+										value="#{perfilTransaccionalMB.perfilTransaccionalCliente.transaccionSemanal}"
+										style="width:100px" decimalPlaces="0" />
+									<p:message for="txtTrxSemanales" />
+
+									<p:outputLabel value="Monto mensual permitido:" />
+									<p:outputLabel style="text-align : right" value="Máximo $"></p:outputLabel>
+									<h:outputLabel style="text-align : right"
+										value="#{perfilTransaccionalMB.perfilTransaccionalCooperativa.montoMensual}">
+										<f:convertNumber minFractionDigits="2" />
+									</h:outputLabel>
+									<p:inputNumber id="txtMontoMensualMax"
+										value="#{perfilTransaccionalMB.perfilTransaccionalCliente.montoMensual}"
+										symbol="$ " required="true"
+										requiredMessage="Monto máximo mensual es obligatorio"
+										style="width:100px; text-align:right">
+									</p:inputNumber>
+									<p:message for="txtMontoMensualMax" />
+
+									<p:outputLabel value="Transacciones mensuales permitidas:" />
+									<p:outputLabel style="text-align : right" value="Máximo" />
+									<p:outputLabel style="text-align : right"
+										value="#{perfilTransaccionalMB.perfilTransaccionalCooperativa.transaccionesMensual}" />
+									<p:inputNumber id="txtTrxMensuales" required="true"
+										requiredMessage="Transacciones mensuales requeridas."
+										value="#{perfilTransaccionalMB.perfilTransaccionalCliente.transaccionesMensual}"
+										style="width:100px" decimalPlaces="0" />
+									<p:message for="txtTrxMensuales" />
+								</h:panelGrid>
+								<center>
+									<h:panelGrid columns="1">
+										<p:commandButton value="Guardar Cambios"
+											action="#{perfilTransaccionalMB.validaActualizaPerfilTransaccional()}"
+											update=":frmConfirmaActualizacion, :frmPerfilTransaccional"
+											partialSubmit="@form" process="@form" icon="fa fa-floppy-o"
+											disabled="#{perfilTransaccionalMB.botonValidar}" />
+									</h:panelGrid>
+								</center>
+							</p:fieldset>
+						</h:panelGrid>
+					</center>
+				</h:form>
+				<h:form id="frmConfirmaActualizacion">
+					<p:messages id="mensajeAplicacion" globalOnly="true"
+						showDetail="true" closable="true" showSummary="true" />
+					<p:panel rendered="#{perfilTransaccionalMB.confirmacion}"
+						header="Hemos enviado un código de seguridad a su correo electrónico, por favor ingreselo para completar los cambios.">
+						<center>
+							<h:panelGrid columns="4">
+								<p:outputLabel value="Ingrese codigo de seguridad:" />
+								<!-- 								<p:keyboard id="txtCodigoSeguridad" required="true" -->
+								<!-- 									requiredMessage="Código de seguridad es requeridas." -->
+								<!-- 									value="#{perfilTransaccionalMB.codigoSeguridad}" -->
+								<!-- 									style="width:100px" password="true" keypadOnly="true" /> -->
+								<p:keyboard id="txtCodigoSeguridad" required="true"
+									requiredMessage="Código de seguridad es requeridas."
+									value="#{perfilTransaccionalMB.codigoSeguridad}"
+									style="width:100px" password="true" closeLabel="Cerrar"
+									backspaceLabel="Borrar" clearLabel="Limpiar"
+									onkeydown="return false" onkeypress="return false"
+									onkeyup="return false" layout="custom"
+									layoutTemplate="#{configuracionesGeneralesMB.tecladoRandom}" />
+								<p:message for="txtCodigoSeguridad" />
+								<p:commandButton
+									action="#{perfilTransaccionalMB.confirmaActualizaPerfilTransaccional()}"
+									update=":frmPerfilTransaccional, :frmConfirmaActualizacion"
+									value="Confirmar" onstart="PF('dlgCargando').show()"
+									onsuccess="PF('dlgCargando').hide()">
+								</p:commandButton>
+							</h:panelGrid>
+						</center>
+					</p:panel>
+				</h:form>
+			</p:panel>
+		</center>
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+			width="300" appendToBody="true">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>

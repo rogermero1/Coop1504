@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+		<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+		<link rel="shortcut icon" type="image/x-icon"
+			href="#{configuracionesGeneralesMB.iconoAplicacion}" />
+		<link rel="stylesheet" type="text/css"
+			href="#{configuracionesGeneralesMB.estiloPrincipal}" />
+		<!-- 		<link rel="stylesheet" type="text/css" -->
+		<!-- 			href="#{configuracionesGeneralesMB.estiloPrincipal}" media="screen" /> -->
+		<!-- 		<link rel="stylesheet" type="text/css" -->
+		<!-- 			href="/15onLine/resources/css/estilo_impresion.css" media="print" /> -->
+		<title><h:outputText
+				value="#{configuracionesGeneralesMB.tituloAplicacion}" /></title>
+	</f:facet>
+
+	<script type="text/javascript"
+		src="#{configuracionesGeneralesMB.jsPrincipal}" />
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+		    $(".ui-panelmenu-content").css("display","block");
+		    $(".ui-panelmenu-header").addClass("ui-state-active");
+		    $(".ui-icon-triangle-1-e").removeClass("ui-icon-triangle-1-e").addClass("ui-icon-triangle-1-s");
+		});
+	</script>
+</h:head>
+<h:body>
+	<pe:layout resizerTip="Resize Me" togglerTipClosed="Open Me"
+		togglerTipOpen="Close Me">
+		<p:idleMonitor timeout="300000">
+			<p:ajax event="idle" onstart="sessionTimeOutDialog.show();" />
+		</p:idleMonitor>
+<!-- 		<p:idleMonitor onactive="sessionTimeOutDialog.show();" -->
+<!-- 			timeout="300000" /> -->
+		<p:dialog header="Información" widgetVar="sessionTimeOutDialog"
+			modal="true" fixedCenter="true" closable="false" width="400"
+			visible="false">
+			<h:form>
+				<center>
+					<table>
+						<tr>
+							<td>
+								<center>
+									<h:outputText
+										value="#{configuracionesGeneralesMB.mensajeNoAutenticado}" />
+								</center>
+							</td>
+						</tr>
+						<tr>
+							<td><center>
+									<p:commandButton onclick="javascript:cerrarEmergente()"
+										value="Cerrar" ajax="false" />
+								</center></td>
+						</tr>
+					</table>
+				</center>
+			</h:form>
+		</p:dialog>
+		<!-- NORTE -->
+		<pe:layoutPane position="north" size="110" closable="false"
+			resizable="0" spacingClosed="0" spacingOpen="0"
+			resizeWhileDragging="false"
+			styleContent="overflow: hiden; border: none;">
+			<!-- 			<pe:layoutPane position="west" closable="false" resizable="0" -->
+			<!-- 				spacingClosed="0" spacingOpen="0" resizeWhileDragging="false" -->
+			<!-- 				styleContent="border:none; overflow-x:hidden!important; overflow-y:hidden!important;" -->
+			<!-- 				rendered="#{configuracionesGeneralesMB.presentarSegmLogoSuperiorIzquierda}"> -->
+			<!-- 				<ui:insert name="SEGM_LOGO_SUPERIOR_IZQUIERDA"> -->
+			<!-- 					<ui:include -->
+			<!-- 						src="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('SEGM_LOGO_SUPERIOR_IZQUIERDA')}" /> -->
+			<!-- 				</ui:insert> -->
+			<!-- 			</pe:layoutPane> -->
+			<!-- 			<pe:layoutPane position="east" closable="false" resizable="0" -->
+			<!-- 				spacingClosed="0" spacingOpen="0" resizeWhileDragging="false" -->
+			<!-- 				styleContent="border:none; overflow-x:hidden!important; overflow-y:hidden!important;" -->
+			<!-- 				rendered="#{configuracionesGeneralesMB.presentarSegmInformacionUsuarioSuperiorDerecha}"> -->
+			<!-- 				<ui:insert name="SEGM_INFORMACION_USUARIO_SUPERIOR_DERECHA"> -->
+			<!-- 					<ui:include -->
+			<!-- 						src="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('SEGM_INFORMACION_USUARIO_SUPERIOR_DERECHA')}" /> -->
+			<!-- 				</ui:insert> -->
+			<!-- 			</pe:layoutPane> -->
+			<pe:layoutPane position="center" closable="false" resizable="0"
+				spacingClosed="0" spacingOpen="0" resizeWhileDragging="false"
+				styleContent="border:none;  z-index: 9998;  z-index: 40; overflow: visible !important;"
+				rendered="#{configuracionesGeneralesMB.presentarsegmMenuHorizontalSuperiorCentro}">
+				<ui:insert name="SEGM_MENU_HORIZONTAL_SUPERIOR_CENTRO">
+					<ui:include
+						src="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('SEGM_MENU_HORIZONTAL_SUPERIOR_CENTRO')}" />
+				</ui:insert>
+			</pe:layoutPane>
+		</pe:layoutPane>
+
+		<!--CENTRO -->
+		<pe:layoutPane position="center">
+			<pe:layoutPane position="center">
+				<f:facet name="header">
+					<ui:insert name="SEGM_CONTENIDO_OPCIONES_TITULO">
+					</ui:insert>
+				</f:facet>
+				<ui:insert name="SEGM_CONTENIDO_OPCIONES">
+					<!-- Aqui se llenara el contenido de las opciones -->
+				</ui:insert>
+			</pe:layoutPane>
+		</pe:layoutPane>
+
+		<!-- CENTRO OESTE -->
+		<pe:layoutPane position="west" size="200"
+			styleContent="border-style:none;" styleHeader="border-style:none;"
+			rendered="#{configuracionesGeneralesMB.presentarSegmInformacionVariosCentroIzquierda}">
+			<pe:layoutPane position="center" styleContent="border-style:none;"
+				styleHeader="border-style:none;">
+				<f:facet name="header">
+					<h:outputText id="SEGM_INFORMACION_VARIOS_CENTRO_IZQUIERDA_TITULO"
+						value="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('SEGM_INFORMACION_VARIOS_CENTRO_IZQUIERDA_TITULO')}" />
+				</f:facet>
+				<ui:insert name="SEGM_INFORMACION_VARIOS_CENTRO_IZQUIERDA">
+					<ui:include
+						src="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('SEGM_INFORMACION_VARIOS_CENTRO_IZQUIERDA')}" />
+				</ui:insert>
+			</pe:layoutPane>
+		</pe:layoutPane>
+
+		<!-- CENTRO ESTE -->
+		<!-- 		<pe:layoutPane position="east" size="200" -->
+		<!-- 			styleContent="border-style:none;" styleHeader="border-style:none;" -->
+		<!-- 			rendered="#{configuracionesGeneralesMB.presentarSegmInformacionVariosCentroDerecha}"> -->
+		<!-- 			<pe:layoutPane position="center" styleContent="border-style:none;" -->
+		<!-- 				styleHeader="border-style:none;"> -->
+		<!-- 				<f:facet name="header"> -->
+		<!-- 					<h:outputText id="SEGM_INFORMACION_VARIOS_CENTRO_DERECHA_TITULO" -->
+		<!-- 						value="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('SEGM_INFORMACION_VARIOS_CENTRO_DERECHA_TITULO')}" /> -->
+		<!-- 				</f:facet> -->
+		<!-- 				<ui:insert name="SEGM_INFORMACION_VARIOS_CENTRO_DERECHA"> -->
+		<!-- 					<ui:include -->
+		<!-- 						src="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('SEGM_INFORMACION_VARIOS_CENTRO_DERECHA')}" /> -->
+		<!-- 				</ui:insert> -->
+		<!-- 			</pe:layoutPane> -->
+		<!-- 		</pe:layoutPane> -->
+
+		<!-- SUR -->
+		<!-- 		<pe:layoutPane position="south" styleHeader="border-style:none;" -->
+		<!-- 			closable="false" resizable="0" spacingClosed="0" spacingOpen="0" -->
+		<!-- 			resizeWhileDragging="false" -->
+		<!-- 			styleContent="overflow: hiden; border: none; overflow-x:hidden!important; overflow-y:hidden!important;" -->
+		<!-- 			rendered="#{configuracionesGeneralesMB.presentarSegmToolbarInferior}"> -->
+		<!-- 			<ui:insert name="SEGM_TOOLBAR_INFERIOR"> -->
+		<!-- 				<ui:include -->
+		<!-- 					src="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('SEGM_TOOLBAR_INFERIOR')}" /> -->
+		<!-- 			</ui:insert> -->
+		<!-- 		</pe:layoutPane> -->
+	</pe:layout>
+</h:body>
+</html>

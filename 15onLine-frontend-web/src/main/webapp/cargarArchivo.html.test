@@ -1,0 +1,10 @@
+<html>
+<head></head>
+<body>
+<form action="servlet_archivo" method="post" enctype="multipart/form-data">
+Seleccione el archivo:<input type="file" name="fileName">
+<br>
+<input type="submit" value="Cargar">
+</form>
+</body>
+</html>

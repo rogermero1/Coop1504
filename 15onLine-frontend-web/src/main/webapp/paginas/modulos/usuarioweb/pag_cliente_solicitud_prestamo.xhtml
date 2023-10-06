@@ -1,0 +1,312 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="viewname">
+		<li>Solicitud de préstamo</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+
+		<p:growl id="msjGeneral" showDetail="true" showSummary="true"
+			sticky="true" />
+
+		<h:form id="frmSolicitud" style="width:90%; margin: auto;"
+			enctype="multipart/form-data">
+			<p:fieldset legend="Datos del solicitante" toggleable="false">
+				<p:panelGrid>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Número Identificación:" />
+						</p:column>
+						<p:column>
+							<b><p:outputLabel
+									value="#{solicitudPrestamoMB.datosCliente.identificacion}" /></b>
+						</p:column>
+						<p:column>
+							<p:outputLabel value="Nombres:" />
+						</p:column>
+						<p:column>
+							<b><p:outputLabel
+									value="#{solicitudPrestamoMB.datosCliente.nombres}" /></b>
+						</p:column>
+						<p:column>
+							<p:outputLabel value="Fecha de nacimiento:" />
+						</p:column>
+						<p:column>
+							<b><p:outputLabel
+									value="#{solicitudPrestamoMB.datosCliente.fechaNacimiento}" /></b>
+						</p:column>
+						<p:column>
+							<p:outputLabel value="Relación dependencia:" />
+						</p:column>
+						<p:column>
+							<b><p:outputLabel
+									value="#{solicitudPrestamoMB.datosCliente.relacionDependencia}" /></b>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Estado Civil:" />
+						</p:column>
+						<p:column>
+							<b><p:outputLabel
+									value="#{solicitudPrestamoMB.datosCliente.estadoCivil}" /></b>
+						</p:column>
+						<p:column>
+							<p:outputLabel value="Identificación conyuge:" />
+						</p:column>
+						<p:column>
+							<b><p:outputLabel
+									value="#{solicitudPrestamoMB.datosCliente.identificacionConyuge}" /></b>
+						</p:column>
+						<p:column>
+							<p:outputLabel value="Nombre Conyuge:" />
+						</p:column>
+						<p:column>
+							<b><p:outputLabel
+									value="#{solicitudPrestamoMB.datosCliente.nombreConyuge}" /></b>
+						</p:column>
+						<p:column>
+							<p:outputLabel value="Preaprobado" />
+						</p:column>
+						<p:column>
+							<b><p:outputLabel
+									value="#{solicitudPrestamoMB.solicitud.preAprobado=='S'?'SI':'NO'}" /></b>
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</p:fieldset>
+			<p:spacer height="5" />
+			<p:fieldset legend="Datos de la solicitud" toggleable="false">
+				<p:panelGrid style="width:77%; margin: auto;">
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Monto: " />
+						</p:column>
+						<p:column>
+							<p:inputNumber style="width:70px;"
+								value="#{solicitudPrestamoMB.solicitud.montoSolicitado}" />
+						</p:column>
+						<p:column>
+							<p:outputLabel value="Plazo (meses): " />
+						</p:column>
+						<p:column>
+							<p:inputNumber style="width:70px;"
+								value="#{solicitudPrestamoMB.solicitud.plazo}" />
+						</p:column>
+						<p:column>
+							<p:outputLabel value="Amortización: " />
+						</p:column>
+						<p:column>
+							<h:selectOneRadio
+								value="#{solicitudPrestamoMB.solicitud.tipoAmortizacion}">
+								<f:selectItem itemLabel="Francés" itemValue="4" />
+								<f:selectItem itemLabel="Alemán" itemValue="3" />
+							</h:selectOneRadio>
+						</p:column>
+						<p:column>
+							<p:outputLabel value="Propósito: " />
+						</p:column>
+						<p:column>
+							<p:inputText style="width:200px;"
+								value="#{solicitudPrestamoMB.solicitud.proposito}" />
+						</p:column>
+						<p:column>
+							<p:commandButton value="Simular" icon="fa fa-calculator"
+								actionListener="#{solicitudPrestamoMB.simular}"
+								partialSubmit="true" update=":frmSolicitud" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:outputLabel value="Tasa: " />
+						</p:column>
+						<p:column>
+							<b><p:outputLabel
+									value="#{solicitudPrestamoMB.solicitud.tasa}" /></b>
+						</p:column>
+						<p:column>
+							<p:outputLabel value="Cuota: " />
+						</p:column>
+						<p:column>
+							<b><p:outputLabel
+									value="#{solicitudPrestamoMB.solicitud.cuota}" /></b>
+						</p:column>
+						<p:column>
+							<p:outputLabel value=" " />
+						</p:column>
+						<p:column>
+							<p:outputLabel value=" " />
+						</p:column>
+						<p:column>
+							<p:outputLabel value=" " />
+						</p:column>
+						<p:column>
+							<p:selectBooleanCheckbox
+								value="#{solicitudPrestamoMB.aceptaAutorizacion}">
+								<p:ajax update="frmSolicitud:btnGrabar"
+									listener="#{solicitudPrestamoMB.aceptarCondiciones}" />
+							</p:selectBooleanCheckbox>
+							<p:outputLabel style="font-weight:bold;" value="   Acepta la " />
+							<p:commandLink onmousedown="PF('dlgAutorizacion').show()">
+								<p:outputLabel style="font-weight:bold;" value="AUTORIZACION" />
+							</p:commandLink>
+						</p:column>
+						<p:column>
+							<p:commandButton value="Grabar" icon="fa fa-floppy-o"
+								actionListener="#{solicitudPrestamoMB.guardar}"
+								partialSubmit="true" update=":frmSolicitud :msjGeneral"
+								process="frmSolicitud" id="btnGrabar"
+								disabled="#{solicitudPrestamoMB.aceptaAutorizacion == false}"
+								onstart="PF('dlgCargando').show()"
+								onsuccess="PF('dlgCargando').hide()" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</p:fieldset>
+			<p:spacer height="5" />
+			<p:fieldset legend="Documentos Requeridos" toggleable="false">
+				<b><p:outputLabel
+						value="* Para personas con relación de dependencia (ingrese rol de pagos, certificado de sueldo o planilla del iess)" /></b>
+				<br />
+				<b><p:outputLabel
+						value="* Para personas sin relación de dependencia (ingrese Ruc, Rise, facturas o Referencia Comercial)" /></b>
+				<p:panel style="width:77%; margin: auto;">
+					<p:panelGrid style="width:77%; margin: auto;">
+						<p:row>
+							<p:column>
+								<p:commandButton onclick="PF('dlgArchivo').show()"
+									icon="fa fa-upload"
+									action="#{solicitudPrestamoMB.asignarNombreArchivo('cedula')}"
+									value="Cargar Cédula" update=":panelDialog" />
+							</p:column>
+							<p:column>
+								<p:commandButton onclick="PF('dlgArchivo').show()"
+									icon="fa fa-upload"
+									action="#{solicitudPrestamoMB.asignarNombreArchivo('certificadoVotacion')}"
+									value="Cargar Certificado de votación" update=":panelDialog" />
+							</p:column>
+							<p:column>
+								<p:commandButton onclick="PF('dlgArchivo').show()"
+									icon="fa fa-upload"
+									action="#{solicitudPrestamoMB.asignarNombreArchivo('certificadoIngresos')}"
+									value="Cargar Certificado de ingresos" update=":panelDialog" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:panel>
+			</p:fieldset>
+			<p:spacer height="5" />
+			<p:fieldset legend="Situación financiera" toggleable="false">
+				<p:panelGrid style="width:77%; margin: auto;" columns="2">
+
+					<p:dataTable id="tablaIngresos" var="ingreso"
+						value="#{solicitudPrestamoMB.listaIngresos}" paginator="false"
+						rows="5" emptyMessage="No registra Ingresos" style="width:100%;">
+						<f:facet name="header">
+							<p:outputLabel value="Ingresos" />
+						</f:facet>
+						<p:column headerText="Descripción">
+							<h:outputText value="#{ingreso.descripcion}" />
+						</p:column>
+						<p:column headerText="Valor Registrado">
+							<h:outputText value="#{ingreso.valor}" />
+						</p:column>
+						<p:column headerText="Valor Actual">
+							<p:inputNumber value="#{ingreso.valorNuevo}" />
+						</p:column>
+					</p:dataTable>
+
+					<p:dataTable id="tablaGastos" var="gasto"
+						value="#{solicitudPrestamoMB.listaGastos}" paginator="false"
+						rows="5" emptyMessage="No registra Gastos" style="width:100%;">
+						<f:facet name="header">
+							<p:outputLabel value="Gastos" />
+						</f:facet>
+						<p:column headerText="Descripción">
+							<h:outputText value="#{gasto.descripcion}" />
+						</p:column>
+						<p:column headerText="Valor Registrado">
+							<h:outputText value="#{gasto.valor}" />
+						</p:column>
+						<p:column headerText="Valor Actual">
+							<p:inputNumber value="#{gasto.valorNuevo}" />
+						</p:column>
+					</p:dataTable>
+
+				</p:panelGrid>
+			</p:fieldset>
+
+		</h:form>
+
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+			width="300" appendToBody="true">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando"></p:graphicImage>
+		</p:dialog>
+
+		<p:dialog id="dialogArchivo" header="Carga de documentos"
+			resizable="true" widgetVar="dlgArchivo" modal="true" height="100"
+			width="30%" appendToBody="true">
+			<p:outputPanel id="panelDialog">
+				<form action="#{solicitudPrestamoMB.contextPath}/servlet_archivo" method="post" target="respuesta"
+					enctype="multipart/form-data">
+					<input type="file" name="fileName" accept="image/*,.pdf" /> <br />
+					<br /> <input type="submit" value="Cargar" />
+					<iframe name="respuesta" id="respuesta" frameborder="0" width="300"
+						height="30" scrolling="no"></iframe>
+				</form>
+			</p:outputPanel>
+
+		</p:dialog>
+
+		<p:dialog id="dialogAutorizacion" header="Autorización"
+			resizable="true" widgetVar="dlgAutorizacion" modal="true"
+			height="500" width="50%" appendToBody="true">
+			<div class="logoImpresion">
+				<h:panelGrid columns="1">
+					<img src="#{configuracionesGeneralesMB.logoAplicacion}"
+						height="90px" align="left" class="" />
+				</h:panelGrid>
+				<div>
+					<p style="font-weight: bold; font-size: 14px; text-align: center;">AUTORIZACION</p>
+					<p style="font-size: 12px; text-align: justify;">
+						Por medio de la presente AUTORIZO EXPRESAMENTE a la Cooperativa de
+						Ahorro y Crédito 15 de Abril Ltda., para que obtenga de la central
+						de riesgo y burós de información crediticia autorizados para
+						operar en el país o de cualquier fuente de información,
+						referencias relativas a mi comportamiento crediticio, al
+						cumplimiento de mis obligaciones, manejo de mi (s) tarjeta (s) de
+						crédito, u otros que transparente mi capacidad de pago o sirvan
+						para valorar el riesgo futuro en casos de concederme operaciones
+						crediticias, productos o servicios que brinda esta Institución
+						Financiera. <br /> Así mismo la Cooperativa de Ahorro y Crédito
+						15 de Abril Ltda. queda autorizada para transferir o entregar
+						dicha información, referente a la presente operación crediticia
+						sea como deudor principal, codeudor o garante con la Cooperativa
+						15 de Abril Ltda., a todos los burós de información crediticia
+						autorizado en el país, a los organismos de control, autoridades
+						competentes y demás instituciones facultadas legalmente. En caso
+						de cesión, o cualquier forma de transparencia de la presente
+						operación crediticia, que mi persona mantenga sea como deudor
+						principal, codeudor o garante con la Cooperativa 15 de Abril
+						Ltda., la personal natural o jurídica cesionaria o adquirente de
+						dicha obligación queda facultada para realizar lo autorizado en la
+						presente. <br />Esta autorización está legalmente amparado en la
+						Ley de Instituciones del Sistema Financiero, y demás normas
+						concordantes, y tendrá vigencia solo mientras
+					</p>
+				</div>
+			</div>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>

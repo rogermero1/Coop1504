@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+	<ui:define name="viewname">
+		<li>Administración de conexiones</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+
+	<ui:define name="content">
+		<p:growl id="msjGeneral" showDetail="true" showSummary="true"
+			life="5000" />
+
+		<p:outputLabel value="#{cambioClavePreguntasMB.controlSesion}" />
+		<center>
+			<h:form id="formComputadores" style="width:90%;">
+				<center>
+					<p:dataTable id="tablaComputadores" var="computador"
+						value="#{cambioClavePreguntasMB.listaIpsVigentesUsuario}"
+						paginator="true" rows="8" paginatorPosition="bottom"
+						emptyMessage="No registra Computadores">
+						<p:column headerText="Fecha" style="width:10%;">
+							<h:outputText value="#{computador.fechaRegistro}">
+								<f:convertDateTime pattern="yyyy-MM-dd"
+									timeZone="#{cambioClavePreguntasMB.zonaHoraria}" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Ip" style="width:15%;">
+							<p:outputLabel value="#{computador.ip}" />
+						</p:column>
+						<p:column headerText="Descripción">
+							<p:outputLabel value="#{computador.observacion}" />
+						</p:column>
+						<p:column headerText="Estado" style="width:10%;">
+							<p:selectOneMenu value="#{computador.estado}">
+								<f:selectItem itemLabel="Activo" itemValue="A" />
+								<f:selectItem itemLabel="Inactivo" itemValue="I" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:dataTable>
+					<h:panelGrid>
+						<p:commandButton partialSubmit="true"
+							update=":formComputadores, :frmConfirmacion, :msjGeneral"
+							process=":formComputadores"
+							actionListener="#{cambioClavePreguntasMB.cambiarIpsAutorizadas}"
+							value="Guardar" icon="fa fa-floppy-o"
+							disabled="#{cambioClavePreguntasMB.botonCambioIps}" />
+					</h:panelGrid>
+				</center>
+			</h:form>
+		</center>
+		<center>
+			<h:form id="frmConfirmacion">
+				<p:panel style="width:50%"
+					rendered="#{cambioClavePreguntasMB.confirmacion}"
+					header="Hemos enviado un código de seguridad a su correo electrónico y/o celular, por favor ingreselo para completar los cambios.">
+					<!-- 						<p:keyboard value="#{cambioClavePreguntasMB.codigoSeguridad}" -->
+					<!-- 							password="true" keypadOnly="true" /> -->
+					<h:panelGrid border="0" columns="3">
+						<p:outputLabel value="Ingrese código de seguridad:" />
+						<p:keyboard value="#{cambioClavePreguntasMB.codigoSeguridad}"
+							password="true" closeLabel="Cerrar" backspaceLabel="Borrar"
+							clearLabel="Limpiar" onkeydown="return false"
+							onkeypress="return false" onkeyup="return false" layout="custom"
+							layoutTemplate="#{configuracionesGeneralesMB.tecladoRandom}" />
+						<p:commandButton
+							actionListener="#{cambioClavePreguntasMB.completarCambios}"
+							update=":formComputadores, :msjGeneral, :frmConfirmacion"
+							value="Confirmar" onstart="PF('dlgCargando').show()"
+							onsuccess="PF('dlgCargando').hide()" />
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+		</center>
+
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+			width="300" appendToBody="true">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>

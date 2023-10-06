@@ -1,0 +1,16 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ec.fin.coop15abril</groupId>
+  <artifactId>15onLineWeb</artifactId>
+  <version>2.0</version>
+  <packaging>pom</packaging>
+  <name>15onLineWeb</name>
+  <description>15onLineWeb</description>
+  <modules>
+  	<module>15onLine-servicios-core</module>
+  	<module>15onLine-loginmodule-realm</module>
+  	<module>15onLine-cliente-ws</module>
+  	<module>15onLine-frontend-web</module>
+   	<!--<module>15onLine-frontend-portal</module> -->
+  </modules>
+</project>

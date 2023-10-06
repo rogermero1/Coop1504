@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template_registro_externo.xhtml">
+
+	<ui:define name="viewname">
+		<li>Creación de usuarios (Paso 5 - Confirmación de códigos
+			enviados)</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+		<center>
+			<h:form id="form">
+				<p:panel id="panelRegistro" style="width:50%"
+					header="Por favor, ingrese los códigos enviados a su correo: #{registroUsuarioMB.usuario.correo} y celular: #{registroUsuarioMB.usuario.celular}">
+
+					<p:messages globalOnly="true" showDetail="true" closable="true" />
+					<div align="left">
+						<p:fieldset legend="Resúmen" toggleable="true" toggleSpeed="500">
+							<h:panelGrid columns="3">
+								<h:outputText value="Cliente : " style="font-weight:bold;" />
+								<h:outputText value="#{registroUsuarioMB.cedula}" />
+								<h:outputText value="#{registroUsuarioMB.nombreCliente}" />
+							</h:panelGrid>
+							<h:panelGrid columns="2">
+								<h:outputText value="Usuario : " style="font-weight:bold;" />
+								<h:outputText value="#{registroUsuarioMB.usuario.usuario}" />
+								<h:outputText value="Correo : " style="font-weight:bold;" />
+								<h:outputText value="#{registroUsuarioMB.usuario.correo}" />
+								<h:outputText value="Teléfono : " style="font-weight:bold;" />
+								<h:outputText value="#{registroUsuarioMB.usuario.celular}" />
+							</h:panelGrid>
+						</p:fieldset>
+						<p:fieldset legend="Códigos" toggleable="true" toggleSpeed="500">
+							<center>
+								<!-- 									<p:keyboard id="otpcorreo" required="true" -->
+								<!-- 										requiredMessage="Ingrese código" -->
+								<!-- 										validatorMessage="INGRESE CODIGO" -->
+								<!-- 										value="#{registroUsuarioMB.otpCorreo}" password="true" -->
+								<!-- 										keypadOnly="true" /> -->
+								<!-- 									<p:keyboard id="otpcelular" required="true" -->
+								<!-- 										requiredMessage="Ingrese código" -->
+								<!-- 										validatorMessage="INGRESE CODIGO" -->
+								<!-- 										value="#{registroUsuarioMB.otpCelular}" password="true" -->
+								<!-- 										keypadOnly="true" /> -->
+								<h:panelGrid columns="3">
+									<h:outputText value="Código Correo : "
+										style="font-weight:bold;" />
+									<p:keyboard id="otpcorreo" required="true"
+										requiredMessage="Ingrese código"
+										validatorMessage="INGRESE CODIGO"
+										value="#{registroUsuarioMB.otpCorreo}" password="true"
+										closeLabel="Cerrar" backspaceLabel="Borrar"
+										clearLabel="Limpiar" onkeydown="return false"
+										onkeypress="return false" onkeyup="return false"
+										layout="custom"
+										layoutTemplate="#{configuracionesGeneralesMB.tecladoRandom}" />
+									<p:message for="otpcorreo" />
+									<h:outputText value="Código Celular : "
+										style="font-weight:bold;" />
+									<p:keyboard id="otpcelular" required="true"
+										requiredMessage="Ingrese código"
+										validatorMessage="INGRESE CODIGO"
+										value="#{registroUsuarioMB.otpCelular}" password="true"
+										closeLabel="Cerrar" backspaceLabel="Borrar"
+										clearLabel="Limpiar" onkeydown="return false"
+										onkeypress="return false" onkeyup="return false"
+										layout="custom"
+										layoutTemplate="#{configuracionesGeneralesMB.tecladoRandom}" />
+									<p:message for="otpcelular" />
+								</h:panelGrid>
+								<h:panelGrid>
+									<p:commandButton partialSubmit="true" update="form"
+										process="form"
+										actionListener="#{registroUsuarioMB.creacionUsuario}"
+										value="Crear Usuario" icon="fa fa-floppy-o"
+										onstart="PF('dlgCargando').show()"
+										onsuccess="PF('dlgCargando').hide()" />
+								</h:panelGrid>
+							</center>
+						</p:fieldset>
+					</div>
+				</p:panel>
+			</h:form>
+		</center>
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+			width="300" appendToBody="true">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando"></p:graphicImage>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

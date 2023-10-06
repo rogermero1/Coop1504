@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+	<ui:define name="viewname">
+		<li>Histórico de cuentas de ahorro</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+
+	<ui:define name="content">
+		<p:growl id="msjGeneral" showDetail="true" showSummary="true"
+			life="5000" />
+		<center>
+			<h:form id="frmConsulta" style="width:90%;">
+				<p:fieldset legend="Datos de consulta" toggleable="false">
+					<h:panelGrid columns="4">
+						<p:outputLabel value="Fecha desde:" style="font-weight:bold;" />
+						<p:calendar value="#{historicoAhorrosMB.fechaDesde}"
+							pattern="dd-MM-yyyy" mask="true"
+							mindate="#{posicionConsolidadaMB.fechaMinHistorico}"
+							validatorMessage="Rango de fecha incorrecto" />
+						<p:outputLabel value="Fecha Hasta:" style="font-weight:bold;" />
+						<p:calendar value="#{historicoAhorrosMB.fechaHasta}"
+							pattern="dd-MM-yyyy" mask="true" />
+					</h:panelGrid>
+					<h:panelGrid columns="2">
+						<p:commandButton value="Consultar" icon="fa fa-search"
+							partialSubmit="true"
+							update=":frmConsulta:tablaMovimientosAhorro, :msjGeneral"
+							actionListener="#{historicoAhorrosMB.consultar}"
+							onstart="PF('dlgCargando').show()"
+							onsuccess="PF('dlgCargando').hide()" />
+						<p:commandButton value="Regresar" icon="fa fa-arrow-circle-left"
+							partialSubmit="true" update=":frmConsulta, :msjGeneral"
+							actionListener="#{posicionConsolidadaMB.regresarPaginaPrincipal}"
+							onstart="PF('dlgCargando').show()" />
+					</h:panelGrid>
+					<b><p:outputLabel value="Nota: " /></b>
+					<p:outputLabel
+						value="Usted podrá consultar los movimientos de los últimos #{posicionConsolidadaMB.mesesHistoricoAhorros} meses" />
+				</p:fieldset>
+				<p />
+				<p:dataTable id="tablaMovimientosAhorro" var="movimientosAhorro"
+					value="#{historicoAhorrosMB.movimientos}" paginator="true"
+					rows="10" paginatorPosition="bottom"
+					emptyMessage="No registra Movimientos">
+					<f:facet name="header">
+						<p:outputLabel
+							value="Cuenta N° #{posicionConsolidadaMB.cuentaSeleccionada.numeroCuenta}" />
+					</f:facet>
+					<p:column headerText="Fecha/Hora">
+						<h:outputText value="#{movimientosAhorro.hora}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+								timeZone="#{historicoAhorrosMB.zonaHoraria}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Secuencia" style="width:10%;">
+						<h:outputText value="#{movimientosAhorro.secuenciaMovimiento}" />
+					</p:column>
+					<p:column headerText="Descripción">
+						<p:commandLink id="descripcion"
+							value="#{movimientosAhorro.descripcionMovimiento}"
+							update=":frmConsulta:modalDialog"
+							onstart="PF('dlgCargando').show()"
+							onsuccess="PF('dlgCargando').hide()"
+							oncomplete="PF('dlgDetalleTransaccion').show()"
+							actionListener="#{posicionConsolidadaMB.asignaDetalleMovimientoAhorro}">
+							<f:param name="paramDetalle"
+								value="#{movimientosAhorro.detalleTransaccion}" />
+						</p:commandLink>
+					</p:column>
+					<p:column headerText="Agencia">
+						<h:outputText value="#{movimientosAhorro.agencia}" />
+					</p:column>
+					<p:column headerText="Débito" style="width:10%; text-align: right">
+						<h:outputText value="#{movimientosAhorro.debito}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Crédito" style="width:10%; text-align: right">
+						<h:outputText value="#{movimientosAhorro.credito}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Saldo" style="width:10%; text-align: right">
+						<h:outputText value="#{movimientosAhorro.saldo}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+
+				<p:dialog id="modalDialogCargando" closable="false"
+					header="Cargando..." widgetVar="dlgCargando" modal="true"
+					height="60" width="300" appendToBody="true">
+					<p:graphicImage value="/imagenes/seed/barra_ajax.gif"
+						alt="Cargando"></p:graphicImage>
+				</p:dialog>
+				<p:dialog id="modalDialog" header="Detalle de transacción"
+					widgetVar="dlgDetalleTransaccion" modal="true" height="50%"
+					width="25%" appendToBody="true">
+					<h:panelGrid columns="1">
+						<img class="logoImpresion"
+							src="#{configuracionesGeneralesMB.logoAplicacion}" height="90px"
+							align="left" style="display: none;" />
+					</h:panelGrid>
+					<p:spacer height="5" />
+					<p:panelGrid styleClass="align: center">
+						<p:row>
+							<p:column>
+								<p:outputLabel
+									value="#{posicionConsolidadaMB.detalleMovimientoAhorro}" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<p:spacer height="20" />
+					<center>
+						<h:panelGrid columns="2">
+							<p:commandButton value="Regresar" icon="fa fa-arrow-circle-left"
+								onclick="PF('dlgDetalleTransaccion').hide()" />
+						</h:panelGrid>
+					</center>
+				</p:dialog>
+			</h:form>
+		</center>
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+			width="300" appendToBody="true">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>

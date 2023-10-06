@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template_registro_externo.xhtml">
+
+	<ui:define name="viewname">
+		<li>Creación de usuarios (Paso 4 - Creación del Usuario)</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+
+	<ui:define name="content">
+		<center>
+			<h:form id="form">
+				<p:panel id="panelRegistro" style="width:100%"
+					header="Por favor, complete la información solicitada.">
+
+					<p:messages globalOnly="true" showDetail="true" closable="true" />
+
+					<div align="left">
+						<h:panelGrid columns="3">
+							<h:outputText value="Cliente : " style="font-weight:bold;" />
+							<h:outputText value="#{registroUsuarioMB.cedula}" />
+							<h:outputText value="#{registroUsuarioMB.nombreCliente}" />
+						</h:panelGrid>
+
+						<p:fieldset legend="Usuario" toggleable="true" toggleSpeed="500">
+							<center>
+								<p:outputLabel style="font-weight:bold;" value="Nota: " />
+								<p:outputLabel value="#{registroUsuarioMB.mensajeFormatoClave}" />
+							</center>
+							<p:spacer height="10" />
+							<center>
+								<h:panelGrid columns="3">
+									<h:outputText value="Nombre de usuario : "
+										style="font-weight:bold;" />
+									<p:inputText id="usuario" required="true"
+										requiredMessage="Ingrese usuario"
+										validatorMessage="El usuario debe tener al menos 8 caracteres y solo deben constar letras y números"
+										onchange="ChangeCase(this);"
+										value="#{registroUsuarioMB.usuario.usuario}" maxlength="25">
+										<f:validateRegex pattern="(?=.*\d)[a-zA-Z0-9]{8,25}$" />
+										<!--pattern="[a-zA-Z0-9]+[a-zA-Z0-9]+[a-zA-Z0-9]+[a-zA-Z0-9]+[a-zA-Z0-9]+[a-zA-Z0-9]+[a-zA-Z0-9]+[a-zA-Z0-9]$" -->
+									</p:inputText>
+									<p:message for="usuario" />
+									<h:outputText value="Correo electrónico : "
+										style="font-weight:bold;" />
+									<p:inputText id="correo" required="true"
+										readonly="#{registroUsuarioMB.segundaValidacion == false}"
+										requiredMessage="Ingrese correo"
+										validatorMessage="INGRESE CORREO"
+										value="#{registroUsuarioMB.usuario.correo}">
+										<f:validateRegex
+											pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+									</p:inputText>
+									<p:message for="correo" />
+									<h:outputText value="Teléfono celular : "
+										style="font-weight:bold;" />
+									<p:inputMask mask="9999999999" id="celular" required="true"
+										readonly="#{registroUsuarioMB.segundaValidacion == false}"
+										requiredMessage="Ingrese celular"
+										validatorMessage="INGRESE CELULAR"
+										value="#{registroUsuarioMB.usuario.celular}" />
+									<p:message for="celular" />
+									<h:outputText value="Contraseña : " style="font-weight:bold;" />
+									<p:password id="clave1" feedback="true" required="true"
+										requiredMessage="Ingrese Clave"
+										validatorMessage="INGRESE CLAVE" promptLabel="Ingrese Clave"
+										weakLabel="Seguridad Baja" goodLabel="Seguridad Media"
+										strongLabel="Seguridad Alta"
+										value="#{registroUsuarioMB.claveTemp}" />
+									<p:message for="clave1" />
+									<h:outputText value="Confirme contraseña : "
+										style="font-weight:bold;" />
+									<p:password id="clave2" feedback="true" required="true"
+										requiredMessage="Ingrese Verificación de la Clave"
+										validatorMessage="INGRESE VERIFICACION DE LA CLAVE"
+										promptLabel="Ingrese Clave" weakLabel="Seguridad Baja"
+										goodLabel="Seguridad Media" strongLabel="Seguridad Alta"
+										value="#{registroUsuarioMB.claveTemp2}" />
+									<p:message for="clave2" />
+								</h:panelGrid>
+								<p:spacer height="10" />
+								<h:panelGrid>
+									<p:commandButton partialSubmit="true" update="form"
+										process="form"
+										actionListener="#{registroUsuarioMB.validacionUsuario}"
+										value="Validar" icon="fa fa-floppy-o"
+										onstart="PF('dlgCargando').show()"
+										onsuccess="PF('dlgCargando').hide()" />
+								</h:panelGrid>
+							</center>
+						</p:fieldset>
+					</div>
+				</p:panel>
+			</h:form>
+		</center>
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+			width="300" appendToBody="true">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando"></p:graphicImage>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

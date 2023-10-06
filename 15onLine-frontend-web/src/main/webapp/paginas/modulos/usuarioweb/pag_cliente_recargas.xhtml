@@ -1,0 +1,162 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+	<ui:define name="viewname">
+		<li>Recargas</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+
+		<center>
+
+			<p:outputLabel value="#{pagoMB.controlSesion}" />
+
+			<h:form id="frmPagoServicio" style="width:90%;">
+				<p:fieldset legend="Datos para su recarga" toggleable="false">
+
+
+					<p:panelGrid>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Recarga:" />
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="cmbRubro" value="#{pagoMB.idRubroFacilito}">
+									<p:ajax event="change"
+										listener="#{pagoMB.filtraValoresRecarga()}"
+										update=":frmPagoServicio:cmbValores, :frmPagoServicio:txtTitulo" />
+									<f:selectItem itemLabel="Seleccione Recarga" itemValue="" />
+									<f:selectItems value="#{pagoMB.rubrosRecargaFacilito}"
+										var="rubro" itemLabel="#{rubro.nombre}"
+										itemValue="#{rubro.identidad}" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Valor:" />
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="cmbValores" value="#{pagoMB.valorRecarga}">
+									<f:selectItem itemLabel="Seleccione Valor" itemValue="0" />
+									<f:selectItems value="#{pagoMB.listadoValoresRecargas}"
+										var="valor" itemLabel="#{valor.id}" itemValue="#{valor.id}" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Su Cuenta(*)" />
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="cmbCuentas" value="#{pagoMB.cuentaDebito}"
+									requiredMessage="Seleccione cuenta">
+									<f:selectItem itemLabel="Seleccione cuenta" itemValue="" />
+									<f:selectItems value="#{pagoMB.listadoCuentas}" var="cuenta"
+										itemLabel="#{cuenta.descripcion}" itemValue="#{cuenta.id}" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel id="txtTitulo"
+									value="#{pagoMB.tituloReferenciaRecarga}" />
+							</p:column>
+							<p:column>
+								<p:inputText value="#{pagoMB.numeroIdenticacionServicio}" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<p:panelGrid>
+						<p:row>
+							<p:column colspan="6" style="text-align:center">
+								<p:commandButton value="Continuar" id="btnContinuar"
+									rendered="#{!pagoMB.confirmaRecarga}"
+									actionListener="#{pagoMB.validaDatosRecarga}"
+									update=":frmPagoServicio, :frmConfirmacion, :mensajeAplicacion, :frmPagoServicio:btnContinuar"
+									process=":frmPagoServicio" icon="fa fa-play-circle"
+									onstart="PF('dlgCargando').show()"
+									onsuccess="PF('dlgCargando').hide()" />
+								<h:outputText value=" " />
+								<p:commandButton value="Limpiar" icon="fa fa-refresh"
+									actionListener="#{pagoMB.funcionLimpiar}" partialSubmit="true"
+									process="@this" update=":frmPagoServicio, :frmConfirmacion" />
+								<h:outputText value=" " />
+								<p:commandButton value="Cancelar" icon="fa fa-window-close"
+									ajax="true" immediate="true"
+									actionListener="#{pagoMB.funcionCancelar}" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:fieldset>
+			</h:form>
+		</center>
+
+		<center>
+			<p:messages id="mensajeAplicacion" closable="true" showSummary="true"
+				showDetail="true" style="width:90%;" />
+		</center>
+
+		<center>
+			<h:form id="frmConfirmacion">
+				<p:panel style="width:50%" rendered="#{pagoMB.confirmaRecarga}"
+					header="Hemos enviado a su #{servicioUsuarioMB.textoOtpMail} teléfono celular un código de seguridad con un tiempo de vigencia de #{pagoMB.parametrosGenerales.minutosVigenciaOtp} minutos, procesada a ingresarlo para confirmar su transacción">
+					<p:panelGrid>
+						<p:row>
+							<p:column colspan="2">
+								<center>
+									<p:outputLabel value="Ingrese código de seguridad:" />
+								</center>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<center>
+									<!-- 									<p:keyboard id="txtCodigoSeguridad" required="true" -->
+									<!-- 										requiredMessage="Código de seguridad es requeridas." -->
+									<!-- 										value="#{pagoMB.codigoSeguridad}" style="width:100px" -->
+									<!-- 										password="true" keypadOnly="true" /> -->
+									<p:keyboard id="txtCodigoSeguridad" required="true"
+										requiredMessage="Código de seguridad es requeridas."
+										value="#{pagoMB.codigoSeguridad}" style="width:100px"
+										password="true" closeLabel="Cerrar" backspaceLabel="Borrar"
+										clearLabel="Limpiar" onkeydown="return false"
+										onkeypress="return false" onkeyup="return false"
+										layout="custom"
+										layoutTemplate="#{configuracionesGeneralesMB.tecladoRandom}" />
+									<p:message for="txtCodigoSeguridad" />
+								</center>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2">
+								<center>
+									<p:commandButton id="btnConfirmarTransaccion"
+										icon="fa fa-check" action="#{pagoMB.trxRecargaFacilito()}"
+										update=":frmConfirmacion, :mensajeAplicacion"
+										value="Confirmar" onstart="PF('dlgCargando').show()"
+										onsuccess="PF('dlgCargando').hide()" />
+								</center>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:panel>
+			</h:form>
+		</center>
+
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+			width="300">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando"></p:graphicImage>
+		</p:dialog>
+
+	</ui:define>
+
+</ui:composition>

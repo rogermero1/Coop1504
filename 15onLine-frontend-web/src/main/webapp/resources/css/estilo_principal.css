@@ -1,0 +1,132 @@
+body {
+	background: url("/15onLine/imagenes/seed/banner_fondo.png");
+	font-size: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	color: black;
+	line-height: 20px;
+}
+
+#fondoEncabezado {
+	background-image: url(/15onLine/imagenes/coop15abril/fondo.jpg);
+	width: 100%;
+	height: 100px;
+}
+
+@media all {
+	div.saltoDePagina {
+		display: none;
+	}
+}
+
+@media print {
+	.logoImpresion {
+		display: inline !important;
+	}
+	.ui-button,.ui-button-text-icon-left {
+		display: none !important;
+	}
+	form {
+		width: 100% !important;
+	}
+	div.saltoDePagina {
+		display: block;
+		page-break-before: always;
+	}
+}
+
+.titulos {
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.ui-layout-north {
+	z-index: 40 !important;
+	overflow: visible !important;
+}
+
+.ui-corner-tl {
+	-moz-border-radius-topleft: 0px;
+	-webkit-border-top-left-radius: 0px;
+	border-top-left-radius: 0px;
+}
+
+.ui-corner-tr {
+	-moz-border-radius-topright: 0px;
+	-webkit-border-top-right-radius: 0px;
+	border-top-right-radius: 0px;
+}
+
+.ui-corner-bl {
+	-moz-border-radius-bottomleft: 0px;
+	-webkit-border-bottom-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
+
+.ui-corner-br {
+	-moz-border-radius-bottomright: 0px;
+	-webkit-border-bottom-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+.ui-corner-top {
+	-moz-border-radius-topleft: 0px;
+	-webkit-border-top-left-radius: 0px;
+	border-top-left-radius: 0px;
+	-moz-border-radius-topright: 0px;
+	-webkit-border-top-right-radius: 0px;
+	border-top-right-radius: 0px;
+}
+
+.ui-corner-bottom {
+	-moz-border-radius-bottomleft: 0px;
+	-webkit-border-bottom-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+	-moz-border-radius-bottomright: 6px;
+	-webkit-border-bottom-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+.ui-corner-right {
+	-moz-border-radius-topright: 0px;
+	-webkit-border-top-right-radius: 0px;
+	border-top-right-radius: 0px;
+	-moz-border-radius-bottomright: 0px;
+	-webkit-border-bottom-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+.ui-corner-left {
+	-moz-border-radius-topleft: 0px;
+	-webkit-border-top-left-radius: 0px;
+	border-top-left-radius: 0px;
+	-moz-border-radius-bottomleft: 0px;
+	-webkit-border-bottom-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
+
+.ui-corner-all {
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
+}
+
+.colMantenimientoBasicoIzquierda {
+	width: 30%;
+	vertical-align: top;
+}
+
+.colMantenimientoBasicoDerecha {
+	width: 70%;
+	vertical-align: top;
+}
+
+.ui-panelgrid td {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #FAFAF4 !important;
+	padding: 4px 10px;
+}
+
+/* .ui-widget-content {
+	background: url("/15onLine/imagenes/seed/banner_fondo.png");
+} */

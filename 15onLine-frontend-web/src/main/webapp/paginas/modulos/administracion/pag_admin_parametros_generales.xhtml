@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="viewname">
+		<li>Administración de Parámetros Generales</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+		<p:growl id="msjGeneral" showDetail="true" showSummary="true"
+			life="5000" />
+		<h:form id="frmParametros">
+			<p:dataTable id="tablaParametros" var="regParametro"
+				value="#{administracionParametrosGeneralesMB.parametrosGenerales}"
+				paginator="true" rows="10" paginatorPosition="bottom"
+				selectionMode="single" rowKey="#{regParametro.id}"
+				selection="#{administracionParametrosGeneralesMB.parametroGeneral}">
+				<f:facet name="header">
+					<p:outputLabel value="Parámetros Generales" />
+				</f:facet>
+				<p:ajax event="rowSelect"
+					listener="#{administracionParametrosGeneralesMB.onRowSelect}"
+					update=":frmParametros" />
+				<p:ajax event="rowUnselect"
+					listener="#{administracionParametrosGeneralesMB.onRowUnselect}"
+					update=":frmParametros" />
+				<p:column headerText="Id">
+					<h:outputText value="#{regParametro.id}" />
+				</p:column>
+				<p:column headerText="Días vigencia clave">
+					<h:outputText value="#{regParametro.diasVigenciaClave}" />
+				</p:column>
+				<p:column headerText="Intentos bloqueo">
+					<h:outputText value="#{regParametro.intentosFallidosParaBloquear}" />
+				</p:column>
+				<p:column headerText="Vigencia otp">
+					<h:outputText value="#{regParametro.minutosVigenciaOtp}" />
+				</p:column>
+				<p:column headerText="Preg. obligatorias">
+					<h:outputText value="#{regParametro.preguntasObligatorias}" />
+				</p:column>
+				<p:column headerText="Longitud minima Clave">
+					<h:outputText value="#{regParametro.longitudMinimaClave}" />
+				</p:column>
+				<p:column headerText="Minimo letras Clave">
+					<h:outputText value="#{regParametro.minimoLetrasClave}" />
+				</p:column>
+				<p:column headerText="Minimo Mayusculas Clave">
+					<h:outputText value="#{regParametro.minimoMayusculasClave}" />
+				</p:column>
+				<p:column headerText="Minimo números Clave">
+					<h:outputText value="#{regParametro.minimoNumerosClave}" />
+				</p:column>
+				<p:column headerText="Minimo caracteres especiales">
+					<h:outputText
+						value="#{regParametro.minimoCaracteresEspecialesClave}" />
+				</p:column>
+				<p:column headerText="Histórico de clave">
+					<h:outputText value="#{regParametro.historicoClave}" />
+				</p:column>
+				<p:column headerText="H.Consulta ahorros">
+					<h:outputText value="#{regParametro.historicoAhorros}" />
+				</p:column>
+				<p:column headerText="Encrp OTP">
+					<h:selectOneRadio value="#{regParametro.encriptarOtp}">
+						<f:selectItem itemLabel="SI" itemValue="S" />
+						<f:selectItem itemLabel="NO" itemValue="N" />
+					</h:selectOneRadio>
+				</p:column>
+				<f:facet name="footer">
+					<p:commandButton value="Editar" icon="fa fa-pencil"
+						disabled="#{administracionParametrosGeneralesMB.accionEliminar}"
+						update=":frmMantenimiento" oncomplete="PF('dlgparametro').show()" />
+				</f:facet>
+			</p:dataTable>
+		</h:form>
+		<p:dialog header="Datos Parámetro" widgetVar="dlgparametro"
+			resizable="false" id="dlgParam" appendToBody="true"
+			showEffect="explode" hideEffect="drop" modal="true">
+			<h:form id="frmMantenimiento">
+				<p:panelGrid columns="2">
+					<h:outputText value="Días de vigencia de clave:" />
+					<p:inputText
+						value="#{administracionParametrosGeneralesMB.parametroGeneral.diasVigenciaClave}" />
+					<h:outputText value="Intentos fallidos para bloquear:" />
+					<p:inputText
+						value="#{administracionParametrosGeneralesMB.parametroGeneral.intentosFallidosParaBloquear}" />
+					<h:outputText value="Minutos de vigencia otp:" />
+					<p:inputText
+						value="#{administracionParametrosGeneralesMB.parametroGeneral.minutosVigenciaOtp}" />
+					<h:outputText value="Preguntas obligatorias:" />
+					<p:inputText
+						value="#{administracionParametrosGeneralesMB.parametroGeneral.preguntasObligatorias}" />
+					<h:outputText value="Longitud mínima de clave:" />
+					<p:inputText
+						value="#{administracionParametrosGeneralesMB.parametroGeneral.longitudMinimaClave}" />
+					<h:outputText value="Mínimo letras clave:" />
+					<p:inputText
+						value="#{administracionParametrosGeneralesMB.parametroGeneral.minimoLetrasClave}" />
+					<h:outputText value="Mínimo mayúsculas clave:" />
+					<p:inputText
+						value="#{administracionParametrosGeneralesMB.parametroGeneral.minimoMayusculasClave}" />
+					<h:outputText value="Mínimo números clave:" />
+					<p:inputText
+						value="#{administracionParametrosGeneralesMB.parametroGeneral.minimoNumerosClave}" />
+					<h:outputText value="Mínimo caracteres especiales clave:" />
+					<p:inputText
+						value="#{administracionParametrosGeneralesMB.parametroGeneral.minimoCaracteresEspecialesClave}" />
+					<h:outputText value="Histórico de clave:" />
+					<p:inputText
+						value="#{administracionParametrosGeneralesMB.parametroGeneral.historicoClave}" />
+					<f:facet name="footer">
+						<center>
+							<p:commandButton value="Guardar" icon="fa fa-floppy-o"
+								partialSubmit="true"
+								update=":frmParametros, :frmMantenimiento, :msjGeneral"
+								actionListener="#{administracionParametrosGeneralesMB.actualizarParametroGeneral}"
+								oncomplete="PF('dlgparametro').hide()" />
+
+							<h:outputText value=" " />
+
+							<p:commandButton value="Cancelar" icon="fa fa-ban"
+								partialSubmit="true"
+								update=":frmParametros, :frmMantenimiento, :msjGeneral"
+								action="#{administracionParametrosGeneralesMB.inicializacion}"
+								oncomplete="PF('dlgparametro').hide()" />
+						</center>
+					</f:facet>
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

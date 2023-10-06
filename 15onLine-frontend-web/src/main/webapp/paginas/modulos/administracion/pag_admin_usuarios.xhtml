@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	 template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="viewname">
+		<li>Administración de Usuarios</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+
+		<h:form id="frmUsuarios">
+			<p:growl id="msjGeneral" showDetail="true" showSummary="true"
+				sticky="true"></p:growl>
+			<ui:define name="SEGM_CONTENIDO_OPCIONES_TITULO">
+				<h:outputText value="Administración de Usuarios" />
+			</ui:define>
+			<h:panelGrid columns="2"
+				columnClasses="colMantenimientoBasicoIzquierda, colMantenimientoBasicoDerecha">
+				<p:panel id="datosUsuario" header="Datos Usuario">
+					<h:panelGrid columns="2">
+						<h:outputText value="Cédula:" />
+						<p:inputText
+							value="#{administracionUsuarioMB.numeroIdentificacion}">
+							<p:ajax event="blur" update="frmUsuarios"
+								listener="#{administracionUsuarioMB.buscaEmpleado}" />
+						</p:inputText>
+						<h:outputText value="Nombre:" />
+						<p:outputLabel id="nombreEmpleado" style="font-weight:bold;"
+							value="#{administracionUsuarioMB.nombreEmpleado}" />
+						<h:outputText value="Usuario:" />
+						<p:inputText onchange="ChangeCase(this);"
+							value="#{administracionUsuarioMB.usuario.usuario}" />
+						<h:outputText value="Correo:" />
+						<p:inputText value="#{administracionUsuarioMB.usuario.correo}" />
+						<h:outputText value="Celular:" />
+						<p:inputMask id="celular" mask="9999999999"
+							value="#{administracionUsuarioMB.usuario.celular}" />
+						<h:outputText value="Rol:" />
+						<p:selectOneMenu value="#{administracionUsuarioMB.rol}">
+							<f:selectItems value="#{administracionUsuarioMB.listaRoles}"
+								var="listaRol" itemLabel="#{listaRol.rol}"
+								itemValue="#{listaRol.id}" />
+						</p:selectOneMenu>
+						<h:outputText value="Estado:" />
+						<p:selectOneMenu value="#{administracionUsuarioMB.usuario.estado}">
+							<f:selectItems value="#{administracionUsuarioMB.listaEstados}"
+								var="lista" itemLabel="#{lista.descripcion}"
+								itemValue="#{lista.codigoEstado}" />
+						</p:selectOneMenu>
+						<h:outputText value="Contraseña: " />
+						<p:password id="clave1" feedback="true"
+							validatorMessage="INGRESE CLAVE" promptLabel="Ingrese Clave"
+							weakLabel="Seguridad Baja" goodLabel="Seguridad Media"
+							strongLabel="Seguridad Alta"
+							value="#{administracionUsuarioMB.claveTemp}" />
+						<h:outputText value="Confirme contraseña: " />
+						<p:password id="clave2" feedback="true"
+							validatorMessage="INGRESE VERIFICACION DE LA CLAVE"
+							promptLabel="Ingrese Clave" weakLabel="Seguridad Baja"
+							goodLabel="Seguridad Media" strongLabel="Seguridad Alta"
+							value="#{administracionUsuarioMB.claveTemp2}" />
+						<p:commandButton value="Guardar" partialSubmit="true"
+							update="frmUsuarios" process="frmUsuarios"
+							actionListener="#{administracionUsuarioMB.guardarUsuario}" />
+						<p:commandButton value="Cancelar" partialSubmit="true"
+							update="frmUsuarios" process="frmUsuarios"
+							action="#{administracionUsuarioMB.inicializacion}" />
+					</h:panelGrid>
+				</p:panel>
+				<p:panel header="Usuarios Activos">
+					<p:dataTable id="datUsuarios"
+						value="#{administracionUsuarioMB.usuariosInternos}"
+						var="regUsuario" paginator="true" rows="10"
+						paginatorPosition="bottom">
+						<p:column headerText="Id">
+							<h:outputLabel value="#{regUsuario.id}" />
+						</p:column>
+						<p:column headerText="Usuario">
+							<h:outputLabel value="#{regUsuario.usuario}" />
+						</p:column>
+						<p:column headerText="Nombre">
+							<h:outputLabel
+								value="#{administracionUsuarioMB.nombreEmpleado(regUsuario.codigoCliente)}" />
+						</p:column>
+						<p:column headerText="F.Registro">
+							<h:outputLabel value="#{regUsuario.fechaRegistro}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"
+									timeZone="#{administracionUsuarioMB.zonaHoraria}" />
+							</h:outputLabel>
+						</p:column>
+						<p:column headerText="F.Ult cambio clave">
+							<h:outputLabel value="#{regUsuario.fechaUltimoCambioClave}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"
+									timeZone="#{administracionUsuarioMB.zonaHoraria}" />
+							</h:outputLabel>
+						</p:column>
+						<p:column headerText="Estado">
+							<h:outputLabel
+								value="#{regUsuario.estado=='A'?'ACTIVO':'INACTIVO'}" />
+						</p:column>
+						<p:column headerText="Bloqueado">
+							<h:outputLabel value="#{regUsuario.bloqueado=='S'?'SI':'NO'}" />
+						</p:column>
+						<p:column headerText="Rol">
+							<p:dataList
+								value="#{administracionUsuarioMB.rolesUsuario(regUsuario.id)}"
+								var="rol" itemType="disc">
+								#{rol.rol.rol}
+							</p:dataList>
+						</p:column>
+						<p:column>
+							<p:commandButton id="selectButton"
+								update=":frmUsuarios:datosUsuario" title="Actualizar"
+								icon="fa fa-pencil"
+								
+								onstart="PF('dlgCargando').show()" onsuccess="PF('dlgCargando').hide()"
+								
+								action="#{administracionUsuarioMB.cargarEmpleado(regUsuario.codigoCliente)}">
+								<f:setPropertyActionListener value="#{regUsuario}"
+									target="#{administracionUsuarioMB.usuario}" />
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</p:panel>
+			</h:panelGrid>
+		</h:form>
+		
+		<p:dialog id="modalDialogCargando" closable="false"
+				header="Cargando..." widgetVar="dlgCargando" modal="true"
+				height="60" width="300">
+				<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando"></p:graphicImage>
+			</p:dialog>
+		
+	</ui:define>
+</ui:composition>

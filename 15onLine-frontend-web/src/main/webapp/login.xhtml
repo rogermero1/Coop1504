@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<link rel="shortcut icon" type="image/x-icon"
+			href="#{configuracionesGeneralesMB.iconoAplicacion}" />
+	</f:facet>
+
+	<title><h:outputText
+			value="#{configuracionesGeneralesMB.tituloAplicacion}" /></title>
+
+	<script type="text/javascript"
+		src="#{configuracionesGeneralesMB.jsProteccion}" />
+
+	<script type="text/javascript">
+            $(function () {
+                var loginForms = $('.login-forms');
+                var login = $('.login');
+                var register = $('.register');
+            
+                $('.tab').on('click', function (e) {
+                    var tab = $(this);
+                    tab.siblings('.active-tab').removeClass('active-tab');
+                    tab.addClass('active-tab');
+
+                    if (tab.hasClass('tab-1')) {
+                        loginForms.css('transform', 'translate3d(0, 0, 0)');
+                        login.css('opacity', '1');
+                        register.css('opacity', '0');
+                        
+                    } else if (tab.hasClass('tab-2')) {
+                        loginForms.css('transform', 'translate3d(-100%, 0, 0)');
+                        login.css('opacity', '0');
+                        register.css('opacity', '1');
+                    }
+                    e.preventDefault();
+                });
+            });
+
+            function ChangeCase(elem) {
+        		elem.value = elem.value.toUpperCase();
+        	}
+        </script>
+
+	<style>
+.login-body .login-wrapper .login-panel .login-title {
+	margin-bottom: 10px;
+}
+
+.login-body .login-wrapper .login-panel .login-forms-wrapper .login-forms .login-form
+	{
+	flex: 1 0 100%;
+	-moz-transition: all 0.3s;
+	-o-transition: all 0.3s;
+	-webkit-transition: all 0.3s;
+	transition: all 0.3s;
+	overflow: hidden;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	flex-direction: column;
+	padding: 0px 2px;
+}
+
+.ui-button {
+	background-color: #58813f !important;
+	border: 1px solid #a3bb43 !important;
+}
+
+.ui-inputfield.ui-state-focus {
+	box-shadow: 0 0 0 0.2em #a3bb43 !important;
+}
+
+.ui-fieldset-legend.ui-state-focus {
+	box-shadow: 0 0 0 0.2em #a3bb43 !important;
+}
+
+.ui-fieldset-legend.ui-state-hover {
+	box-shadow: 0 0 0 0.2em #a3bb43 !important;
+}
+
+.login-topbar {
+	box-shadow: 0 2px 10px 0 rgba(25, 26, 28, 0.12);
+	background: -webkit-linear-gradient(left, #ffffff, #58813f);
+	/*  	background: -webkit-linear-gradient(left, #A7BF43, #5A8741, #A7BF43);  */
+	/*  	background: -webkit-linear-gradient(left, #ffffff, #58813f, #A7BF43);  */
+	-moz-transition: width 0.2s;
+	-o-transition: width 0.2s;
+	-webkit-transition: width 0.2s;
+	transition: width 0.2s;
+	padding: 0px 1% !important;
+	height: 56px !important;
+	/*  	position: fixed; */
+	/*  	width: 100%; */
+}
+
+.login-panel {
+	padding: 175px 5% 175px 5% !important;
+}
+
+/*  .login-image{ */
+/*   padding: 167px 5% 167px 5% !important;   */
+/*  } */
+.login-footer {
+	height: 30px !important;
+}
+
+.layout-footer {
+	box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+	background-color: #ffffff;
+	padding: 0px 24px;
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: justify;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+	position: fixed !important;
+	bottom: 0 !important;
+	width: 100%;
+	height: 50px !important;
+}
+
+.login-body .login-wrapper {
+	height: calc(100vh - 106px) !important;
+}
+
+.login-image {
+	background-size: 100% 100% !important;
+}
+</style>
+
+
+</h:head>
+
+<h:body styleClass="login-body">
+	<h:form id="form">
+		<div class="login-topbar">
+			<p:graphicImage name="images/coop15abril/banner_logo.png"
+				library="pandora-layout" height="100%" />
+		</div>
+		<div class="login-wrapper">
+			<div class="login-panel">
+				<div class="login-title"
+					style="text-align: justify; text-justify: inter-word;">
+					<h1>Inicio de Sesión</h1>
+					<!--                     <span> -->
+					<!--                        Estimado cliente, pensando en su -->
+					<!-- 					seguridad hemos creado una nueva plataforma para sus -->
+					<!-- 					transacciones On Line acorde a los requerimientos dispuestos -->
+					<!-- 					por nuestros organismos de control. Si es un usuario de la -->
+					<!-- 					plataforma anterior, ingrese al sistema y luego actualice su -->
+					<!-- 					usuario. -->
+					<!--                     </span> -->
+				</div>
+
+				<!--                 <p:fieldset toggleable="true" collapsed="true" legend="PROCEDIMIENTOS DE SEGURIDAD "  > -->
+
+				<!--                 <p> -->
+				<!-- 										<strong>Bloqueo de Usuario:</strong> -->
+				<!-- 									</p> -->
+				<!-- 									<ul -->
+				<!-- 										style="margin: 0px; padding: 10px; padding-top: 0px; padding-bottom: 0px;"> -->
+				<!-- 										<li>Luego de 3 intentos errados en el inicio de sesión.</li> -->
+				<!-- 										<li>Al ingresar 3 veces de manera incorrecta la respuesta -->
+				<!-- 											a las preguntas de seguridad.</li> -->
+				<!-- 										<li>Al ingresar 3 veces de manera incorrecta la clave -->
+				<!-- 											temporal.</li> -->
+				<!-- 									</ul> -->
+				<!-- 									<p> -->
+				<!-- 										<strong>Reactivación:</strong> -->
+				<!-- 									</p> -->
+				<!-- 									<ul -->
+				<!-- 										style="margin: 0px; padding: 10px; padding-top: 0px; padding-bottom: 0px;"> -->
+				<!-- 										<li>El sistema validará las preguntas de seguridad.</li> -->
+				<!-- 									</ul> -->
+				<!-- 									<p> -->
+				<!-- 										<strong>Cancelación:</strong> -->
+				<!-- 									</p> -->
+				<!-- 									<ul -->
+				<!-- 										style="margin: 0px; padding: 10px; padding-top: 0px; padding-bottom: 0px;"> -->
+				<!-- 										<li>Anule su usuario llamando a nuestro Call Center -->
+				<!-- 											2590040 opción 1, o también acercándose a cualquiera de -->
+				<!-- 											nuestras oficinas de servicio de atención al cliente.</li> -->
+				<!-- 									</ul> -->
+
+				<!--                 </p:fieldset> -->
+
+				<div class="login-forms-wrapper">
+
+
+
+					<!--                     <div class="form-tabs"> -->
+					<!--                         <div class="tab tab-1 active-tab">Login</div> -->
+					<!--                         <div class="tab tab-2">Registro/Desbloqueo</div> -->
+					<!--                     </div> -->
+
+					<div class="login-forms">
+
+						<div class="login-form login">
+							<p:messages globalOnly="false" showDetail="true" closable="true"
+								id="mensaje" />
+							<div class="form-group">
+								<span>Usuario</span>
+								<p:inputText id="user" value="#{loginMB.usuario}"
+									required="true" requiredMessage="Ingrese Usuario"
+									onblur="ChangeCase(this);" validatorMessage="INGRESE USUARIO"
+									autocomplete="off">
+								</p:inputText>
+							</div>
+							<div class="form-group">
+								<span>Clave</span>
+								<p:password value="#{loginMB.clave}" id="pass" required="true"
+									requiredMessage="Ingrese Clave"
+									validatorMessage="INGRESE CLAVE">
+								</p:password>
+							</div>
+							<div class="form-footer">
+								<p:commandButton icon="fa fa-key" value="Acceder"
+									action="#{loginMB.autenticar}" update="mensaje"
+									onstart="PF('dlgCargando').show()"
+									onsuccess="PF('dlgCargando').hide()" />
+							</div>
+							<h:link
+								outcome="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('RUTA_INICIO_REGISTRO')}">
+									Registrarse
+							</h:link>
+							<h:link
+								outcome="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('RUTA_INICIO_DESBLOQUEO')}">
+									Recuperar contraseña / Desbloquear Usuario
+							</h:link>
+						</div>
+
+						<div class="login-form register">
+							<div class="form-group">
+								<h:link
+									outcome="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('RUTA_INICIO_REGISTRO')}">
+									Ir al Registro
+								</h:link>
+							</div>
+							<div class="form-group">
+								<h:link
+									outcome="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('RUTA_INICIO_DESBLOQUEO')}">
+									Desbloquear Usuario
+								</h:link>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="login-image"></div>
+		</div>
+
+		<!-- 		<div class="login-footer"> -->
+		<div class="layout-footer">
+			<p:outputLabel value="" />
+			<!--         <p:graphicImage name="images/coop15abril/banner_logo.png" library="pandora-layout" style="height: 100px !important;"/> -->
+			<div class="social-icons">
+				<a><i class="fa fa-facebook-official"></i></a> <a><i
+					class="fa fa-twitter"></i></a> <a><i class="fa fa-instagram"></i></a>
+			</div>
+		</div>
+
+		<h:outputStylesheet
+			name="css/layout-#{configurador.layoutPrimaryColor}.css"
+			library="pandora-layout" />
+	</h:form>
+
+
+	<p:dialog id="modalDialogCargando" closable="false"
+		header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+		width="300">
+		<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando"></p:graphicImage>
+	</p:dialog>
+
+
+</h:body>
+
+</html>

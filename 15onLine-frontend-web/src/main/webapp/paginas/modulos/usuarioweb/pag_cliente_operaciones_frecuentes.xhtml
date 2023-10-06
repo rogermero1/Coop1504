@@ -1,0 +1,189 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="viewname">
+		<li>Operaciones frecuentes</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+		<p:growl id="msjGeneral" showDetail="true" showSummary="true"
+			life="5000" />
+
+		<center>
+			<h:form id="formOperacionesFrecuentes" style="width:90%;">
+				<p:dataTable var="regOperacion"
+					value="#{operacionesFrecuentesMB.listaOperacionesVigentes}"
+					paginator="true" rows="10" paginatorPosition="bottom"
+					emptyMessage="No existen registros" selectionMode="single"
+					rowKey="#{regOperacion.id}"
+					selection="#{operacionesFrecuentesMB.operacionSeleccionada}">
+					<f:facet name="header">
+						<p:outputLabel value="Opciones vigentes" />
+					</f:facet>
+
+					<p:ajax event="rowSelect"
+						listener="#{operacionesFrecuentesMB.onRowSelect}"
+						update=":formOperacionesFrecuentes" />
+					<p:ajax event="rowUnselect"
+						listener="#{operacionesFrecuentesMB.onRowUnselect}"
+						update=":formOperacionesFrecuentes" />
+
+					<p:column headerText="Tipo">
+						<h:outputText value="#{regOperacion.tipoTransaccion.observacion}" />
+					</p:column>
+					<p:column headerText="Concepto">
+						<h:outputText value="#{regOperacion.observacion}" />
+					</p:column>
+					<p:column headerText="Cuenta a debitar">
+						<h:outputText value="#{regOperacion.cuentaDebito}" />
+					</p:column>
+					<p:column headerText="Cuenta a acreditar">
+						<h:outputText value="#{regOperacion.cuentaCredito}" />
+					</p:column>
+					<p:column headerText="Monto">
+						<h:outputText value="#{regOperacion.monto}"
+							style="text-align: right">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+
+					<f:facet name="footer">
+						<p:commandButton value="Nuevo" icon="fa fa-file"
+							update=":formOperacionesFrecuentes :frmOperacion"
+							action="#{operacionesFrecuentesMB.inicializar()}"
+							oncomplete="PF('dlgOpcion').show()" />
+						<h:outputText value=" " />
+						<p:commandButton value="Editar" icon="fa fa-pencil"
+							disabled="#{operacionesFrecuentesMB.accionEliminar}"
+							update=":formOperacionesFrecuentes :frmOperacion"
+							action="#{operacionesFrecuentesMB.cargaActualizacion()}"
+							oncomplete="PF('dlgOpcion').show()" />
+						<h:outputText value=" " />
+						<p:commandButton value="Eliminar" icon="fa fa-trash"
+							disabled="#{operacionesFrecuentesMB.accionEliminar}"
+							update=":formOperacionesFrecuentes"
+							oncomplete="PF('dlgConfirmacion').show()" />
+					</f:facet>
+				</p:dataTable>
+			</h:form>
+		</center>
+
+		<p:dialog header="Datos Opción" widgetVar="dlgOpcion"
+			resizable="false" id="dlgOpc" appendToBody="true"
+			showEffect="explode" hideEffect="drop" modal="true">
+			<h:form id="frmOperacion">
+				<p:panelGrid columns="2">
+					<h:outputText value="Tipo:" />
+					<p:selectOneMenu
+						value="#{operacionesFrecuentesMB.transaccionSeleccionada}">
+						<f:selectItems
+							value="#{operacionesFrecuentesMB.listaTiposTransaccion}"
+							var="lista" itemLabel="#{lista.observacion}"
+							itemValue="#{lista.id}" />
+						<p:ajax event="change" update=":frmOperacion" />
+					</p:selectOneMenu>
+
+					<h:outputText value="Concepto:" />
+					<p:inputText
+						value="#{operacionesFrecuentesMB.operacionSeleccionada.observacion}" />
+					<h:outputText value="Su cuenta:" />
+					<p:selectOneMenu
+						value="#{operacionesFrecuentesMB.operacionSeleccionada.cuentaDebito}">
+						<f:selectItems value="#{operacionesFrecuentesMB.listadoCuentas}"
+							var="cuenta" itemLabel="#{cuenta.descripcion}"
+							itemValue="#{cuenta.id}" />
+					</p:selectOneMenu>
+
+					<h:outputText value="Cuenta a acreditar:" />
+					<p:inputText
+						value="#{operacionesFrecuentesMB.operacionSeleccionada.cuentaCredito}" />
+					<h:outputText value="Tipo de cuenta:"
+						rendered="#{operacionesFrecuentesMB.transaccionSeleccionada == 2}" />
+					<p:selectOneMenu
+						value="#{operacionesFrecuentesMB.operacionSeleccionada.tipoCuentaBeneficiaria}"
+						rendered="#{operacionesFrecuentesMB.transaccionSeleccionada == 2}">
+						<f:selectItems value="#{operacionesFrecuentesMB.listaTipoCuenta}"
+							var="tipo" itemLabel="#{tipo.descripcion}" itemValue="#{tipo.id}" />
+					</p:selectOneMenu>
+					<h:outputText value="Identificación del beneficiario:"
+						rendered="#{operacionesFrecuentesMB.transaccionSeleccionada != 1}" />
+					<p:inputText
+						value="#{operacionesFrecuentesMB.operacionSeleccionada.identificacionBeneficiario}"
+						rendered="#{operacionesFrecuentesMB.transaccionSeleccionada != 1}" />
+					<h:outputText value="Nombre del beneficiario:"
+						rendered="#{operacionesFrecuentesMB.transaccionSeleccionada != 1}" />
+					<p:inputText
+						value="#{operacionesFrecuentesMB.operacionSeleccionada.nombreBeneficiario}"
+						rendered="#{operacionesFrecuentesMB.transaccionSeleccionada != 1}" />
+					<h:outputText value="Financiera:"
+						rendered="#{operacionesFrecuentesMB.transaccionSeleccionada != 1}" />
+					<p:selectOneMenu
+						value="#{operacionesFrecuentesMB.operacionSeleccionada.financiera}"
+						rendered="#{operacionesFrecuentesMB.transaccionSeleccionada != 1}">
+						<f:selectItems value="#{operacionesFrecuentesMB.listaFinancieras}"
+							var="financiera" itemLabel="#{financiera.descripcion}"
+							itemValue="#{financiera.id}" />
+					</p:selectOneMenu>
+					<h:outputText value="Monto:" />
+					<p:inputNumber symbol="$ " style="text-align:right"
+						value="#{operacionesFrecuentesMB.operacionSeleccionada.monto}" />
+
+					<f:facet name="footer">
+						<center>
+							<p:commandButton value="Guardar" icon="fa fa-floppy-o"
+								partialSubmit="true"
+								update=":formOperacionesFrecuentes, :frmOperacion, :msjGeneral"
+								actionListener="#{operacionesFrecuentesMB.guardarOperacion}"
+								oncomplete="PF('dlgOpcion').hide()" />
+							<h:outputText value=" " />
+							<p:commandButton value="Cancelar" icon="fa fa-ban"
+								partialSubmit="true"
+								update=":formOperacionesFrecuentes, :frmOperacion, :msjGeneral"
+								action="#{operacionesFrecuentesMB.inicializar()}"
+								onclick="PF('dlgOpcion').hide()" />
+						</center>
+					</f:facet>
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		<p:dialog header="Confirmación" widgetVar="dlgConfirmacion"
+			resizable="false" id="dlgConfirma" appendToBody="true"
+			hideEffect="drop" showEffect="explode" modal="true">
+			<h:form id="frmConfirmacion">
+				<p:panelGrid>
+					<p:row>
+						<p:column colspan="2">
+							<p:outputLabel value="Desea eliminar la operación?" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:commandButton value="SI" partialSubmit="true"
+								update=":formOperacionesFrecuentes, :frmOperacion, :frmConfirmacion :msjGeneral"
+								actionListener="#{operacionesFrecuentesMB.eliminarOperacion}"
+								oncomplete="PF('dlgConfirmacion').hide()"
+								styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+						</p:column>
+						<h:outputText value=" " />
+						<p:column>
+							<p:commandButton value="NO"
+								onclick="PF('dlgConfirmacion').hide()"
+								styleClass="ui-confirmdialog-no" icon="fa fa-window-close" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+	</ui:define>
+</ui:composition>

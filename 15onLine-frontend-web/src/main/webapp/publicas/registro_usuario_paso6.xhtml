@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template_registro_externo.xhtml">
+
+	<ui:define name="viewname">
+		<li>Creación de usuarios</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+		<center>
+			<h:form>
+				<p:panel id="panelRegistro" style="width:50%"
+					header="Registro exitoso">
+					<h:panelGrid style="text-align: center; width : 100%">
+						<p:spacer height="20" />
+						<h:outputText
+							value="Felicitaciones, su usuario ha sido creado con éxito"
+							style="font-size: 20px;  text-align: center;" />
+						<p:spacer height="20" />
+						<p:commandButton
+							action="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('RUTA_LOGIN_APLICACION')}"
+							value="Iniciar sesión" ajax="false" />
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+		</center>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template_registro_externo.xhtml">
+	
+		<ui:define name="viewname">
+        <li>Desbloqueo, Olvido de contraseña (Paso 3 - Confirmación)</li>
+        <li><i class="fa fa-angle-right"></i></li>
+        <li>
+            
+        </li>
+    </ui:define>
+	 <ui:define name="content">
+		<center>
+			<h:form id="frmDesbloqueoOlvido">
+				<p:panel id="panelDescbloqueoOlvido" style="width:500px"
+					header="El proceso de desbloqueo de usuario/olvide de contraseña ha concluido con éxito, diríjase al inicio de sesión.
+Gracias por preferirnos.">
+					<p:spacer height="10" />
+					<p:messages globalOnly="true" showDetail="true" closable="true" />
+					<p:panelGrid style="margin-top:20px">
+						<p:row>
+							<p:column colspan="2">
+								<center>
+									<p:commandButton partialSubmit="true"
+										update="frmDesbloqueoOlvido" process="frmDesbloqueoOlvido"
+										actionListener="#{registroUsuarioMB.iniciarSesionDesbloqueo}"
+										value="Inicio de sesión" icon="fa fa-play-circle" />
+								</center>
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+
+				</p:panel>
+			</h:form>
+		</center>
+	</ui:define>
+
+</ui:composition>

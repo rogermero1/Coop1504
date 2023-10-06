@@ -1,0 +1,224 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="viewname">
+		<li>Cuotas de préstamo</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+
+		<p:growl id="msjGeneral" showDetail="true" showSummary="true"
+			sticky="true" />
+		<center>
+			<h:form id="frmCuotasPrestamo" style="width:100%;">
+				<h:panelGrid columns="1">
+					<img class="logoImpresion"
+						src="#{configuracionesGeneralesMB.logoAplicacion}" height="90px"
+						align="left" style="display: none;" />
+				</h:panelGrid>
+
+				<center>
+					<p:panelGrid styleClass="align: center">
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Número Préstamo :" />
+							</p:column>
+							<p:column>
+								<b><p:outputLabel
+										value="#{posicionConsolidadaMB.prestamoSeleccionado.numeroPrestamo}" /></b>
+							</p:column>
+							<p:column>
+								<p:outputLabel value="Linea Financiera :" />
+							</p:column>
+							<p:column>
+								<b><p:outputLabel
+										value="#{posicionConsolidadaMB.prestamoSeleccionado.descripcionLineaFinanciera}" /></b>
+							</p:column>
+							<p:column>
+								<p:outputLabel value="Tasa :" />
+							</p:column>
+							<p:column>
+								<b><p:outputLabel
+										value="#{posicionConsolidadaMB.prestamoSeleccionado.tasa}" /></b>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Monto Inicial :" />
+							</p:column>
+							<p:column>
+								<b><p:outputLabel
+										value="#{posicionConsolidadaMB.prestamoSeleccionado.montoInicial}" /></b>
+							</p:column>
+							<p:column>
+								<p:outputLabel value="Saldo Capital :" />
+							</p:column>
+							<p:column>
+								<b><p:outputLabel
+										value="#{posicionConsolidadaMB.prestamoSeleccionado.saldoCapital}" /></b>
+							</p:column>
+							<p:column>
+								<p:outputLabel value="Saldo Otros :" />
+							</p:column>
+							<p:column>
+								<b><p:outputLabel
+										value="#{posicionConsolidadaMB.prestamoSeleccionado.saldoOtros}" /></b>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Fecha Apertura :" />
+							</p:column>
+							<p:column>
+								<b><h:outputLabel
+										value="#{posicionConsolidadaMB.prestamoSeleccionado.fechaApertura}">
+										<f:convertDateTime pattern="yyyy-MM-dd"
+											timeZone="#{posicionConsolidadaMB.zonaHoraria}" />
+									</h:outputLabel></b>
+							</p:column>
+							<p:column>
+								<p:outputLabel value="Fecha Vencimiento :" />
+							</p:column>
+							<p:column>
+								<b><h:outputLabel
+										value="#{posicionConsolidadaMB.prestamoSeleccionado.fechaVencimiento}">
+										<f:convertDateTime pattern="yyyy-MM-dd"
+											timeZone="#{posicionConsolidadaMB.zonaHoraria}" />
+									</h:outputLabel></b>
+							</p:column>
+							<p:column>
+								<p:outputLabel value="Valor Cuota:" />
+								<!-- 							<p:outputLabel value="Plazo (Dias) :" /> -->
+							</p:column>
+							<p:column>
+								<b><p:outputLabel
+										value="#{posicionConsolidadaMB.prestamoSeleccionado.valorCuota}" /></b>
+								<!-- 							<b><p:outputLabel -->
+								<!-- 									value="#{posicionConsolidadaMB.prestamoSeleccionado.plazo}"> -->
+								<!-- 									<f:convertDateTime pattern="yyyy-MM-dd" -->
+								<!-- 										timeZone="#{posicionConsolidadaMB.zonaHoraria}" /> -->
+								<!-- 								</p:outputLabel></b> -->
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<p:dataTable id="tablaCuotasPrestamo" var="cuotasPrestamo"
+						value="#{posicionConsolidadaMB.listadoCuotasPrestamo}"
+						paginator="true" rows="8" paginatorPosition="bottom"
+						emptyMessage="No registra Cuotas" style="width:70%;">
+						<f:facet name="header">
+							<p:outputLabel value="Cuotas" />
+						</f:facet>
+						<p:column headerText="N° Cuota">
+							<p:commandLink id="numeroCuotaModal"
+								value="#{cuotasPrestamo.numeroCuota}"
+								update=":frmCuotasPrestamo:modalDialog"
+								onstart="PF('dlgCargando').show()"
+								onsuccess="PF('dlgCargando').hide()"
+								oncomplete="PF('dlgDetalleCuota').show()"
+								actionListener="#{detallePosicionConsolidadaMB.detalleCuotaPrestamo}">
+								<f:param name="paramNumeroCuota"
+									value="#{cuotasPrestamo.numeroCuota}" />
+								<f:param name="paramNumeroPrestamo"
+									value="#{posicionConsolidadaMB.prestamoSeleccionado.numeroPrestamo}" />
+							</p:commandLink>
+						</p:column>
+						<p:column headerText="Fecha Vence">
+							<h:outputText value="#{cuotasPrestamo.fechaVence}">
+								<f:convertDateTime pattern="yyyy-MM-dd"
+									timeZone="#{posicionConsolidadaMB.zonaHoraria}" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Fecha Pago">
+							<h:outputText value="#{cuotasPrestamo.fechaPago}">
+								<f:convertDateTime pattern="yyyy-MM-dd"
+									timeZone="#{posicionConsolidadaMB.zonaHoraria}" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Dias atraso">
+							<h:outputText value="#{cuotasPrestamo.diasVencido}" />
+						</p:column>
+						<!-- 					<p:column headerText="Valor Cuota" style="text-align: right"> -->
+						<!-- 						<h:outputText value="#{cuotasPrestamo.valorCuota}"> -->
+						<!-- 							<f:convertNumber pattern="#0.00" /> -->
+						<!-- 						</h:outputText> -->
+						<!-- 					</p:column> -->
+						<p:column headerText="Saldo Cuota" style="text-align: right">
+							<h:outputText value="#{cuotasPrestamo.saldoCuota}">
+								<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Estado">
+							<h:outputText value="#{cuotasPrestamo.descripcionCuota}" />
+						</p:column>
+					</p:dataTable>
+					<p:spacer height="5" />
+					<h:panelGrid columns="2">
+						<p:commandButton value="Regresar" icon="fa fa-arrow-circle-left"
+							partialSubmit="true" update=":frmCuotasPrestamo, :msjGeneral"
+							actionListener="#{posicionConsolidadaMB.regresarPaginaPrincipal}"
+							onstart="PF('dlgCargando').show()" />
+						<p:commandButton value="Imprimir" type="button" icon="fa fa-print">
+							<p:printer target="frmCuotasPrestamo" />
+						</p:commandButton>
+					</h:panelGrid>
+				</center>
+
+				<p:dialog id="modalDialogCargando" closable="false"
+					header="Cargando..." widgetVar="dlgCargando" modal="true"
+					height="60" width="300" appendToBody="true">
+					<p:graphicImage value="/imagenes/seed/barra_ajax.gif"
+						alt="Cargando"></p:graphicImage>
+				</p:dialog>
+
+				<p:dialog id="modalDialog"
+					header="Detalle de cuota ##{detallePosicionConsolidadaMB.cuotaSeleccionada}"
+					widgetVar="dlgDetalleCuota" modal="true" height="50%" width="60%"
+					appendToBody="true">
+					<h:panelGrid columns="1">
+						<img class="logoImpresion"
+							src="#{configuracionesGeneralesMB.logoAplicacion}" height="90px"
+							align="left" style="display: none;" />
+					</h:panelGrid>
+					<p:dataTable id="tablaDetalleCuotasPrestamo"
+						var="detalleCuotasPrestamo"
+						value="#{detallePosicionConsolidadaMB.listadoDetalleCuota}"
+						paginator="true" rows="10" paginatorPosition="bottom"
+						emptyMessage="No registra Cuotas">
+						<p:column headerText="Detalle">
+							<h:outputText value="#{detalleCuotasPrestamo.tipoSaldo}" />
+						</p:column>
+						<p:column headerText="Monto">
+							<h:outputText value="#{detalleCuotasPrestamo.valorSaldo}">
+								<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Saldo">
+							<h:outputText value="#{detalleCuotasPrestamo.saldo}">
+								<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+						</p:column>
+					</p:dataTable>
+					<p:spacer height="5" />
+					<center>
+						<h:panelGrid columns="2">
+							<p:commandButton value="Regresar" icon="fa fa-arrow-circle-left"
+								onclick="PF('dlgDetalleCuota').hide()" />
+							<p:commandButton value="Imprimir" type="button"
+								icon="fa fa-print">
+								<p:printer target="modalDialog" />
+							</p:commandButton>
+						</h:panelGrid>
+					</center>
+				</p:dialog>
+			</h:form>
+		</center>
+	</ui:define>
+</ui:composition>

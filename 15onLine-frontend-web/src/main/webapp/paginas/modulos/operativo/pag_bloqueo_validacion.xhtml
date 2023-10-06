@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+	 
+	 
+	<ui:define name="viewname">
+        <li>Bloqueos por validación</li>
+        <li><i class="fa fa-angle-right"></i></li>
+        <li>
+            
+        </li>
+    </ui:define>
+	 <ui:define name="content">
+	
+		<p:growl id="msjGeneral" showDetail="true" showSummary="true"
+			life="5000" />
+		<p:outputLabel value="#{bloqueoValidacionMB.control}" />
+
+		<h:form id="frmUsuario">
+			<p:fieldset legend="Información del Cliente" toggleable="true"
+				toggleSpeed="500">
+				<center>
+					<h:panelGrid columns="2">
+						<p:outputLabel style="font-weight:bold;" value="Identificación: " />
+						<p:inputText value="#{bloqueoValidacionMB.identificacion}" />
+						<p:outputLabel style="font-weight:bold;" value="Cliente:" />
+						<p:outputLabel value="#{bloqueoValidacionMB.nombreCliente}"
+							style="font-weight:bold;" />
+						<p:commandButton value="Buscar" icon="fa fa-search"
+							partialSubmit="true" update=":frmUsuario, :msjGeneral"
+							actionListener="#{bloqueoValidacionMB.consultaUsuarioBloqueado}" />
+						<p:commandButton value="Eliminar" icon="fa fa-trash"
+							disabled="#{bloqueoValidacionMB.accionEliminar}"
+							update=":frmConfirmacion, :msjGeneral"
+							oncomplete="PF('dlgConfirmacion').show()" />
+
+					</h:panelGrid>
+				</center>
+			</p:fieldset>
+		</h:form>
+
+		<p:dialog header="Confirmación" widgetVar="dlgConfirmacion"
+			resizable="false" id="dlgConfirma" appendToBody="true"
+			hideEffect="drop" showEffect="explode" modal="true">
+			<h:form id="frmConfirmacion">
+				<p:panelGrid>
+					<p:row>
+						<p:column colspan="2">
+							<p:outputLabel
+								value="Confirma levantar el bloqueo para el cliente #{bloqueoValidacionMB.nombreCliente}?" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:commandButton value="SI" partialSubmit="true"
+								update=":frmUsuario, :frmConfirmacion :msjGeneral"
+								actionListener="#{bloqueoValidacionMB.eliminarBloqueo}"
+								oncomplete="PF('dlgConfirmacion').hide()"
+								styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+						</p:column>
+						<p:column>
+							<p:commandButton value="NO" onclick="PF('dlgConfirmacion').hide()"
+								styleClass="ui-confirmdialog-no" icon="fa fa-window-close" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>

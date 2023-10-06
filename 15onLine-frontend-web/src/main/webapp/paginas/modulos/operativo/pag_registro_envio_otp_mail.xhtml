@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="viewname">
+		<li>Registro de otp MAIL</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+
+		<p:growl id="msjGeneral" showDetail="true" showSummary="true"
+			life="5000" />
+		<p:outputLabel value="#{administracionUsuarioMB.control}" />
+		<h:form id="frmUsuario">
+			<p:fieldset legend="Información del Cliente" toggleable="true"
+				toggleSpeed="500">
+				<center>
+					<h:panelGrid columns="2">
+						<p:outputLabel style="font-weight:bold;" value="Identificación: " />
+						<p:inputText
+							value="#{administracionUsuarioMB.numeroIdentificacion}" />
+						<p:outputLabel style="font-weight:bold;" value="Cliente:" />
+						<p:outputLabel
+							value="#{administracionUsuarioMB.nombreCliente(administracionUsuarioMB.usuarioSeleccionado.codigoCliente)}"
+							style="font-weight:bold;" />
+						<p:outputLabel style="font-weight:bold;" value="Usuario:" />
+						<p:outputLabel
+							value="#{administracionUsuarioMB.usuarioSeleccionado.usuario}" />
+						<p:outputLabel style="font-weight:bold;" value="Teléfono:" />
+						<p:outputLabel
+							value="#{administracionUsuarioMB.usuarioSeleccionado.celular}" />
+						<p:outputLabel style="font-weight:bold;" value="Correo:" />
+						<p:outputLabel
+							value="#{administracionUsuarioMB.usuarioSeleccionado.correo}" />
+						<p:outputLabel style="font-weight:bold;" value="OTP correo:" />
+						<p:selectOneMenu
+							value="#{administracionUsuarioMB.usuarioSeleccionado.envia_otp_mail}">
+							<f:selectItem itemLabel="SI" itemValue="S" />
+							<f:selectItem itemLabel="NO" itemValue="N" />
+						</p:selectOneMenu>
+
+						<p:commandButton value="Buscar" icon="fa fa-search"
+							partialSubmit="true" update=":frmUsuario, :msjGeneral"
+							actionListener="#{administracionUsuarioMB.consultaUsuarioPorNumeroIdentificacion}" />
+						<p:commandButton value="Actualizar" icon="fa fa-floppy-o"
+							disabled="#{administracionUsuarioMB.accionEliminar}"
+							update=":frmConfirmacion, :msjGeneral"
+							oncomplete="PF('dlgConfirmacion').show()" />
+					</h:panelGrid>
+				</center>
+			</p:fieldset>
+		</h:form>
+		<p:dialog header="Confirmación" widgetVar="dlgConfirmacion"
+			resizable="false" id="dlgConfirma" appendToBody="true"
+			hideEffect="drop" showEffect="explode" modal="true">
+			<h:form id="frmConfirmacion">
+				<p:panelGrid>
+					<p:row>
+						<p:column colspan="2">
+							<p:outputLabel
+								value="Desea actualizar el usuario #{administracionUsuarioMB.usuarioSeleccionado.usuario}?" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column>
+							<p:commandButton value="SI" partialSubmit="true"
+								update=":frmUsuario, :frmConfirmacion :msjGeneral"
+								actionListener="#{administracionUsuarioMB.actualizar}"
+								oncomplete="PF('dlgConfirmacion').hide()"
+								styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+						</p:column>
+						<p:column>
+							<p:commandButton value="NO"
+								onclick="PF('dlgConfirmacion').hide()"
+								styleClass="ui-confirmdialog-no" icon="fa fa-window-close" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

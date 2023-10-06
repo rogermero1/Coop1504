@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+<h:body>
+
+	<h:form>
+
+		<p:growl showDetail="true" showSummary="true"></p:growl>
+
+		<p:commandButton actionListener="#{testReporteMB.exportar}"
+			value="Reporte" ajax="false"></p:commandButton>
+
+		<p:commandLink actionListener="#{testReporteMB.exportar}"
+			value="REPORTE" target="blank" ajax="false" />
+
+		<h:outputLabel value="#{testReporteMB.fechaHora}">
+			<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+				timeZone="#{testReporteMB.timeZone}" />
+		</h:outputLabel>
+	</h:form>
+
+</h:body>
+</html>

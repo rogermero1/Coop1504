@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template_registro_externo.xhtml">
+
+	<ui:define name="viewname">
+		<li>Validación de Conexión</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+		<f:event type="preRenderView"
+			listener="#{servicioUsuarioMB.controlNavegacion }" />
+
+		<h:form id="frmControl" rendered="#{servicioUsuarioMB.ipNoAutorizada}">
+
+			<center>
+				<table>
+					<tr>
+						<td><p:outputLabel
+								value="La IP #{servicioUsuarioMB.ip} no se encuentra autorizada" />
+						</td>
+					</tr>
+					<tr>
+						<td><center>
+								<p:commandButton value="Aceptar"
+									action="/login.jsf?faces-redirect=true" />
+							</center></td>
+					</tr>
+				</table>
+			</center>
+
+		</h:form>
+
+		<h:form id="frmConfirmacionDatos"
+			rendered="#{!servicioUsuarioMB.ipNoAutorizada}">
+			<center>
+				<p:spacer height="10" />
+				<p:panel id="panelDescbloqueoOlvido" style="width:700px"
+					header="ESTIMADO CLIENTE SI LA IMAGEN Y DESCRIPCIÓN MOSTRADA A CONTINUACIÓN SON CORRECTAS, DE RESPUESTA A LA PREGUNTA Y PROCEDA A INGRESAR.">
+					<p:messages globalOnly="true" showDetail="true" closable="true" />
+					<center>
+						<table>
+							<tr>
+								<td><p:graphicImage
+										value="#{servicioUsuarioMB.twebUsuario.imagen}" /></td>
+							</tr>
+							<tr>
+								<td><center>
+										<p:outputLabel
+											value="#{servicioUsuarioMB.twebUsuario.descripcionImagen}"
+											style="font-weight: bold;" />
+									</center></td>
+							</tr>
+						</table>
+					</center>
+					<p:separator />
+					<h:panelGrid columns="2">
+						<p:outputLabel
+							value="#{servicioUsuarioMB.preguntaSecreta.pregunta}" />
+						<p:commandLink partialSubmit="true" update="frmConfirmacionDatos"
+							process="frmConfirmacionDatos"
+							actionListener="#{servicioUsuarioMB.buscaPreguntaSecreta}"
+							value="Otra Pregunta" />
+						<p:password value="#{servicioUsuarioMB.respuestaPregunta}" />
+						<p:commandButton partialSubmit="true"
+							update="frmConfirmacionDatos" process="frmConfirmacionDatos"
+							action="#{servicioUsuarioMB.validaRespuesta}"
+							value="Validar Acceso" icon="fa fa-check"
+							onstart="PF('dlgCargando').show()" />
+					</h:panelGrid>
+				</p:panel>
+				<p:spacer height="10" />
+				<p:panel id="panelValidacionIp"
+					header="Estimado cliente
+					nuestro sistema ha detectado que el computador desde el que usted está accediendo 
+					no es de uso frecuente, por seguridad se le ha enviado a su #{servicioUsuarioMB.textoOtpMail}
+					teléfono celular un código de seguridad para que confirme su acceso, puede decidir 
+					entre permitir permanentemente la conexión desde este equipo o hacerlo de manera temporal"
+					style="width:700px" rendered="#{!servicioUsuarioMB.ipConocida}">
+					<!-- 							<p:keyboard value="#{servicioUsuarioMB.otpConfirmacionConeccion}" -->
+					<!-- 							password="true" keypadOnly="true" /> -->
+					<h:panelGrid border="0" columns="2">
+						<p:outputLabel value="Aprobación: " style="font-weight:bold;" />
+						<h:selectOneRadio value="#{servicioUsuarioMB.tipoAutorizacionIp}">
+							<f:selectItem itemLabel="Temporal" itemValue="TEMPORAL" />
+							<f:selectItem itemLabel="Permanente" itemValue="PERMANENTE" />
+							<f:ajax render="pnlDesc" />
+						</h:selectOneRadio>
+						<p:outputLabel value="Código: " style="font-weight:bold;" />
+						<p:keyboard value="#{servicioUsuarioMB.otpConfirmacionConeccion}"
+							password="true" closeLabel="Cerrar" backspaceLabel="Borrar"
+							clearLabel="Limpiar" onkeydown="return false"
+							onkeypress="return false" onkeyup="return false" layout="custom"
+							layoutTemplate="#{configuracionesGeneralesMB.tecladoRandom}" />
+					</h:panelGrid>
+					<h:panelGrid border="0" columns="2" id="pnlDesc">
+						<p:outputLabel value="Descripción del computador:"
+							style="font-weight:bold;"
+							rendered="#{servicioUsuarioMB.tipoAutorizacionIp == 'PERMANENTE'}" />
+						<p:inputText value="#{servicioUsuarioMB.descripcionIp}"
+							rendered="#{servicioUsuarioMB.tipoAutorizacionIp == 'PERMANENTE'}" />
+					</h:panelGrid>
+				</p:panel>
+			</center>
+			<p:dialog id="modalDialogCargando" closable="false"
+				header="Cargando..." widgetVar="dlgCargando" modal="true"
+				height="60" width="300">
+				<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando"></p:graphicImage>
+			</p:dialog>
+			<p:dialog id="modalBloqueo" closable="false" header="Alerta"
+				widgetVar="dlgBloqueo" modal="true" appendToBody="true" height="70"
+				width="300">
+				<center>
+					<h:outputText value="Usuario BLOQUEADO" />
+					<br />
+					<p:commandLink
+						action="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('RUTA_LOGIN_APLICACION')}"
+						oncomplete="javascript:window.close();">
+						<button>Regresar</button>
+					</p:commandLink>
+				</center>
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+
+
+</ui:composition>

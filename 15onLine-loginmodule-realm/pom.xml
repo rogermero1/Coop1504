@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>ec.fin.coop15abril</groupId>
+		<artifactId>15onLineWeb</artifactId>
+		<version>2.0</version>
+	</parent>
+	<artifactId>15onLine-loginmodule-realm</artifactId>
+	<name>15onLine-loginmodule-realm</name>
+	<description>15onLine-loginmodule-realm</description>
+	<packaging>jar</packaging>
+	<properties>
+		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>11</maven.compiler.source>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.novell.ldap</groupId>
+			<artifactId>jldap</artifactId>
+			<version>2009-10-07</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>ec.fin.coop15abril</groupId>
+			<artifactId>15onLine-servicios-core</artifactId>
+			<version>2.0</version>
+			<classifier>integracion</classifier>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.as</groupId>
+			<artifactId>jboss-as-security</artifactId>
+			<version>7.1.0.Final</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>ec.fin.coop15abril</groupId>
+			<artifactId>15onLine-cliente-ws</artifactId>
+			<version>2.0</version>
+		</dependency>
+
+	</dependencies>
+
+
+</project>

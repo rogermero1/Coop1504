@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+	 
+	 
+	<ui:define name="viewname">
+        <li>Saldos reservas</li>
+        <li><i class="fa fa-angle-right"></i></li>
+        <li>
+            
+        </li>
+    </ui:define>
+	 <ui:define name="content">
+	
+		<p:growl id="msjGeneral" showDetail="true" showSummary="true"
+			sticky="true" />
+		<center>
+			<h:form id="frmSaldosReserva" style="width:70%;">
+				<h:panelGrid columns="1">
+					<img class="logoImpresion"
+						src="#{configuracionesGeneralesMB.logoAplicacion}" height="90px"
+						align="left" style="display: none;" />
+				</h:panelGrid>
+				<p:dataTable id="tablaSaldosReserva" var="saldosReserva"
+					value="#{posicionConsolidadaMB.listaSaldosReserva}"
+					paginator="true" rows="10" paginatorPosition="bottom"
+					emptyMessage="No registra Saldos">
+					<f:facet name="header">
+						<p:outputLabel
+							value="Cuenta N° #{posicionConsolidadaMB.cuentaSeleccionada.numeroCuenta}" />
+					</f:facet>
+					<p:column headerText="Cuenta">
+						<h:outputText value="#{saldosReserva.cuentaGiradora}" />
+					</p:column>
+					<p:column headerText="Financiera">
+						<h:outputText value="#{saldosReserva.financiera}" />
+					</p:column>
+					<p:column headerText="Procedencia">
+						<h:outputText value="#{saldosReserva.procedencia}" />
+					</p:column>
+					<p:column headerText="Fecha">
+						<h:outputText value="#{saldosReserva.fechaReserva}">
+							<f:convertDateTime pattern="yyyy-MM-dd"
+								timeZone="#{posicionConsolidadaMB.zonaHoraria}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Días reserva">
+						<h:outputText value="#{saldosReserva.diasReserva}" />
+					</p:column>
+					<p:column headerText="Valor" style="text-align: right">
+						<h:outputText value="#{saldosReserva.valor}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+				<p:spacer height="5" />
+				<h:panelGrid columns="2">
+					<p:commandButton value="Regresar"
+						icon="fa fa-arrow-circle-left" partialSubmit="true"
+						update=":frmSaldosReserva, :msjGeneral"
+						actionListener="#{posicionConsolidadaMB.regresarPaginaPrincipal}"
+						onstart="PF('dlgCargando').show()" />
+					<p:commandButton value="Imprimir" type="button"
+						icon="fa fa-print">
+						<p:printer target="frmSaldosReserva" />
+					</p:commandButton>
+				</h:panelGrid>
+			</h:form>
+		</center>
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60" width="300" appendToBody="true">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>

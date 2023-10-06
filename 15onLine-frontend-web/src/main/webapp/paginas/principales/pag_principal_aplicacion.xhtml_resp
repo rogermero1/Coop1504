@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions"> 
+
+<h:head>
+ <!-- <link rel="stylesheet" type="text/css" href="/css/style.css"  />  -->
+<style type="text/css">
+
+.ui-layout-north {
+	z-index: 40 !important;
+	overflow: visible !important;;
+}
+
+.ui-layout-north .ui-layout-unit-content {
+	overflow: visible !important;
+}
+body  { 
+
+background: url("./imagenes/seed/baner_fondo.png");
+} 
+ .ui-corner-tl{-moz-border-radius-topleft:0px;-webkit-border-top-left-radius:0px;border-top-left-radius:0px;}
+.ui-corner-tr{-moz-border-radius-topright:0px;-webkit-border-top-right-radius:0px;border-top-right-radius:0px;}
+.ui-corner-bl{-moz-border-radius-bottomleft:0px;-webkit-border-bottom-left-radius:0px;border-bottom-left-radius:0px;}
+.ui-corner-br{-moz-border-radius-bottomright:0px;-webkit-border-bottom-right-radius:0px;border-bottom-right-radius:0px;}
+.ui-corner-top{-moz-border-radius-topleft:0px;-webkit-border-top-left-radius:0px;border-top-left-radius:0px;-moz-border-radius-topright:0px;-webkit-border-top-right-radius:0px;border-top-right-radius:0px;}
+.ui-corner-bottom{-moz-border-radius-bottomleft:0px;-webkit-border-bottom-left-radius:0px;border-bottom-left-radius:0px;-moz-border-radius-bottomright:6px;-webkit-border-bottom-right-radius:0px;border-bottom-right-radius:0px;}
+.ui-corner-right{-moz-border-radius-topright:0px;-webkit-border-top-right-radius:0px;border-top-right-radius:0px;-moz-border-radius-bottomright:0px;-webkit-border-bottom-right-radius:0px;border-bottom-right-radius:0px;}
+.ui-corner-left{-moz-border-radius-topleft:0px;-webkit-border-top-left-radius:0px;border-top-left-radius:0px;-moz-border-radius-bottomleft:0px;-webkit-border-bottom-left-radius:0px;border-bottom-left-radius:0px;}
+.ui-corner-all{-moz-border-radius:0px;-webkit-border-radius:0px;border-radius:0px;}
+
+
+</style>
+</h:head> 
+<h:body> 
+<h:form>  
+    <pe:layout resizerTip="Resize Me" togglerTipClosed="Open Me" togglerTipOpen="Close Me" >  
+    <!-- NORTE -->
+        <pe:layoutPane position="north" size="78" closable="false" resizable="0" spacingClosed="0" spacingOpen="0" resizeWhileDragging="false"  styleContent="overflow: hiden; border: none;" >  
+          <!--     <div align="center">--> 
+           <pe:layoutPane position="west" closable="false" resizable="0" spacingClosed="0" spacingOpen="0" resizeWhileDragging="false"  styleContent="border:none; overflow: hiden;">
+                   <div align="center"> 
+			       <h:graphicImage value="/imagenes/coop15abril/banner_logo.png" style=" width : 160px;"/>
+			         <!--</div>  -->
+			       </div>
+		   </pe:layoutPane>
+		   <pe:layoutPane position="east" closable="false" resizable="0" spacingClosed="0" spacingOpen="0" resizeWhileDragging="false"  styleContent="border:none;">
+                   <div align="left"> 
+			        otras acciones
+			       </div>
+		   </pe:layoutPane>
+		   <pe:layoutPane position="center" closable="false" resizable="0" spacingClosed="0" spacingOpen="0" resizeWhileDragging="false" styleContent="border:none;  z-index: 9998;  z-index: 40; overflow: visible !important;">
+                <p:menubar >  
+                           <p:submenu label="File" icon="ui-icon-document">  
+                           <p:submenu label="New" icon="ui-icon-contact">  
+                               <p:menuitem value="Project" url="#" />  
+                               <p:menuitem value="Other" url="#" />  
+                          </p:submenu>  
+                               <p:menuitem value="Open" url="#" />  
+                            <p:separator />  
+                           <p:menuitem value="Quit" url="#" />  
+                        </p:submenu>
+                   </p:menubar>
+		        	
+			        
+           </pe:layoutPane>	
+           		 
+			 
+        </pe:layoutPane> 
+        
+         <!--CENTRO --> 
+        <pe:layoutPane position="center" styleContent="border-style:none; -moz-border-radius-topleft:0px;-webkit-border-top-left-radius:0px;border-top-left-radius:0px;" styleHeader="-moz-border-radius-topleft:0px;-webkit-border-top-left-radius:0px;border-top-left-radius:0px;" >  
+            <pe:layoutPane position="center" size="50%" styleContent="border-style:none; border-radius: 0px 0px 0px 0px; -moz-border-radius: 0px 0px 0px 0px;-webkit-border-radius: 0px 0px 0px 0px;" styleHeader="border-style:none; border:none; border-width:-2 -2 -1px; border-radius: 0px 0px 0px 0px; -moz-border-radius: 0px 0px 0px 0px;-webkit-border-radius: 0px 0px 0px 0px;">  
+                <f:facet name="header">  
+                    <h:outputText value="_ "/>  
+                </f:facet>  
+            </pe:layoutPane>  
+            
+        </pe:layoutPane> 
+        
+         <!-- OESTE --> 
+        <pe:layoutPane position="west" size="200" styleContent="border-style:none;" styleHeader="border-style:none;" > 
+   
+            <pe:layoutPane position="center" styleContent="border-style:none;" styleHeader="border-style:none;" > 
+                <f:facet name="header" >  
+                    <h:outputText value="Menu" />  
+                </f:facet> 
+                 
+            </pe:layoutPane >
+            <pe:layoutPane position="center" styleContent="border-style:none;" styleHeader="border-style:none;" > 
+                <f:facet name="header" >  
+                    <h:outputText value="Menu" />  
+                </f:facet> 
+                 
+            </pe:layoutPane>  
+           
+        </pe:layoutPane> 
+         <pe:layoutPane position="east" size="200" styleContent="border-style:none;" styleHeader="border-style:none;"> 
+   
+            <pe:layoutPane position="center" styleContent="border-style:none;" styleHeader="border-style:none;" > 
+                <f:facet name="header" >  
+                    <h:outputText value="Menu" />  
+                </f:facet> 
+                 
+            </pe:layoutPane>  
+           
+        </pe:layoutPane> 
+         
+         
+    </pe:layout>  
+</h:form>  
+ 
+<!--     
+<h:outputStylesheet id="layoutCSS">  
+.pe-layout-pane-header {
+    padding: 4px 1em;
+    border-width: 0 0 1px;
+    background-color:#FFD700; 
+}
+</h:outputStylesheet> 
+  -->  
+
+</h:body> 
+</html>

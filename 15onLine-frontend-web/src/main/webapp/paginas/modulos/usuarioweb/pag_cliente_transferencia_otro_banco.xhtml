@@ -1,0 +1,272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="viewname">
+		<li>Trasferencia a otros Bancos Locales</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+		<!-- 		<p:panel header="Orden de transferencia"> -->
+		<center>
+			<h:form id="frmTransferenciaOtrosBancos" style="width:90%">
+				<p:outputLabel value="#{transferenciaMB.controlSesion}" />
+				<p:fieldset legend="Información general" toggleable="false">
+					<center>
+						<p:outputLabel
+							value="Le recordamos el monto máximo y mínimo permitido por transferencia, usted puede parametrizar su perfil transaccional en el menu opciones." />
+						<br />
+						<p:panelGrid>
+							<p:row>
+								<p:column>
+									<p:outputLabel value="Monto mínimo:" />
+								</p:column>
+								<p:column style="text-align : right">
+									<b><h:outputLabel
+											value="#{transferenciaMB.montosPermitidos.montoMinimoDiario}">
+											<f:convertNumber minFractionDigits="2" />
+										</h:outputLabel></b>
+								</p:column>
+								<p:column>
+									<p:outputLabel value="Monto máximo:" />
+								</p:column>
+								<p:column style="text-align : right">
+									<b><h:outputLabel
+											value="#{transferenciaMB.montosPermitidos.montoMaximoDiario}">
+											<f:convertNumber minFractionDigits="2" />
+										</h:outputLabel></b>
+								</p:column>
+								<p:column>
+									<p:outputLabel value="Monto máximo por transacción:" />
+								</p:column>
+								<p:column style="text-align : right">
+									<b><h:outputLabel
+											value="#{transferenciaMB.montosPermitidos.montoTransaccion}">
+											<f:convertNumber minFractionDigits="2" />
+										</h:outputLabel></b>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</center>
+				</p:fieldset>
+				<p:fieldset legend="Datos requeridos para la transacción"
+					toggleable="false">
+					<p:messages id="mensajeAplicacion" closable="true"
+						showSummary="true" showDetail="true" />
+					<center>
+						<p:panelGrid>
+							<p:row>
+								<p:column>
+									<p:outputLabel value="Operación frecuente" />
+								</p:column>
+								<p:column>
+									<p:selectOneMenu id="cmbOperacionFrecuente"
+										value="#{transferenciaMB.idOperacionTransferenciaOtroBanco}"
+										required="true" requiredMessage="Seleccione operación">
+										<p:ajax event="change"
+											listener="#{transferenciaMB.cargarOperacionFrecuente(2)}"
+											update="txtMotivoTransferencia cmbNumeroCuenta txtCuentaAcreditar txtNumeroIdentificacionBeneficiario txtNombreBeneficiario cmbTipoCuentaBeneficiaria cmbFinanciera txtMontoTransferir" />
+										<f:selectItem itemLabel="Seleccione Operación" itemValue="0" />
+										<f:selectItems
+											value="#{transferenciaMB.listaTransferenciasOtrosBancos}"
+											var="operacion" itemLabel="#{operacion.observacion}"
+											itemValue="#{operacion.id}" />
+									</p:selectOneMenu>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Motivo transferencia(*)</p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:inputText size="45" id="txtMotivoTransferencia"
+										value="#{transferenciaMB.transferenciaOtroBanco.motivo}"
+										required="true"
+										requiredMessage="Ingrese motivo transferencia."
+										title="Ingrese motivo transferencia."
+										converter="toUpperCaseConverter">
+										<f:ajax event="blur" render="@this" />
+									</p:inputText>
+									<p:tooltip id="toolTipMotivoTransferencia"
+										for="txtMotivoTransferencia" showEvent="focus"
+										hideEvent="blur" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Su Cuenta(*)</p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:selectOneMenu id="cmbNumeroCuenta"
+										value="#{transferenciaMB.transferenciaOtroBanco.cuentaOrdenante}"
+										required="true"
+										requiredMessage="Cuenta a debitar es requerida.">
+										<p:ajax />
+										<f:selectItem itemLabel="Seleccione Cuenta" itemValue="" />
+										<f:selectItems value="#{transferenciaMB.listaCuentas}"
+											var="cuenta" itemLabel="#{cuenta.descripcion}"
+											itemValue="#{cuenta.id}" />
+									</p:selectOneMenu>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Cuenta a acreditar(*)</p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:inputText id="txtCuentaAcreditar"
+										value="#{transferenciaMB.transferenciaOtroBanco.cuentaDestino}"
+										size="30" required="true"
+										requiredMessage="Ingrese cuenta a acreditar."
+										title="Ingrese cuenta a acreditar." />
+									<p:tooltip id="toolTipCuentaAcreditar" for="txtCuentaAcreditar"
+										showEvent="focus" hideEvent="blur" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Numero identificación del beneficiario(*)</p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:inputText id="txtNumeroIdentificacionBeneficiario"
+										value="#{transferenciaMB.transferenciaOtroBanco.identificacionBeneficiario}"
+										size="13" required="true"
+										requiredMessage="Ingrese número de identificación del beneficiario."
+										title="Ingrese número de identificación del beneficiario." />
+									<p:tooltip id="toolTipNumeroIdentificacionBeneficiario"
+										for="txtNumeroIdentificacionBeneficiario" showEvent="focus"
+										hideEvent="blur" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Apellidos y nombres del beneficiario(*)</p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:inputText id="txtNombreBeneficiario"
+										value="#{transferenciaMB.transferenciaOtroBanco.nombreBeneficiario}"
+										converter="toUpperCaseConverter" size="40" required="true"
+										requiredMessage="Ingrese apellidos y nombres del beneficiario."
+										title="Ingrese apellidos y nombres del beneficiario.">
+										<f:ajax event="blur" render="@this" />
+									</p:inputText>
+									<p:tooltip id="toolTipNombreBeneficiario"
+										for="txtNombreBeneficiario" showEvent="focus" hideEvent="blur" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Tipo de cuenta a creditar(*)</p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:selectOneMenu id="cmbTipoCuentaBeneficiaria"
+										value="#{transferenciaMB.transferenciaOtroBanco.tipoCuentaDestino}"
+										required="true" requiredMessage="Seleccione tipo de cuenta.">
+										<p:ajax />
+										<f:selectItem itemLabel="Seleccione tipo cuenta" itemValue="" />
+										<f:selectItems value="#{transferenciaMB.listaTipoCuenta}"
+											var="cuenta" itemLabel="#{cuenta.descripcion}"
+											itemValue="#{cuenta.id}" />
+									</p:selectOneMenu>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Entidad financiera Beneficiario (*)</p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:selectOneMenu id="cmbFinanciera"
+										value="#{transferenciaMB.financiera}" required="true"
+										requiredMessage="Seleccione entidad financiera." filter="true"
+									filterMatchMode="contains">
+										<p:ajax />
+										<f:selectItem itemLabel="Seleccione financiera" itemValue="" />
+										<f:selectItems value="#{transferenciaMB.listaFinancieras}"
+											var="cuenta" itemLabel="#{cuenta.descripcion}"
+											itemValue="#{cuenta.id}" />
+									</p:selectOneMenu>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Comisión </p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:inputText readonly="true" disabled="true"
+										value="#{transferenciaMB.comisionOtrosBancos}" required="true"></p:inputText>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column>
+									<p:outputLabel>Monto a transferir(*)</p:outputLabel>
+								</p:column>
+								<p:column>
+									<p:inputNumber id="txtMontoTransferir" required="true"
+										requiredMessage="Monto de la transacción es requerido."
+										symbol="$ " style="width:100px; text-align:right"
+										title="Ingrese valor a transferir."
+										value="#{transferenciaMB.transferenciaOtroBanco.valor}">
+									</p:inputNumber>
+									<p:tooltip id="toolTipMontoTransferir" for="txtMontoTransferir"
+										showEvent="focus" hideEvent="blur" />
+									<p:outputLabel> USD (Ejemplo: 1537.45)</p:outputLabel>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column colspan="2">
+									<p:outputLabel>
+										<hr></hr>
+									</p:outputLabel>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column colspan="4" style="text-align : center">
+									<p:commandButton value="Confirmar" icon="fa fa-check"
+										action="#{transferenciaMB.verificaDatosOtrosBancos()}"
+										update=":frmTransferenciaOtrosBancos:mensajeAplicacion"
+										onstart="PF('dlgCargando').show()"
+										onsuccess="PF('dlgCargando').hide()" />
+									<h:outputText value=" " />
+									<p:commandButton value="Limpiar" icon="fa fa-refresh"
+										actionListener="#{transferenciaMB.funcionLimpiar}"
+										partialSubmit="true" process="@this"
+										update=":frmTransferenciaOtrosBancos" />
+									<h:outputText value=" " />
+									<p:commandButton id="btnCancelar" title="Cancelar transacción"
+										ajax="true" immediate="true" icon="fa fa-window-close"
+										value="Cancelar" action="#{transferenciaMB.funcionCancelar}"
+										onstart="PF('dlgCargando').show()">
+									</p:commandButton>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</center>
+				</p:fieldset>
+				<p:fieldset legend="Nota recordatoria" toggleable="false">
+					<center>
+						<p:outputLabel>Al presionar el botón <b>Confirmar</b> le enviaremos un código de seguridad a su <b>#{servicioUsuarioMB.textoOtpMail}
+								teléfono celular</b> para que proceda a confirmar la transferencia.</p:outputLabel>
+						<br />
+						<p:outputLabel>Tiempo máximo de duración del código de seguridad es de <b>#{transferenciaMB.parametrosGenerales.minutosVigenciaOtp}
+								minutos.</b>
+						</p:outputLabel>
+						<br />
+					</center>
+				</p:fieldset>
+			</h:form>
+		</center>
+		<!-- 		</p:panel> -->
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+			width="300" appendToBody="true">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>

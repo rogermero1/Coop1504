@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+	<p:panel
+		style="border:none; overflow-x:hidden!important; overflow-y:hidden!important;">
+		<h:panelGrid columns="2"
+			style="font-size:80%; text-align:center; vertical-align:text-top;">
+			<h:graphicImage
+				value="#{configuracionesGeneralesMB.getValorConstanteConfiguracion('RUTA_IMAGEN_USUARIO')}"
+				width="70%" />
+			<h:panelGrid columns="1">
+				<h:outputText
+					value="#{configuracionesGeneralesMB.nombreUsuarioAutenticado}" />
+				<p:commandLink action="#{logoutMB.logout}"
+					oncomplete="javascript:window.close();">
+					<h:outputText value="Salir" style="font-weight:bold;" />
+				</p:commandLink>
+			</h:panelGrid>
+		</h:panelGrid>
+	</p:panel>
+</ui:composition>

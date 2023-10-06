@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="viewname">
+		<li>Ultimos Movimientos de Ahorro</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+		<p:growl id="msjGeneral" showDetail="true" showSummary="true"
+			sticky="true" />
+		<center>
+			<h:form id="frmUltimosMovimientosAhorro" style="width:90%;">
+				<h:panelGrid columns="1">
+					<img class="logoImpresion"
+						src="#{configuracionesGeneralesMB.logoAplicacion}" height="90px"
+						align="left" style="display: none;" />
+				</h:panelGrid>
+				<p:dataTable id="tablaUltimosMovimientosAhorro"
+					var="ultimosMovmientosAhorro"
+					value="#{posicionConsolidadaMB.listadoUltimosMovimientos}"
+					paginator="true" rows="10" paginatorPosition="bottom"
+					emptyMessage="No registra Movimientos">
+					<f:facet name="header">
+						<p:outputLabel
+							value="Cuenta N° #{posicionConsolidadaMB.cuentaSeleccionada.numeroCuenta}" />
+					</f:facet>
+					<p:column headerText="Fecha/Hora">
+						<h:outputText value="#{ultimosMovmientosAhorro.hora}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+								timeZone="#{posicionConsolidadaMB.zonaHoraria}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Secuencia" style="width:10%;">
+						<h:outputText
+							value="#{ultimosMovmientosAhorro.secuenciaMovimiento}" />
+					</p:column>
+					<p:column headerText="Descripción">
+						<p:commandLink id="descripcion"
+							value="#{ultimosMovmientosAhorro.descripcionMovimiento}"
+							update=":frmUltimosMovimientosAhorro:modalDialog"
+							onstart="PF('dlgCargando').show()"
+							onsuccess="PF('dlgCargando').hide()"
+							oncomplete="PF('dlgDetalleTransaccion').show()"
+							actionListener="#{posicionConsolidadaMB.asignaDetalleMovimientoAhorro}">
+							<f:param name="paramDetalle"
+								value="#{ultimosMovmientosAhorro.detalleTransaccion}" />
+						</p:commandLink>
+					</p:column>
+					<p:column headerText="Agencia">
+						<h:outputText value="#{ultimosMovmientosAhorro.agencia}" />
+					</p:column>
+					<p:column headerText="Débito" style="width:10%; text-align: right">
+						<h:outputText value="#{ultimosMovmientosAhorro.debito}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Crédito" style="width:10%; text-align: right">
+						<h:outputText value="#{ultimosMovmientosAhorro.credito}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Saldo" style="width:10%; text-align: right">
+						<h:outputText value="#{ultimosMovmientosAhorro.saldo}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+				<p:spacer height="5" />
+				<h:panelGrid columns="3">
+					<p:commandButton value="Regresar" icon="fa fa-arrow-circle-left"
+						partialSubmit="true"
+						update=":frmUltimosMovimientosAhorro, :msjGeneral"
+						actionListener="#{posicionConsolidadaMB.regresarPaginaPrincipal}"
+						onstart="PF('dlgCargando').show()" />
+					<p:commandButton value="Histórico" icon="fa fa-bookmark"
+						partialSubmit="true"
+						update=":frmUltimosMovimientosAhorro, :msjGeneral"
+						actionListener="#{posicionConsolidadaMB.paginaHistoricoAhorros}" />
+					<p:commandButton value="Imprimir" type="button" icon="fa fa-print">
+						<p:printer target="frmUltimosMovimientosAhorro" />
+					</p:commandButton>
+				</h:panelGrid>
+
+				<p:dialog id="modalDialogCargando" closable="false"
+					header="Cargando..." widgetVar="dlgCargando" modal="true"
+					height="60" width="300" appendToBody="true">
+					<p:graphicImage value="/imagenes/seed/barra_ajax.gif"
+						alt="Cargando"></p:graphicImage>
+				</p:dialog>
+				<p:dialog id="modalDialog" header="Detalle de transacción"
+					widgetVar="dlgDetalleTransaccion" modal="true" height="50%"
+					width="25%" appendToBody="true">
+					<h:panelGrid columns="1">
+						<img class="logoImpresion"
+							src="#{configuracionesGeneralesMB.logoAplicacion}" height="90px"
+							align="left" style="display: none;" />
+					</h:panelGrid>
+					<p:spacer height="5" />
+					<p:panelGrid styleClass="align: center">
+						<p:row>
+							<p:column>
+								<p:outputLabel
+									value="#{posicionConsolidadaMB.detalleMovimientoAhorro}" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<p:spacer height="20" />
+					<center>
+						<h:panelGrid columns="2">
+							<p:commandButton value="Regresar" icon="fa fa-arrow-circle-left"
+								onclick="PF('dlgDetalleTransaccion').hide()" />
+						</h:panelGrid>
+					</center>
+				</p:dialog>
+
+			</h:form>
+		</center>
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+			width="300" appendToBody="true">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>

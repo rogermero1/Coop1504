@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template_registro_externo.xhtml">
+
+	<ui:define name="viewname">
+		<li>Creación de usuarios (Paso 3 - Selección de Preguntas)</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+		<center>
+			<h:form id="form">
+				<p:panel id="panelRegistro" style="width:100%"
+					header="Por favor, de respuesta a las preguntas en pantalla.">
+
+					<p:messages globalOnly="true" showDetail="true" closable="true" />
+
+					<div align="left">
+						<h:panelGrid columns="3">
+							<h:outputText value="Cliente : " style="font-weight:bold;" />
+							<h:outputText value="#{registroUsuarioMB.cedula}" />
+							<h:outputText value="#{registroUsuarioMB.nombreCliente}" />
+						</h:panelGrid>
+
+						<p:fieldset legend="Preguntas" toggleable="true" toggleSpeed="500">
+							<center>
+								<p:dataTable id="datPreguntas"
+									value="#{registroUsuarioMB.listaPreguntasRespuestas}"
+									var="regPreguntas" paginator="false" rows="15"
+									style="width:75%;">
+									<f:facet name="header">
+										<p:outputLabel value="Banco de preguntas" />
+									</f:facet>
+									<p:column headerText="Pregunta">
+										<h:outputText value="#{regPreguntas.pregunta}" />
+									</p:column>
+									<p:column headerText="Respuesta">
+										<p:inputText id="respuesta" value="#{regPreguntas.respuesta}"
+											required="true" requiredMessage="Ingrese Respuesta"
+											style="width:95%;" />
+										<p:message for="respuesta" />
+									</p:column>
+								</p:dataTable>
+								<p:spacer height="20" />
+								<!-- 						<center> -->
+								<h:panelGrid>
+									<p:commandButton partialSubmit="true" update="form"
+										process="form"
+										actionListener="#{registroUsuarioMB.validacionPreguntas}"
+										value="Validar" icon="fa fa-floppy-o"
+										onstart="PF('dlgCargando').show()"
+										onsuccess="PF('dlgCargando').hide()" />
+								</h:panelGrid>
+							</center>
+						</p:fieldset>
+					</div>
+				</p:panel>
+			</h:form>
+		</center>
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+			width="300" appendToBody="true">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando"></p:graphicImage>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

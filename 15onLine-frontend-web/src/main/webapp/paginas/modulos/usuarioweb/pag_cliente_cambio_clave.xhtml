@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+	<ui:define name="viewname">
+		<li>Cambio de clave</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+
+	<ui:define name="content">
+		<p:growl id="msjGeneral" showDetail="true" showSummary="true"
+			life="5000" />
+
+		<p:outputLabel value="#{cambioClavePreguntasMB.controlSesion}" />
+
+		<h:form id="formClave">
+			<center>
+				<p:outputLabel style="font-weight:bold;" value="Nota: " />
+				<p:outputLabel value="#{cambioClavePreguntasMB.mensajeFormatoClave}" />
+			</center>
+			<center>
+				<h:panelGrid columns="2">
+					<p:outputLabel style="font-weight:bold;" value="Contraseña actual" />
+					<p:password id="claveActual" required="true"
+						requiredMessage="Ingrese Clave" validatorMessage="INGRESE CLAVE"
+						value="#{cambioClavePreguntasMB.claveActual}" />
+					<p:outputLabel style="font-weight:bold;" value="Contraseña nueva" />
+					<p:password id="clave1" feedback="true" required="true"
+						requiredMessage="Ingrese Clave" validatorMessage="INGRESE CLAVE"
+						promptLabel="Ingrese Clave" weakLabel="Seguridad Baja"
+						goodLabel="Seguridad Media" strongLabel="Seguridad Alta"
+						value="#{cambioClavePreguntasMB.claveNueva}"
+						title="MENSAJE DE LA CLAVE" />
+					<p:outputLabel style="font-weight:bold;"
+						value="Confirme su contraseña" />
+					<p:password id="clave2" feedback="true" required="true"
+						requiredMessage="Ingrese Verificación de la Clave"
+						validatorMessage="INGRESE VERIFICACION DE LA CLAVE"
+						promptLabel="Ingrese Clave" weakLabel="Seguridad Baja"
+						goodLabel="Seguridad Media" strongLabel="Seguridad Alta"
+						value="#{cambioClavePreguntasMB.confirmacionClaveNueva}" />
+				</h:panelGrid>
+				<h:panelGrid>
+					<p:commandButton partialSubmit="true"
+						update=":formClave, :frmConfirmacion, :msjGeneral"
+						process=":formClave"
+						actionListener="#{cambioClavePreguntasMB.cambiarClave}"
+						value="Guardar" icon="fa fa-floppy-o"
+						disabled="#{cambioClavePreguntasMB.botonCambioClave}" />
+				</h:panelGrid>
+			</center>
+		</h:form>
+
+		<center>
+			<h:form id="frmConfirmacion">
+				<p:panel style="width:50%"
+					rendered="#{cambioClavePreguntasMB.confirmacion}"
+					header="Hemos enviado un código de seguridad a su correo electrónico y/o celular, por favor ingreselo para completar los cambios.">
+					<!-- 							<p:keyboard value="#{cambioClavePreguntasMB.codigoSeguridad}" -->
+					<!-- 								password="true" keypadOnly="true" /> -->
+					<h:panelGrid border="0" columns="3">
+						<p:outputLabel value="Ingrese código de seguridad:" />
+						<p:keyboard value="#{cambioClavePreguntasMB.codigoSeguridad}"
+							password="true" closeLabel="Cerrar" backspaceLabel="Borrar"
+							clearLabel="Limpiar" onkeydown="return false"
+							onkeypress="return false" onkeyup="return false" layout="custom"
+							layoutTemplate="#{configuracionesGeneralesMB.tecladoRandom}" />
+						<p:commandButton
+							actionListener="#{cambioClavePreguntasMB.completarCambios}"
+							update=":formClave, :frmConfirmacion, :msjGeneral"
+							value="Confirmar" onstart="PF('dlgCargando').show()"
+							onsuccess="PF('dlgCargando').hide()" />
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+		</center>
+
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+			width="300" appendToBody="true">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>

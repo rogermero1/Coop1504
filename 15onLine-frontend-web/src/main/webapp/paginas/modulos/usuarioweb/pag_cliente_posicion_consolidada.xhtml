@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+
+	</ui:define>
+
+	<ui:define name="viewname">
+		<li>Posición Consolidada</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+
+	<ui:define name="content">
+		<p:growl id="msjGeneral" showDetail="true" showSummary="true"
+			sticky="true" life="5000"
+			rendered="#{posicionConsolidadaMB.preaprobado}" />
+		<center>
+			<h:form id="frmPosicionConsolidada" style="width:100%;">
+				<h:panelGrid columns="1">
+					<img class="logoImpresion"
+						src="#{configuracionesGeneralesMB.logoAplicacion}" height="90px"
+						align="left" style="display: none;" />
+				</h:panelGrid>
+				<!-- 				<p:spacer height="10" /> -->
+				<h:panelGrid columns="2">
+					<p:outputLabel rendered="#{posicionConsolidadaMB.preaprobado}"
+						style="font-weight:bold; font-size:15px;"
+						value="Usted tiene un crédito preaprobado, si desea aplicar de click en " />
+					<p:commandLink style="font-weight:bold; font-size:15px;"
+						rendered="#{posicionConsolidadaMB.preaprobado}" value="continuar"
+						action="#{posicionConsolidadaMB.solicitudPrestamo}"
+						onstart="PF('dlgCargando').show()"
+						onsuccess="PF('dlgCargando').hide()">
+					</p:commandLink>
+				</h:panelGrid>
+				<p:spacer height="15" />
+				<p:dataTable id="tablaAhorro" var="ahorro"
+					value="#{posicionConsolidadaMB.posicionConsolidadaAhorro}"
+					paginator="false" rows="10"
+					emptyMessage="No registra cuenta de ahorro"
+					rendered="#{posicionConsolidadaMB.muestraCuentas}">
+					<f:facet name="header">
+						<p:outputLabel value="Cuentas de Ahorro" />
+					</f:facet>
+					<p:column headerText="N° Cuenta" style="width:10%;">
+						<h:outputText value="#{ahorro.numeroCuenta}" />
+					</p:column>
+					<p:column headerText="Moneda" style="width:7%;">
+						<h:outputText value="#{ahorro.abreviaturaMoneda}" />
+					</p:column>
+					<p:column headerText="Tipo" style="width:20%;">
+						<h:outputText value="#{ahorro.claseCuenta}" />
+					</p:column>
+					<p:column headerText="Nombre" style="width:20%;">
+						<h:outputText value="#{ahorro.nombreCuenta}" />
+					</p:column>
+					<p:column headerText="Saldo en linea" style="text-align: right">
+						<p:commandLink id="consultaMovimientosAhorro"
+							title="Consulta ultmimos movimientos" icon="fa fa-search"
+							update=":frmPosicionConsolidada"
+							value="#{ahorro.saldoTotalLinea}"
+							onstart="PF('dlgCargando').show()"
+							action="#{posicionConsolidadaMB.ultimosMovimientosAhorro()}">
+							<f:setPropertyActionListener value="#{ahorro}"
+								target="#{posicionConsolidadaMB.cuentaSeleccionada}" />
+						</p:commandLink>
+					</p:column>
+					<p:column headerText="Saldo reserva" style="text-align: right">
+						<p:commandLink id="consultaSaldosReserva"
+							title="Consulta de saldos reserva" icon="fa fa-search"
+							update=":frmPosicionConsolidada"
+							value="#{ahorro.saldoReservaLinea}"
+							onstart="PF('dlgCargando').show()"
+							action="#{posicionConsolidadaMB.consultaSaldosReserva()}">
+							<f:setPropertyActionListener value="#{ahorro}"
+								target="#{posicionConsolidadaMB.cuentaSeleccionada}" />
+						</p:commandLink>
+					</p:column>
+					<p:column headerText="Saldo bloqueado" style="text-align: right">
+						<p:commandLink id="consultaSaldosBloqueados"
+							title="Consulta de saldos bloqueados" icon="fa fa-search"
+							update=":frmPosicionConsolidada" value="#{ahorro.saldoBloqueado}"
+							onstart="PF('dlgCargando').show()"
+							action="#{posicionConsolidadaMB.consultaSaldosBloqueados()}">
+							<f:setPropertyActionListener value="#{ahorro}"
+								target="#{posicionConsolidadaMB.cuentaSeleccionada}" />
+						</p:commandLink>
+					</p:column>
+					<p:column headerText="Saldo disponible" style="text-align: right">
+						<h:outputText value="#{ahorro.saldoDisponible}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+				<p:spacer height="5" />
+				<p:dataTable id="tablaPrestamo" var="prestamo"
+					value="#{posicionConsolidadaMB.posicionConsolidadaPrestamo}"
+					paginator="false" rows="10" emptyMessage="No registra préstamo"
+					rendered="#{posicionConsolidadaMB.muestraPrestamos}">
+					<f:facet name="header">
+						<p:outputLabel value="Préstamos" />
+					</f:facet>
+					<p:column headerText="N° Prestamo" style="width:10%;">
+						<p:commandLink id="consultaMovimientosAhorro"
+							title="Consulta cuotas prestamo" update=":frmPosicionConsolidada"
+							value="#{prestamo.numeroPrestamo}"
+							action="#{posicionConsolidadaMB.cuotasPrestamo()}"
+							onstart="PF('dlgCargando').show()">
+							<f:setPropertyActionListener value="#{prestamo}"
+								target="#{posicionConsolidadaMB.prestamoSeleccionado}" />
+						</p:commandLink>
+					</p:column>
+					<p:column headerText="Moneda" style="width:7%;">
+						<h:outputText value="#{prestamo.abreviaturaMoneda}" />
+					</p:column>
+					<p:column headerText="Linea financiera" style="width:20%;">
+						<h:outputText value="#{prestamo.descripcionLineaFinanciera}" />
+					</p:column>
+					<p:column headerText="Fecha apertura">
+						<h:outputText value="#{prestamo.fechaApertura}">
+							<f:convertDateTime pattern="yyyy-MM-dd"
+								timeZone="#{posicionConsolidadaMB.zonaHoraria}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Monto inicial" style="text-align: right">
+						<h:outputText value="#{prestamo.montoInicial}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Fecha vencimiento">
+						<h:outputText value="#{prestamo.fechaVencimiento}">
+							<f:convertDateTime pattern="yyyy-MM-dd"
+								timeZone="#{posicionConsolidadaMB.zonaHoraria}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Tasa">
+						<h:outputText value="#{prestamo.tasa}" />
+					</p:column>
+					<p:column headerText="Cuotas pendientes" style="text-align: center">
+						<h:outputText value="#{prestamo.cuotasPendientes}" />
+					</p:column>
+					<p:column headerText="Saldo capital" style="text-align: right">
+						<h:outputText value="#{prestamo.saldoCapital}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Periodo de gracia" style="text-align: center">
+						<p:commandLink id="consultaGracia"
+							title="Consulta periodo de gracia"
+							update=":frmPosicionConsolidada"
+							value="#{prestamo.periodoGracia == 'SI' ? 'VER' : ''}"
+							action="#{posicionConsolidadaMB.periodoGracia()}"
+							onstart="PF('dlgCargando').show()">
+							<f:setPropertyActionListener value="#{prestamo}"
+								target="#{posicionConsolidadaMB.prestamoSeleccionado}" />
+						</p:commandLink>
+					</p:column>
+				</p:dataTable>
+				<p:spacer height="5" />
+				<p:dataTable id="tablaInversion" var="inversion"
+					value="#{posicionConsolidadaMB.posicionConsolidadaInversion}"
+					paginator="false" rows="10" emptyMessage="No registra inversiones"
+					rendered="#{posicionConsolidadaMB.muestraInversiones}">
+					<f:facet name="header">
+						<p:outputLabel value="Inversiones" />
+					</f:facet>
+					<p:column headerText="N° Inversion" style="text-align: center">
+						<h:outputText value="#{inversion.numeroDeposito}" />
+					</p:column>
+					<p:column headerText="Moneda" style="text-align: center">
+						<h:outputText value="USD" />
+					</p:column>
+					<p:column headerText="Valor" style="text-align: right">
+						<h:outputText value="#{inversion.valorUltimaRenovacion}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Interes causado" style="text-align: right">
+						<h:outputText value="#{inversion.interesCausado}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Plazo" style="text-align: center">
+						<h:outputText value="#{inversion.plazo}" />
+					</p:column>
+					<p:column headerText="Tasa" style="text-align: right">
+						<h:outputText value="#{inversion.valorTasa}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Fecha vigencia" style="text-align: center">
+						<h:outputText value="#{inversion.fechaVigencia}">
+							<f:convertDateTime pattern="yyyy-MM-dd"
+								timeZone="#{posicionConsolidadaMB.zonaHoraria}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Fecha vencimiento" style="text-align: center">
+						<h:outputText value="#{inversion.fechaVencimiento}">
+							<f:convertDateTime pattern="yyyy-MM-dd"
+								timeZone="#{posicionConsolidadaMB.zonaHoraria}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Proximo pago interes"
+						style="text-align: center">
+						<h:outputText value="#{inversion.fechaProximoPagoInteres}">
+							<f:convertDateTime pattern="yyyy-MM-dd"
+								timeZone="#{posicionConsolidadaMB.zonaHoraria}" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+				<p:spacer height="5" />
+				<p:dataTable id="tablaSeguro" var="seguro"
+					value="#{posicionConsolidadaMB.posicionConsolidadaSeguro}"
+					paginator="false" rows="10" emptyMessage="No registra seguro"
+					rendered="#{posicionConsolidadaMB.muestraSeguros}">
+					<f:facet name="header">
+						<p:outputLabel value="Seguros" />
+					</f:facet>
+					<p:column headerText="N° Seguro" style="text-align: center">
+						<h:outputText value="#{seguro.codigoSeguro}" />
+					</p:column>
+					<p:column headerText="Moneda" style="text-align: center">
+						<h:outputText value="USD" />
+					</p:column>
+					<p:column headerText="Tipo seguro" style="text-align: center">
+						<h:outputText value="#{seguro.descripcionPoliza}" />
+					</p:column>
+					<p:column headerText="Valor" style="text-align: right">
+						<h:outputText value="#{seguro.valorDeposito}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+				<!-- 			<p:commandButton value="IMPRIMIR" -->
+				<!-- 				onclick="javascript:imprimirSeleccion(window,'frmPosicionConsolidada');" /> -->
+				<!-- 				<p:commandButton value="IMPRIMIR" onclick="javascript:imprimir();" /> -->
+				<p:spacer height="5" />
+				<h:panelGrid columns="2">
+					<p:commandButton value="Actualizar" icon="fa fa-refresh"
+						partialSubmit="true" update=":frmPosicionConsolidada"
+						actionListener="#{posicionConsolidadaMB.inicializar}"
+						onstart="PF('dlgCargando').show()"
+						onsuccess="PF('dlgCargando').hide()" />
+					<p:commandButton value="Imprimir" type="button" icon="fa fa-print">
+						<!-- 						onclick="javascript:document.getElementById('encabezado').style.display='inline';" -->
+						<!-- 						oncomplete="javascript:document.getElementById('encabezado').style.display='none';" -->
+						<p:printer target="frmPosicionConsolidada" />
+					</p:commandButton>
+				</h:panelGrid>
+				<p:dialog id="modalDialogCargando" closable="false"
+					header="Cargando..." widgetVar="dlgCargando" modal="true"
+					height="60" width="300" appendToBody="true">
+					<p:graphicImage value="/imagenes/seed/barra_ajax.gif"
+						alt="Cargando"></p:graphicImage>
+				</p:dialog>
+				<p:dialog id="modalSeguridad" closable="true"
+					header="Consejo de seguridad" widgetVar="dlgSeguridad" modal="true"
+					appendToBody="true" height="100" width="500">
+					<h:outputText
+						value="Recuerda que Cooperativa 15 de Abril NUNCA te 
+					solicitará información personal o financiera a través de correo electrónico. 
+					llamadas telefónicas, redes sociales, mensajes de texto o whatsapp." />
+					<br />
+					<h:outputText
+						value="Por cualquier duda comunícate a nuestro Call Center 052590040" />
+				</p:dialog>
+			</h:form>
+			<!-- 			<h:form> -->
+			<!-- 				<p:menu> -->
+			<!-- 					<f:ajax render=":content"> -->
+			<!-- 						<p:menuitem value="prueba" -->
+			<!-- 							action="#{controlPagina.asignarPagina('/testReporte.xhtml')}" -->
+			<!-- 							update=":content" /> -->
+			<!-- 					</f:ajax> -->
+			<!-- 				</p:menu> -->
+			<!-- 			</h:form> -->
+			<!-- 			<p:panel id="content"> -->
+			<!-- 				<p:outputLabel value="#{controlPagina.pagina}" /> -->
+			<!-- 				<ui:include src="#{controlPagina.pagina}" /> -->
+			<!-- 			</p:panel> -->
+		</center>
+	</ui:define>
+
+</ui:composition>

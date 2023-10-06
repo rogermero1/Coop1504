@@ -1,0 +1,170 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui" xmlns:po="http://primefaces.org/pandora">
+
+    <div class="layout-topbar">
+        <div class="layout-topbar-wrapper">
+            <div class="layout-topbar-left">
+                <div class="menu-button">
+                    <i class="fa fa-bars"></i>
+                </div>
+                <h:link id="logolink"  class="layout-topbar-logo">
+                    <p:graphicImage name="images/#{guestPreferences.darkLogo ? 'logo-footer.svg' : 'logo-pandora.svg'}" library="pandora-layout" />
+                </h:link>
+            </div>
+            <div class="layout-topbar-right">
+                <ul class="layout-topbar-actions">
+                    <li class="search-item topbar-item">
+                        <a href="#" class="topbar-search-mobile-button">
+                            <i class="topbar-icon fa fa-search"></i>
+                        </a>
+                        <ul class="search-item-submenu">
+                            <li>
+                                <h:form onsubmit="return false;">
+                                    <h:panelGroup styleClass="md-inputfield search-input-wrapper">
+                                        <p:inputText placeholder="Search..." />
+                                        <i class="fa fa-search"></i>
+                                    </h:panelGroup>
+                                </h:form>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="topbar-item-v-separator"></li>
+                    <li class="topbar-item help">
+                        <a href="#">
+                            <i class="topbar-icon fa fa-life-ring"></i>
+                        </a>
+                        <ul>
+                            <li class="layout-submenu-header">
+                                <h1 class="header-text">Help </h1>
+                            </li>
+                            <li class="layout-submenu-item">
+                                <div class="menu-text">
+                                    <span>🎩</span>
+                                    <p>How to change things</p>
+                                    <i class="fa fa-angle-right angle-icon"></i>
+                                </div>
+                            </li>
+                            <li class="layout-submenu-item">
+                                <div class="menu-text">
+                                    <span>🍕</span>
+                                    <p>How to eat pizza</p>
+                                    <i class="fa fa-angle-right angle-icon"></i>
+                                </div>
+                            </li>
+                            <li class="layout-submenu-item">
+                                <div class="menu-text">
+                                    <span>🌍</span>
+                                    <p>How to dominate world</p>
+                                    <i class="fa fa-angle-right angle-icon"></i>
+                                </div>
+                            </li>
+                            <li class="layout-submenu-item">
+                                <div class="menu-text">
+                                    <span>🧠</span>
+                                    <p>How to control mind</p>
+                                    <i class="fa fa-angle-right angle-icon"></i>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="topbar-item tags">
+                        <a href="#">
+                            <i class="topbar-icon fa fa-tag"></i>
+                        </a>
+                        <ul>
+                            <li class="layout-submenu-header">
+                                <h1 class="header-text">Watched Tags</h1>
+                                <span class="header-helper-text">Edit</span>
+                            </li>
+                            <li class="layout-submenu-item">
+                                <span class="tag">PrimeFaces</span>
+                                <span class="tag">PrimeNG</span>
+                                <span class="tag">PrimeVue</span>
+                                <span class="tag">PrimeReact</span>
+                                <span class="tag">CSS</span>
+                                <span class="tag">HTML</span>
+                                <span class="tag">SASS</span>
+                                <span class="tag">Algorithm</span>
+                                <span class="tag">user Interface</span>
+                                <span class="tag">Twitter</span>
+                                <span class="tag">Grid</span>
+                                <span class="tag">Firefox</span>
+                                <span class="tag">JavaScript</span>
+
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="topbar-item notifications">
+                        <a href="#">
+                            <i class="topbar-icon fa fa-bell"><span class="dot"></span></i>
+                        </a>
+                        <ul>
+                            <li class="layout-submenu-header">
+                                <h1 class="header-text">Notifications </h1>
+                                <span class="header-helper-text"> all items</span>
+                            </li>
+                            <li class="layout-submenu-item">
+                                <div class="menu-text">
+                                    <i class="fa fa-twitter"></i>
+                                    <span>
+                                        <span>comment</span>
+                                        <p>Aliquam sem fringilla ut morbi tincidunt augue interdum.</p>
+                                    </span>
+                                </div>
+                            </li>
+                            <li class="layout-submenu-item">
+                                <div class="menu-text">
+                                    <i class="fa fa-github"></i>
+                                    <span>
+                                        <span>issue</span>
+                                        <p>Nisl vel pretium lectus quam.</p>
+                                    </span>
+                                </div>
+                            </li>
+                            <li class="layout-submenu-item">
+                                <div class="menu-text">
+                                    <i class="fa fa-heart"></i>
+                                    <span>
+                                        <span>comment</span>
+                                        <p>Felis imperdiet proin fermentum leo vel orci porta non pulvinar.</p>
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="topbar-item-v-separator"></li>
+                    <li class="topbar-item language">
+                        <a href="#">
+                            <p:graphicImage name="images/topbar/asset-english.png" library="pandora-layout" />
+                            <h3>English</h3>
+                            <i class="fa fa-sort"></i>
+                        </a>
+                        <ul>
+                            <li class="layout-submenu-header">
+                                <h1 class="header-text">Languages </h1>
+                            </li>
+                            <li class="layout-submenu-item">
+                                <div class="menu-text">
+                                    <p:graphicImage name="images/topbar/asset-german.png" library="pandora-layout" />
+                                    <p>German</p>
+                                </div>
+                            </li>
+                            <li class="layout-submenu-item">
+                                <div class="menu-text">
+                                    <p:graphicImage name="images/topbar/asset-french.png" library="pandora-layout" />
+                                    <p>French</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="topbar-item-v-separator"></li>
+                </ul>
+            </div>
+            <a href="#" class="layout-rightpanel-button">
+                <i class="fa fa-ellipsis-v"></i>
+            </a>
+        </div>
+    </div>
+
+</ui:composition>

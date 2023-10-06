@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+	<ui:define name="viewname">
+		<li>Pagos GAD-Portoviejo</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+
+		<center>
+
+			<p:outputLabel value="#{pagoMB.controlSesion}" />
+
+			<h:form id="frmPagoServicio" style="width:90%;">
+				<p:fieldset legend="Datos de consulta" toggleable="false">
+
+
+					<p:panelGrid>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Ingrese número de Cédula/RUC" />
+							</p:column>
+							<p:column>
+								<p:inputText value="#{pagoMB.numeroIdenticacionServicio}" />
+								<p:outputLabel value=" " />
+								<p:commandButton value="Buscar" icon="fa fa-search"
+									action="#{pagoMB.consultaDeudaGAD()}"
+									update=":mensajeAplicacion, :frmListadoDeuda, :frmPagoServicio:txtNombreDeudor, :frmPagoServicio:cmbRubro, :frmPagoServicio:txtComision"
+									onstart="PF('dlgCargando').show()"
+									onsuccess="PF('dlgCargando').hide()" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Titular:" />
+							</p:column>
+							<p:column colspan="2">
+								<p:inputText readonly="true" id="txtNombreDeudor"
+									value="#{pagoMB.nombreDeudorGad}" size="50" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Rubro:" />
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="cmbRubro" value="#{pagoMB.codigoEmpresa}">
+									<p:ajax event="change" listener="#{pagoMB.filtraRubrosGad()}"
+										update="frmListadoDeuda, :frmPagoServicio:txtTotal" />
+									<f:selectItem itemLabel="Seleccione Rubro" itemValue="" />
+									<f:selectItems value="#{pagoMB.rubrosAdeudadosGad}" var="rubro"
+										itemLabel="#{rubro.nombre}" itemValue="#{rubro.id}" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Comisión" />
+							</p:column>
+							<p:column>
+								<p:inputText readonly="true" id="txtComision"
+									value="#{pagoMB.totalComisionGad}" size="20" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Su Cuenta(*)" />
+							</p:column>
+							<p:column>
+								<p:selectOneMenu id="cmbCuentas" value="#{pagoMB.cuentaDebito}"
+									requiredMessage="Seleccione cuenta">
+									<f:selectItem itemLabel="Seleccione cuenta" itemValue="" />
+									<f:selectItems value="#{pagoMB.listadoCuentas}" var="cuenta"
+										itemLabel="#{cuenta.descripcion}" itemValue="#{cuenta.id}" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<p:outputLabel value="Total a pagar: " />
+							</p:column>
+							<p:column>
+								<p:inputText readonly="true" id="txtTotal"
+									value="#{pagoMB.totalPagoGAD}" size="20" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+					<p:panelGrid>
+						<p:row>
+							<p:column colspan="6" style="text-align:center">
+								<p:commandButton value="Confirmar"
+									action="#{pagoMB.validaDatosPagoGAD()}"
+									update=":frmPagoServicio, :frmListadoDeuda, :mensajeAplicacion"
+									icon="fa fa-check" onstart="PF('dlgCargando').show()"
+									onsuccess="PF('dlgCargando').hide()" />
+								<h:outputText value=" " />
+								<p:commandButton value="Limpiar" icon="fa fa-refresh"
+									actionListener="#{pagoMB.funcionLimpiar}" partialSubmit="true"
+									process="@this" update=":frmPagoServicio, :frmListadoDeuda" />
+								<h:outputText value=" " />
+								<p:commandButton value="Cancelar" icon="fa fa-window-close"
+									ajax="true" immediate="true"
+									actionListener="#{pagoMB.funcionCancelar}" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+				</p:fieldset>
+			</h:form>
+		</center>
+
+		<center>
+			<p:messages id="mensajeAplicacion" closable="true" showSummary="true"
+				showDetail="true" style="width:90%;" />
+		</center>
+
+		<center>
+			<h:form id="frmListadoDeuda" style="width:90%;">
+				<p:dataTable id="tablaDatosPagos" paginator="true"
+					paginatorPosition="bottom" var="datos"
+					value="#{pagoMB.titulosFiltrados}" rows="10"
+					emptyMessage="No registra información" selectionMode="single"
+					rowKey="#{datos.contrapartida}"
+					selection="#{pagoMB.tituloSeleccionado}">
+					<f:facet name="header">
+						<p:outputLabel value="Valores adeudados" />
+					</f:facet>
+					<p:ajax event="rowSelect" listener="#{pagoMB.onRowSelect}"
+						update=":frmListadoDeuda, :frmPagoServicio:txtTotal" />
+					<p:ajax event="rowUnselect" listener="#{pagoMB.onRowUnselect}"
+						update=":frmListadoDeuda, :frmPagoServicio:txtTotal" />
+					<p:column headerText="Clave" style="text-align : center">
+						<h:outputText value="#{datos.clave}" />
+					</p:column>
+					<p:column headerText="Titulo" style="text-align : center">
+						<h:outputText value="#{datos.contrapartida}" />
+					</p:column>
+					<p:column headerText="Año" style="text-align : center">
+						<h:outputText value="#{datos.año}" />
+					</p:column>
+					<p:column headerText="Mes" style="text-align : center">
+						<h:outputText value="#{datos.mes}" />
+					</p:column>
+					<p:column headerText="Valor adeudado" style="text-align : right">
+						<h:outputText value="#{datos.monto}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+					<!-- 					<p:column> -->
+					<!-- 						<p:selectBooleanCheckbox value="#{datos.estadoPago}"> -->
+					<!-- 							<p:ajax listener="#{pagoMB.actualizaValorPago(datos.id)}" /> -->
+					<!-- 						</p:selectBooleanCheckbox> -->
+					<!-- 					</p:column> -->
+				</p:dataTable>
+
+
+			</h:form>
+		</center>
+
+
+
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+			width="300">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando"></p:graphicImage>
+		</p:dialog>
+
+	</ui:define>
+
+</ui:composition>

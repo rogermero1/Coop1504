@@ -1,0 +1,284 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/template.xhtml">
+	<ui:define name="head">
+	</ui:define>
+
+
+	<ui:define name="viewname">
+		<li>Consulta de transacciones Web</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+		<center>
+			<h:form id="frmDatosConsulta" style="width:90%;">
+				<p:growl id="msjGeneral" showDetail="true" showSummary="true"
+					life="5000" />
+				<center>
+					<h:outputLabel value="#{posicionConsolidadaMB.sesion}" />
+					<p:panelGrid>
+						<p:row>
+							<p:column colspan="2">
+								<h:outputText value="Seleccione tipo de transacción(*)" />
+							</p:column>
+							<p:column colspan="2">
+								<p:selectOneMenu id="smbCodigoTipoTransaccion"
+									value="#{posicionConsolidadaMB.codigoTipoTransaccion}">
+									<f:selectItem itemLabel="Seleccione tipo de transacción"
+										itemValue="" />
+									<f:selectItem itemLabel="Transferencia cuentas locales"
+										itemValue="1" />
+									<f:selectItem itemLabel="Transferencia otros bancos"
+										itemValue="2" />
+									<f:selectItem itemLabel="Pago consumo de tarjetas de crédito"
+										itemValue="3" />
+									<f:selectItem itemLabel="Pago de préstamos" itemValue="4" />
+									<f:selectItem itemLabel="Pago de servicios" itemValue="5" />
+								</p:selectOneMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column>
+								<h:outputText value="Fecha desde" />
+							</p:column>
+							<p:column>
+								<p:calendar id="calFechaDesde"
+									value="#{posicionConsolidadaMB.fechaDesde}"
+									pattern="yyyy-MM-dd" mask="true" required="true"
+									requiredMessage="Ingrese fecha desde." />
+							</p:column>
+							<p:column>
+								<h:outputText value="Fecha hasta" />
+							</p:column>
+							<p:column>
+								<p:calendar id="calFechaHasta"
+									value="#{posicionConsolidadaMB.fechaHasta}"
+									pattern="yyyy-MM-dd" mask="true" required="true"
+									requiredMessage="Ingrese fecha hasta." />
+							</p:column>
+						</p:row>
+						<p:row>
+
+							<p:column colspan="4">
+								<center>
+									<p:commandButton value="Buscar" icon="fa fa-search"
+										action="#{posicionConsolidadaMB.buscaTransaccionesWeb()}"
+										process=":frmDatosConsulta" update=":frmTablasMovimientos"
+										onstart="PF('dlgCargando').show()"
+										onsuccess="PF('dlgCargando').hide()" />
+								</center>
+							</p:column>
+
+						</p:row>
+					</p:panelGrid>
+				</center>
+			</h:form>
+
+			<h:form id="frmTablasMovimientos">
+				<!-- TABLA PARA TRANSFERENCIAS LOCALES -->
+				<p:dataTable id="tablaMovimientosWebLocal" var="movimientosWebLocal"
+					value="#{posicionConsolidadaMB.listadoMovimientosWeb}"
+					paginator="true" rows="10" paginatorPosition="bottom"
+					emptyMessage="No registra movimientos web"
+					rendered="#{posicionConsolidadaMB.transferenciaLocal}">
+					<!-- 				<p:column headerText="N°"> -->
+					<!-- 					<h:outputText value="#{movimientosWebLocal.id}" /> -->
+					<!-- 				</p:column> -->
+					<p:column headerText="Fecha/Hora">
+						<h:outputText value="#{movimientosWebLocal.fechaHora}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+								timeZone="#{posicionConsolidadaMB.zonaHoraria}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Referencia">
+						<h:outputText value="#{movimientosWebLocal.referencia}" />
+					</p:column>
+					<p:column headerText="Cuenta origen">
+						<h:outputText value="#{movimientosWebLocal.numeroCuentaOrigen}" />
+					</p:column>
+					<p:column headerText="Cuenta destino" style="text-align: right">
+						<h:outputText value="#{movimientosWebLocal.numeroCuentaDestino}" />
+					</p:column>
+					<p:column headerText="Canal" style="text-align: right">
+						<h:outputText value="#{movimientosWebLocal.canal==null?'WEB':movimientosWebLocal.canal}" />
+					</p:column>
+					<p:column headerText="Valor" style="text-align: right">
+						<h:outputText value="#{movimientosWebLocal.valor}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+
+				</p:dataTable>
+				<!-- TABLA PARA TRANSFERENCIAS OTROS BANCOS -->
+				<p:dataTable id="tablaMovimientosWebOtroBanco"
+					var="movimientosWebOtroBanco"
+					value="#{posicionConsolidadaMB.listadoMovimientosWeb}"
+					paginator="true" rows="10" paginatorPosition="bottom"
+					emptyMessage="No registra movimientos web"
+					rendered="#{posicionConsolidadaMB.transferenciaOtroBanco}">
+					<!-- 				<p:column headerText="N°"> -->
+					<!-- 					<h:outputText value="#{movimientosWebOtroBanco.id}" /> -->
+					<!-- 				</p:column> -->
+					<p:column headerText="Fecha/Hora">
+						<h:outputText value="#{movimientosWebOtroBanco.fechaHora}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+								timeZone="#{posicionConsolidadaMB.zonaHoraria}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Referencia">
+						<h:outputText value="#{movimientosWebOtroBanco.referencia}" />
+					</p:column>
+					<p:column headerText="Cuenta origen">
+						<h:outputText
+							value="#{movimientosWebOtroBanco.numeroCuentaOrigen}" />
+					</p:column>
+					<p:column headerText="N° Identificacion">
+						<h:outputText
+							value="#{movimientosWebOtroBanco.identificacionBeneficiario}" />
+					</p:column>
+					<p:column headerText="Nombres beneficiario">
+						<h:outputText
+							value="#{movimientosWebOtroBanco.nombreBeneficiario}" />
+					</p:column>
+					<p:column headerText="Cuenta destino">
+						<h:outputText
+							value="#{movimientosWebOtroBanco.numeroCuentaDestino}" />
+					</p:column>
+					<p:column headerText="Valor" style="text-align: right">
+						<h:outputText value="#{movimientosWebOtroBanco.valor}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Financiera">
+						<h:outputText
+							value="#{posicionConsolidadaMB.nombreFinanciera(movimientosWebOtroBanco.idTipoFinanciera,movimientosWebOtroBanco.codigoEntidadFinanciera)}" />
+					</p:column>
+				</p:dataTable>
+
+				<!-- TABLA PARA PAGO DE TARJETAS -->
+				<p:dataTable id="tablaMovimientosWebPagoTarjeta"
+					var="movimientosWebPagoTarjeta"
+					value="#{posicionConsolidadaMB.listadoMovimientosWeb}"
+					paginator="true" rows="10" paginatorPosition="bottom"
+					emptyMessage="No registra movimientos web"
+					rendered="#{posicionConsolidadaMB.pagoTarjeta}">
+					<!-- 				<p:column headerText="N°"> -->
+					<!-- 					<h:outputText value="#{movimientosWebPagoTarjeta.id}" /> -->
+					<!-- 				</p:column> -->
+					<p:column headerText="Fecha/Hora">
+						<h:outputText value="#{movimientosWebPagoTarjeta.fechaHora}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+								timeZone="#{posicionConsolidadaMB.zonaHoraria}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Referencia">
+						<h:outputText value="#{movimientosWebPagoTarjeta.referencia}" />
+					</p:column>
+					<p:column headerText="Cuenta origen">
+						<h:outputText
+							value="#{movimientosWebPagoTarjeta.numeroCuentaOrigen}" />
+					</p:column>
+					<p:column headerText="N° Identificacion">
+						<h:outputText
+							value="#{movimientosWebPagoTarjeta.identificacionBeneficiario}" />
+					</p:column>
+					<p:column headerText="Nombres beneficiario">
+						<h:outputText
+							value="#{movimientosWebPagoTarjeta.nombreBeneficiario}" />
+					</p:column>
+					<p:column headerText="Número de tarjeta">
+						<h:outputText
+							value="#{movimientosWebPagoTarjeta.numeroCuentaDestino}" />
+					</p:column>
+					<p:column headerText="Valor" style="text-align: right">
+						<h:outputText value="#{movimientosWebPagoTarjeta.valor}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Financiera">
+						<h:outputText
+							value="#{posicionConsolidadaMB.nombreFinanciera(movimientosWebPagoTarjeta.idTipoFinanciera,movimientosWebPagoTarjeta.codigoEntidadFinanciera)}" />
+					</p:column>
+				</p:dataTable>
+
+				<!-- TABLA PARA PAGO DE PRESTAMOS -->
+				<p:dataTable id="tablaMovimientosWebPrestamo"
+					var="movimientosWebPrestamo"
+					value="#{posicionConsolidadaMB.listadoMovimientosWeb}"
+					paginator="true" rows="10" paginatorPosition="bottom"
+					emptyMessage="No registra movimientos web"
+					rendered="#{posicionConsolidadaMB.pagoPrestamo}">
+					<!-- 				<p:column headerText="N°"> -->
+					<!-- 					<h:outputText value="#{movimientosWebPrestamo.id}" /> -->
+					<!-- 				</p:column> -->
+					<p:column headerText="Fecha/Hora">
+						<h:outputText value="#{movimientosWebPrestamo.fechaHora}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+								timeZone="#{posicionConsolidadaMB.zonaHoraria}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Referencia">
+						<h:outputText value="#{movimientosWebPrestamo.referencia}" />
+					</p:column>
+					<p:column headerText="Cuenta origen">
+						<h:outputText value="#{movimientosWebPrestamo.numeroCuentaOrigen}" />
+					</p:column>
+					<p:column headerText="N° préstamo">
+						<h:outputText value="#{movimientosWebPrestamo.numeroPrestamo}" />
+					</p:column>
+					<p:column headerText="Valor" style="text-align: right">
+						<h:outputText value="#{movimientosWebPrestamo.valor}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+				<!-- TABLA PARA PAGO DE SERVICIOS -->
+				<p:dataTable id="tablaMovimientosWebServicios"
+					var="movimientosWebServicios"
+					value="#{posicionConsolidadaMB.listadoMovimientosWeb}"
+					paginator="true" rows="10" paginatorPosition="bottom"
+					emptyMessage="No registra movimientos web"
+					rendered="#{posicionConsolidadaMB.pagoServicio}">
+					<!-- 				<p:column headerText="N°"> -->
+					<!-- 					<h:outputText value="#{movimientosWebServicios.id}" /> -->
+					<!-- 				</p:column> -->
+					<p:column headerText="Fecha/Hora">
+						<h:outputText value="#{movimientosWebServicios.fechaHora}">
+							<f:convertDateTime pattern="yyyy-MM-dd HH:mm:ss"
+								timeZone="#{posicionConsolidadaMB.zonaHoraria}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Referencia">
+						<h:outputText value="#{movimientosWebServicios.referencia}" />
+					</p:column>
+					<p:column headerText="Cuenta origen">
+						<h:outputText
+							value="#{movimientosWebServicios.numeroCuentaOrigen}" />
+					</p:column>
+					<p:column headerText="N° servicio">
+						<h:outputText value="#{movimientosWebServicios.numeroServicio}" />
+					</p:column>
+					<p:column headerText="Valor" style="text-align: right">
+						<h:outputText value="#{movimientosWebServicios.valor}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Servicio">
+						<h:outputText
+							value="#{posicionConsolidadaMB.nombreServicio(movimientosWebServicios.idTipoServicio)}" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</center>
+		<p:dialog id="modalDialogCargando" closable="false"
+			header="Cargando..." widgetVar="dlgCargando" modal="true" height="60"
+			width="300" appendToBody="true">
+			<p:graphicImage value="/imagenes/seed/barra_ajax.gif" alt="Cargando" />
+		</p:dialog>
+	</ui:define>
+</ui:composition>

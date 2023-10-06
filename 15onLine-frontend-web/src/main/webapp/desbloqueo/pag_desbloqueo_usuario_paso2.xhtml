@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/template_registro_externo.xhtml">
+
+	<ui:define name="viewname">
+		<li>Desbloqueo, Olvido de contraseña (Paso 2 - Validación de
+			Contraseña)</li>
+		<li><i class="fa fa-angle-right"></i></li>
+		<li></li>
+	</ui:define>
+	<ui:define name="content">
+		<center>
+			<h:form id="frmDesbloqueoOlvido">
+				<p:panel id="panelDescbloqueoOlvido" style="width:500px"
+					header="Por favor ingrese la contraseña temporal que hemos enviado a su correo electrónico y celular, y proceda a crear una nueva contraseña para su usuario del sistema 15Online. 
+					le recordamos que el tiempo máximo de duración de su contraseña temporal es de #{registroUsuarioMB.parametroGeneral.minutosVigenciaOtp} minutos">
+					<p:spacer height="10" />
+					<center>
+						<p:outputLabel style="font-weight:bold;" value="Nota: " />
+						<p:outputLabel value="#{registroUsuarioMB.mensajeFormatoClave}" />
+					</center>
+					<p:messages globalOnly="true" showDetail="true" closable="true" />
+					<!-- 						<p:keyboard id="txtContrasenaTemporal" -->
+					<!-- 							value="#{registroUsuarioMB.otpDesbloqueoOlvido}" password="true" -->
+					<!-- 							keypadOnly="true" /> -->
+					<h:panelGrid border="0" columns="2">
+						<p:outputLabel value="Ingrese Contraseña Temporal : " />
+						<p:keyboard id="txtContrasenaTemporal"
+							value="#{registroUsuarioMB.otpDesbloqueoOlvido}" password="true"
+							closeLabel="Cerrar" backspaceLabel="Borrar" clearLabel="Limpiar"
+							onkeydown="return false" onkeypress="return false"
+							onkeyup="return false" layout="custom"
+							layoutTemplate="#{configuracionesGeneralesMB.tecladoRandom}" />
+						<p:outputLabel value="Ingrese Nueva Contraseña : " />
+						<p:password id="txtContrasenaTemporal1"
+							value="#{registroUsuarioMB.claveTemp}" feedback="true"
+							promptLabel="Ingrese Clave" weakLabel="Seguridad Baja"
+							goodLabel="Seguridad Media" strongLabel="Seguridad Alta" />
+						<p:outputLabel value="Confirme Nueva Contraseña : " />
+						<p:password id="txtContrasenaTemporal2"
+							value="#{registroUsuarioMB.claveTemp2}" feedback="true"
+							promptLabel="Ingrese Clave" weakLabel="Seguridad Baja"
+							goodLabel="Seguridad Media" strongLabel="Seguridad Alta" />
+					</h:panelGrid>
+					<h:panelGrid border="0" columns="1">
+						<center>
+							<p:commandButton partialSubmit="true"
+								update="frmDesbloqueoOlvido" process="frmDesbloqueoOlvido"
+								actionListener="#{registroUsuarioMB.desbloqueoOlvidoContrasena}"
+								value="Continuar" icon="fa fa-play-circle" />
+						</center>
+					</h:panelGrid>
+				</p:panel>
+			</h:form>
+		</center>
+	</ui:define>
+
+</ui:composition>
